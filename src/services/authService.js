@@ -8,4 +8,9 @@ export const signup = async (data) => {
 };
 export const getRegistrationMetaData = () => API.get("/v1/registration/meta");
 export const logout = () => API.post("/logout");
-export const numberVerification = (data) => API.post("/v1/user/verify-number", data);
+export const numberVerification = (data) =>
+  API.post("/v1/user/verify-number", data);
+export const forgotPassword = (data) =>
+  API.post("/v1/user/forget-password", data);
+export const resetPassword = (data) =>
+  API.post("/v1/user/reset-password", data);

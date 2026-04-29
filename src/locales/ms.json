@@ -36,5 +36,14 @@
     "verify_number": "Verifikasi Nomor",
     "register": "Daftar",
     "registering": "Mendaftar...",
-    "verifying": "Memverifikasi..."
+    "verifying": "Memverifikasi...",
+    "forget_password_message": "Kami akan mengirimkan email dengan instruksi untuk mereset kata sandi Anda jika alamat email terdaftar. Harap periksa kotak masuk dan folder spam Anda",
+    "forget_password": "Lupa Kata Laluan",
+    "send_reset_link": "Kirim Tautan Reset",
+    "sending": "Mengirim...",
+    "reset_password": "Reset Kata Laluan",
+    "change_password": "Ubah Kata Laluan",
+    "change_password_message": "Masukkan kata sandi baru Anda di bawah ini untuk mengubah kata sandi Anda.",
+    "changing_password": "Mengubah Kata Laluan...",
+    "passwords_do_not_match": "Kata sandi tidak cocok"
 }

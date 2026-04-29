@@ -74,7 +74,7 @@ function cleanup() {
 
                     <div class="text-center mb-4">
                         <h3 class="mt-3">{{ $t('phone_number_verification') }}</h3>
-                        <p>{{ $t('number_verification_message') }}</p>
+                        <p>{{ $t('forget_password_message') }}</p>
                     </div>
                     <NumberVerificationForm @numberVerification="handleNumberVerification" :loading="loading" />
                 </div>

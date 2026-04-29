@@ -38,7 +38,16 @@
     "verify_number": "Verify Number",
     "register": "Register",
     "registering": "Registering...",
-    "verifying": "Verifying..."
+    "verifying": "Verifying...",
+    "forget_password_message": " We will send you an email with instructions to reset your password if the email address is registered. Please check your inbox and spam folder",
+    "forget_password": "Forgot Password",
+    "send_reset_link": "Send Reset Link",
+    "sending": "Sending...",
+    "reset_password": "Reset Password",
+    "change_password": "Change Password",
+    "change_password_message": "Enter your new password below to change your password.",
+    "changing_password": "Changing Password...",
+    "passwords_do_not_match": "Passwords do not match"
 
 
 
