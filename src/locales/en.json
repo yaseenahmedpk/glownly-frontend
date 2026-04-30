@@ -47,7 +47,17 @@
     "change_password": "Change Password",
     "change_password_message": "Enter your new password below to change your password.",
     "changing_password": "Changing Password...",
-    "passwords_do_not_match": "Passwords do not match"
+    "passwords_do_not_match": "Passwords do not match",
+    "invalid_credentials": "Invalid credentials",
+    "your_account_is_inactive": "Your account is inactive",
+    "something_went_wrong": "Something went wrong. Please try again.",
+    "network_error": "Network error. Please check your internet connection.",
+    "server_error": "Server error. Please try again later.",
+    "unable_to_register_account": "We are unable to register your account right now. Please contact support.",
+    "system_unable_to_register_account": "System error: We are unable to register you account right now please contact support.",
+    "unable_to_verify_account": "We are unable to verify your number right now please contact support.",
+    "number_already_verified":"Your number is already verified"
+
 
 
 

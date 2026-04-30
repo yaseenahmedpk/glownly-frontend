@@ -7,7 +7,9 @@ import LanguageChanger from '../components/LanguageChanger.vue'
 import { ref } from 'vue'
 import backgroundImage from '../assets/images/login-bg.png'
 import swal from 'sweetalert2'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 
 const loading = ref(false)
 const handlePasswordForget = async (form) => {
@@ -20,7 +22,7 @@ const handlePasswordForget = async (form) => {
         })
         // Optionally, show a success message or redirect the user
     } catch (error) {
-        showErrorAlert(handleApiError(error))
+        showErrorAlert(handleApiError(error, t));
     } finally {
         loading.value = false
     }

@@ -1,6 +1,6 @@
 <script setup>
 import { reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 
 const form = reactive({
     email: '',
@@ -25,7 +25,7 @@ const handleLogin = () => {
                 <div class="form-group">
                     <div class="d-flex justify-content-between align-items-center">
                         <label class="text-secondary">{{ $t('password') }}</label>
-                        <label><a href="auth-recover-pwd.html">{{ $t('forgot_password') }}</a></label>
+                        <RouterLink :to="`/forget-password`">{{ $t('forgot_password') }}</RouterLink>
                     </div>
                     <input class="form-control" type="password" id="password" v-model="form.password"
                         :placeholder="$t('enter_password')">

@@ -9,8 +9,9 @@ import { handleApiError } from "../helpers/handleApiError";
 import { showErrorAlert } from "../helpers/swal";
 import { useRouter } from 'vue-router'
 import { initEcho } from '../services/echo';
+import { useI18n } from 'vue-i18n'
 
-
+const { t } = useI18n();
 const authStore = useAuthStore()
 const registrationMetaData = ref(null)
 const router = useRouter()
@@ -20,7 +21,7 @@ onMounted(async () => {
     const registrationMetaResponse = await getRegistrationMetaData()
     registrationMetaData.value = registrationMetaResponse.data
   } catch (error) {
-    throw handleApiError(error)
+    throw handleApiError(error, t)
   } finally {
     loading.value = false
   }
@@ -37,7 +38,7 @@ const handleSignup = async (form) => {
 
   } catch (error) {
     console.error('Signup failed:', error)
-    const messages = handleApiError(error)
+    const messages = handleApiError(error, t)
 
     if (messages?.length) {
       showErrorAlert(messages)

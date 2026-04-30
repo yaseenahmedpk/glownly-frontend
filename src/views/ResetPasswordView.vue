@@ -8,8 +8,9 @@ import { onMounted, ref } from 'vue'
 import backgroundImage from '../assets/images/login-bg.png'
 import swal from 'sweetalert2'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
-
+const { t } = useI18n();
 const loading = ref(false)
 const token = ref('')
 const email = ref('')
@@ -27,9 +28,9 @@ const handlePasswordReset = async (form) => {
             icon: 'success',
             title: response.data.message
         })
-        
+
     } catch (error) {
-        showErrorAlert(handleApiError(error))
+        showErrorAlert(handleApiError(error, t))
     } finally {
         loading.value = false
         formRef.value?.resetForm()
@@ -52,7 +53,8 @@ const handlePasswordReset = async (form) => {
                         <h3 class="mt-3">{{ $t('reset_password') }}</h3>
                         <p>{{ $t('change_password_message') }}</p>
                     </div>
-                    <ResetPasswordForm @passwordReset="handlePasswordReset" :loading="loading" :token="token" :email="email" ref="formRef" />
+                    <ResetPasswordForm @passwordReset="handlePasswordReset" :loading="loading" :token="token"
+                        :email="email" ref="formRef" />
                 </div>
             </div>
             <div class="col-md-6 login-bg right-fixed" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>

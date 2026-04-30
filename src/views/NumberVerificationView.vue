@@ -11,7 +11,10 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/authStore';
 import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n'
 
+
+const { t } = useI18n();
 const loading = ref(false)
 const router = useRouter();
 const store = useAuthStore();
@@ -45,10 +48,10 @@ const handleNumberVerification = async (form) => {
         if (response.data.whatsAppTokenUrl) {
             window.open(response.data.whatsAppTokenUrl, '_blank');
         } else {
-            showErrorAlert(response.data.message)
+            showErrorAlert(handleApiError(response.data.message, t))
         }
     } catch (error) {
-        showErrorAlert(handleApiError(error))
+        showErrorAlert(handleApiError(error, t))
     } finally {
         loading.value = false
     }

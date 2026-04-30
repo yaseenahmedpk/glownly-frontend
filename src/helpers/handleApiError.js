@@ -1,13 +1,13 @@
-export function handleApiError(error) {
+export function handleApiError(error,t) {
   // Default message fallback
-  const fallback = ["Something went wrong. Please try again."];
+  const fallback = [t("something_went_wrong")];
 
   if (!error) {
     return fallback;
   }
 
   if (!error.response) {
-    return ["Network error. Please check your internet connection."];
+    return [t("network_error")];
   }
 
   const { status, data } = error.response;
@@ -25,12 +25,12 @@ export function handleApiError(error) {
 
   // ⚠️ Only treat as error if explicitly failed
   if (status >= 500) {
-    return ["Server error. Please try again later."];
+    return [t("server_error")];
   }
 
   // ⚠️ Only use message if it's clearly an error response
   if (data?.message && status >= 400) {
-    return [data.message];
+    return [t(data.message)];
   }
 
   return fallback;

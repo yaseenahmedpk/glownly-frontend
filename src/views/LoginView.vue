@@ -7,7 +7,12 @@ import '../assets/css/backend.css'
 import '../assets/css/custom.css'
 import logo from '../assets/images/glownly_logo.png'
 import loginbg from '../assets/images/login-bg.png'
+import { useI18n } from 'vue-i18n'
+import { RouterLink } from 'vue-router'
+import { handleApiError } from '../helpers/handleApiError'
+import { showErrorAlert } from '../helpers/swal'
 
+const { t } = useI18n()
 const authStore = useAuthStore()
 
 const handleLogin = async (form) => {
@@ -15,10 +20,9 @@ const handleLogin = async (form) => {
     const response = await login(form)
     authStore.setToken(response.data.token)
     authStore.setUser(response.data.user)
-    // Redirect to home page or show success message
+   
   } catch (error) {
-    console.error('Login failed:', error)
-    // Show error message to user
+    showErrorAlert(handleApiError(error, t))
   }
 }
 </script>
@@ -76,7 +80,7 @@ const handleLogin = async (form) => {
           </div>
           <div class="mb-5">
             <p class="line-around text-secondary mb-0"><span class="line-around-1">{{ $t('or_login_with_email')
-            }}</span></p>
+                }}</span></p>
           </div>
           <LoginForm @login="handleLogin" />
         </div>
