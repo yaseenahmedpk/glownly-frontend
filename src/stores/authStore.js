@@ -14,12 +14,23 @@ export const useAuthStore = defineStore("auth", {
 
     setUser(user) {
       this.user = user;
+      localStorage.setItem("user", JSON.stringify(user));
     },
 
     logout() {
       this.token = null;
       this.user = null;
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    },
+    loadFromStorage() {
+      const user = localStorage.getItem("user");
+      const token = localStorage.getItem("token");
+
+      if (user && token) {
+        this.user = JSON.parse(user);
+        this.token = token;
+      }
     },
   },
 });
