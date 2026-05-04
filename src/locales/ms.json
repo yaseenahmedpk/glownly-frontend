@@ -51,5 +51,9 @@
     "your_account_is_inactive": "Akun Anda tidak aktif",
     "something_went_wrong": "Terjadi kesalahan. Silakan coba lagi.",
     "network_error": "Kesalahan jaringan. Harap periksa koneksi internet Anda.",
-    "server_error": "Kesalahan server. Silakan coba lagi nanti."
+    "server_error": "Kesalahan server. Silakan coba lagi nanti.",
+    "permission_added":"Kebenaran berjaya ditambah.",
+    "permissions_error":"Tidak dapat menambah kebenaran.",
+    "add":"Tambah",
+    "edit": "Kemaskini"
 }

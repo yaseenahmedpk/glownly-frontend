@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, reactive } from "vue";
-import Permissions from "../../components/dashboard/Permissions.vue";
-import { getPermissions } from "../../services/permissoinsService";
-import { storePermission } from "../../services/permissoinsService";
+import Roles from "../../components/dashboard/Roles.vue";
+import { getRoles } from "../../services/roleService";
+import { storeRole } from "../../services/roleService";
 import { handleApiError } from '../../helpers/handleApiError'
 import { showErrorAlert } from '../../helpers/swal'
 import { useI18n } from 'vue-i18n'
@@ -11,17 +11,16 @@ import { Modal } from "bootstrap"
 
 const { t } = useI18n();
 const loading = ref(false);
-const permissions = ref([]);
+const roles = ref([]);
 const modalObject = ref(null);
-const permissionName = ref(null);
+const roleName = ref(null);
 const errorsMessage = ref(null);
-const modalTitle = ref(null);
 
-const fetchPermissions = async () => {
+const fetchRoles = async () => {
     try {
         loading.value = true;
-        const response = await getPermissions();
-        permissions.value = response.data.permissions;
+        const response = await getRoles();
+        roles.value = response.data.roles;
     } catch (error) {
         showErrorAlert(handleApiError(error, t));
     } finally {
@@ -29,11 +28,10 @@ const fetchPermissions = async () => {
     }
 }
 onMounted(() => {
-    modalTitle.value = t("add");
-    fetchPermissions();
+    fetchRoles();
 });
 const openModal = () => {
-    const modalEl = document.getElementById("permissionModal")
+    const modalEl = document.getElementById("roleModal")
     modalObject.value = new Modal(modalEl)
     modalObject.value.show()
 }
@@ -43,16 +41,15 @@ const closeModal = () => {
     }
     modalObject.value.hide()
 }
-const savePermission = async () => {
+const saveRole = async () => {
     try {
-        console.log("perem", permissionName.value);
-        if (permissionName.value != null) {
+        if (roleName.value != null) {
             loading.value = true
-            await storePermission({ name: permissionName.value })
-            permissionName.value = "";
+            await storeRole({ name: roleName.value })
+            roleName.value = "";
             modalObject.value.hide()
             // refresh table
-            fetchPermissions()
+            fetchRoles()
         } else {
             errorsMessage.value = "Name is required";
         }
@@ -62,19 +59,12 @@ const savePermission = async () => {
         loading.value = false
     }
 }
-const handlePermissionData = (data) => {
-    const modalEl = document.getElementById("permissionModal")
-    modalObject.value = new Modal(modalEl)
-    permissionName.value = data.name;
-    modalTitle.value = t("edit");
-    modalObject.value.show();
-};
 </script>
 <template>
 
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6">
-            <h3>Permissions</h3>
+            <h3>Roles</h3>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 d-flex justify-content-end">
             <button class="btn btn-primary" @click="openModal">
@@ -86,16 +76,16 @@ const handlePermissionData = (data) => {
             </button>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
-            <Permissions :permissions="permissions" :loading="loading" @permissionData="handlePermissionData" />
+            <Roles :roles="roles" :loading="loading" />
         </div>
 
     </div>
-    <div class="modal fade" id="permissionModal" tabindex="-1">
+    <div class="modal fade" id="roleModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ modalTitle }} Permission</h5>
+                    <h5 class="modal-title">Add Role</h5>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal">
                         <span aria-hidden="true">×</span>
@@ -108,7 +98,7 @@ const handlePermissionData = (data) => {
                     <div class="mb-3">
                         <label class="form-label">Name</label>
 
-                        <input type="text" class="form-control" v-model="permissionName" />
+                        <input type="text" class="form-control" v-model="roleName" />
 
                         <span class="text-danger" v-if="errorsMessage">
                             {{ errorsMessage }}
@@ -122,7 +112,7 @@ const handlePermissionData = (data) => {
                         Cancel
                     </button>
 
-                    <button class="btn btn-primary" :disabled="loading" @click="savePermission">
+                    <button class="btn btn-primary" :disabled="loading" @click="saveRole">
                         {{ loading ? "Saving..." : "Save" }}
                     </button>
                 </div>

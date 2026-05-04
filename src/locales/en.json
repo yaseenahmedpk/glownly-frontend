@@ -56,7 +56,11 @@
     "unable_to_register_account": "We are unable to register your account right now. Please contact support.",
     "system_unable_to_register_account": "System error: We are unable to register you account right now please contact support.",
     "unable_to_verify_account": "We are unable to verify your number right now please contact support.",
-    "number_already_verified":"Your number is already verified"
+    "number_already_verified":"Your number is already verified",
+    "permission_added":"pemrission has been added",
+    "permissions_error":"Unable to add permission",
+    "add":"Add",
+    "edit": "Edit"
 
 
 

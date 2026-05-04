@@ -26,7 +26,7 @@ const ui = useUiStore()
             <nav class="iq-sidebar-menu">
                 <ul id="iq-sidebar-toggle" class="side-menu">
                     <li class=" sidebar-layout">
-                        <a href="../backend/index.html" class="svg-icon">
+                        <RouterLink to="/dashboard" class="svg-icon">
                             <i class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
@@ -36,7 +36,8 @@ const ui = useUiStore()
                             </i>
                             <span class="ml-2">Dashboard</span>
                             <p class="mb-0 w-10 badge badge-pill badge-primary">6</p>
-                        </a>
+                        </RouterLink>
+
                     </li>
                     <li class="sidebar-layout">
                         <a href="#settings" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
@@ -56,7 +57,7 @@ const ui = useUiStore()
                         </a>
                         <ul id="settings" class="submenu collapse" data-parent="#iq-sidebar-toggle">
                             <li class=" sidebar-layout">
-                                <a href="../backend/auth-login.html" class="svg-icon">
+                                <RouterLink to="/roles" class="svg-icon">
                                     <i class="">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -64,7 +65,8 @@ const ui = useUiStore()
                                                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                         </svg>
                                     </i><span class="">Roles</span>
-                                </a>
+                                </RouterLink>
+
                             </li>
                             <li class=" sidebar-layout">
                                 <RouterLink to="/permissions" class="svg-icon">

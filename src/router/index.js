@@ -19,7 +19,7 @@ const routes = [
     component: DashboardLayout,
     children: [
       {
-        path: "",
+        path: "/dashboard",
         name: "DashboardHome",
         component: () => import("../views/dashboard/HomeView.vue"),
       },
@@ -27,6 +27,11 @@ const routes = [
         path: "/permissions",
         name: "Permissions",
         component: () => import("../views/dashboard/PermissionsView.vue"),
+      },
+      {
+        path: "/roles",
+        name: "Roles",
+        component: () => import("../views/dashboard/RolesView.vue"),
       },
     ],
   },
