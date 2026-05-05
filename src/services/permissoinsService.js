@@ -6,3 +6,5 @@ export const getPermissions = (filter = {}) =>
     params: filter,
   });
 export const storePermission = (data) => API.post("/v1/permissions", data);
+export const updatePermission = (id, data) => API.put(`/v1/permissions/${id}`, data);
+export const deletePermission = (id) => API.delete(`/v1/permissions/${id}`);

@@ -3,8 +3,11 @@ import { ref, onMounted, reactive } from "vue";
 import Permissions from "../../components/dashboard/Permissions.vue";
 import { getPermissions } from "../../services/permissoinsService";
 import { storePermission } from "../../services/permissoinsService";
+import { updatePermission } from "../../services/permissoinsService";
+import { deletePermission } from "../../services/permissoinsService";
 import { handleApiError } from '../../helpers/handleApiError'
 import { showErrorAlert } from '../../helpers/swal'
+import Swal from 'sweetalert2'
 import { useI18n } from 'vue-i18n'
 import { Modal } from "bootstrap"
 
@@ -16,6 +19,7 @@ const modalObject = ref(null);
 const permissionName = ref(null);
 const errorsMessage = ref(null);
 const modalTitle = ref(null);
+const editingPermissionId = ref(null);
 
 const fetchPermissions = async () => {
     try {
@@ -35,6 +39,7 @@ onMounted(() => {
 const openModal = () => {
     const modalEl = document.getElementById("permissionModal")
     modalObject.value = new Modal(modalEl)
+    editingPermissionId.value = null;
     modalObject.value.show()
 }
 const closeModal = () => {
@@ -45,11 +50,15 @@ const closeModal = () => {
 }
 const savePermission = async () => {
     try {
-        console.log("perem", permissionName.value);
         if (permissionName.value != null) {
             loading.value = true
-            await storePermission({ name: permissionName.value })
+            if (editingPermissionId.value) {
+                await updatePermission(editingPermissionId.value, { name: permissionName.value })
+            } else {
+                await storePermission({ name: permissionName.value })
+            }
             permissionName.value = "";
+            editingPermissionId.value = null;
             modalObject.value.hide()
             // refresh table
             fetchPermissions()
@@ -66,8 +75,33 @@ const handlePermissionData = (data) => {
     const modalEl = document.getElementById("permissionModal")
     modalObject.value = new Modal(modalEl)
     permissionName.value = data.name;
+    editingPermissionId.value = data.id;
     modalTitle.value = t("edit");
     modalObject.value.show();
+};
+const handleDeletePermission = async (id) => {
+    const result = await Swal.fire({
+        title: t('are_you_sure'),
+        text: t('delete_permission_confirm'),
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: t('yes_delete'),
+        cancelButtonText: t('cancel')
+    });
+
+    if (result.isConfirmed) {
+        try {
+            loading.value = true;
+            await deletePermission(id);
+            fetchPermissions();
+        } catch (error) {
+            showErrorAlert(handleApiError(error, t));
+        } finally {
+            loading.value = false;
+        }
+    }
 };
 </script>
 <template>
@@ -86,7 +120,7 @@ const handlePermissionData = (data) => {
             </button>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
-            <Permissions :permissions="permissions" :loading="loading" @permissionData="handlePermissionData" />
+            <Permissions :permissions="permissions" :loading="loading" @permissionData="handlePermissionData" @deletePermission="handleDeletePermission" />
         </div>
 
     </div>
