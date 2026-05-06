@@ -62,7 +62,12 @@
   "add": "Add",
   "edit": "Edit",
   "are_you_sure": "Are you sure?",
-  "delete_permission_confirm": "Delete permission confirm",
+  "delete_permission_confirm": "Delete permission confirmation",
   "yes_delete": "Yes Delete",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "delete_role_confirm": "Delete role confirmation",
+  "role_delete_error": "We are unable to delete this role",
+  "permissions_delete_error": "We are unable to delete this permission",
+  "role_update_error": "We are unable to update this role",
+  "permissions_update_error": "We are unable to update this permission"
 }

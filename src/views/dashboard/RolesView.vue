@@ -3,8 +3,11 @@ import { ref, onMounted, reactive } from "vue";
 import Roles from "../../components/dashboard/Roles.vue";
 import { getRoles } from "../../services/roleService";
 import { storeRole } from "../../services/roleService";
+import { updateRole } from "../../services/roleService";
+import { deleteRole } from "../../services/roleService";
 import { handleApiError } from '../../helpers/handleApiError'
 import { showErrorAlert } from '../../helpers/swal'
+import Swal from 'sweetalert2'
 import { useI18n } from 'vue-i18n'
 import { Modal } from "bootstrap"
 
@@ -15,6 +18,8 @@ const roles = ref([]);
 const modalObject = ref(null);
 const roleName = ref(null);
 const errorsMessage = ref(null);
+const editingRoleId = ref(null);
+const modalTitle = ref(null);
 
 const fetchRoles = async () => {
     try {
@@ -28,11 +33,13 @@ const fetchRoles = async () => {
     }
 }
 onMounted(() => {
+    modalTitle.value = t("add");
     fetchRoles();
 });
 const openModal = () => {
     const modalEl = document.getElementById("roleModal")
     modalObject.value = new Modal(modalEl)
+    editingRoleId.value = null;
     modalObject.value.show()
 }
 const closeModal = () => {
@@ -45,8 +52,13 @@ const saveRole = async () => {
     try {
         if (roleName.value != null) {
             loading.value = true
-            await storeRole({ name: roleName.value })
+            if (editingRoleId.value) {
+                await updateRole(editingRoleId.value, { name: roleName.value })
+            } else {
+                await storeRole({ name: roleName.value })
+            }
             roleName.value = "";
+            editingRoleId.value = null;
             modalObject.value.hide()
             // refresh table
             fetchRoles()
@@ -59,24 +71,63 @@ const saveRole = async () => {
         loading.value = false
     }
 }
+const handleRoleData = (data) => {
+    const modalEl = document.getElementById("roleModal")
+    modalObject.value = new Modal(modalEl)
+    roleName.value = data.name;
+    editingRoleId.value = data.id;
+    modalTitle.value = t("edit");
+    modalObject.value.show();
+};
+const handleDeleteRole = async (id) => {
+    const result = await Swal.fire({
+        title: t('are_you_sure'),
+        text: t('delete_role_confirm'),
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: t('yes_delete'),
+        cancelButtonText: t('cancel')
+    });
+
+    if (result.isConfirmed) {
+        try {
+            loading.value = true;
+            await deleteRole(id);
+            fetchRoles();
+        } catch (error) {
+            showErrorAlert(handleApiError(error, t));
+        } finally {
+            loading.value = false;
+        }
+    }
+};
 </script>
 <template>
 
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6">
-            <h3>Roles</h3>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 d-flex justify-content-end">
-            <button class="btn btn-primary" @click="openModal">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                Add
-            </button>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
-            <Roles :roles="roles" :loading="loading" />
+        <div class="col-sm-12 col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="header-title">
+                        <h4 class="card-title">Role Permissions</h4>
+                    </div>
+                    <div class="header-action">
+                        <button class="btn btn-primary" @click="openModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <Roles :roles="roles" :loading="loading" @roleData="handleRoleData"
+                        @deleteRole="handleDeleteRole" />
+                </div>
+            </div>
         </div>
 
     </div>
@@ -85,7 +136,7 @@ const saveRole = async () => {
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Role</h5>
+                    <h5 class="modal-title">{{ modalTitle }} Role</h5>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal">
                         <span aria-hidden="true">×</span>

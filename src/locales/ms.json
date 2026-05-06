@@ -59,5 +59,10 @@
   "are_you_sure": "Adakah anda pasti?",
   "delete_permission_confirm": "Padam kebenaran ini?",
   "yes_delete": "Ya, Padam",
-  "cancel": "Batal"
+  "cancel": "Batal",
+  "delete_role_confirm": "Sahkan pemadaman peranan",
+  "role_delete_error": "Kami tidak dapat memadam peranan ini",
+  "permissions_delete_error": "Kami tidak dapat memadam kebenaran ini",
+  "role_update_error": "Kami tidak dapat mengemas kini peranan ini",
+  "permissions_update_error": "Kami tidak dapat mengemas kini kebenaran ini"
 }

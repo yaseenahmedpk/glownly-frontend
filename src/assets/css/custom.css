@@ -66,6 +66,11 @@
 .sidebar-main .sidebar {
   transform: translateX(0);
 }
+.customize-vue-table {
+  --easy-table-header-font-size: 16px;
+  --easy-table-body-row-font-size: 15px;
+  --easy-table-footer-font-size: 15px;
+}
 @media (max-width: 767px) {
   .login-wrapper {
     height: auto;

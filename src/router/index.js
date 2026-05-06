@@ -33,6 +33,11 @@ const routes = [
         name: "Roles",
         component: () => import("../views/dashboard/RolesView.vue"),
       },
+      {
+        path: "/roles-permissions/:id",
+        name: "RolePermissions",
+        component: () => import("../views/dashboard/RolePermissionsView.vue"),
+      },
     ],
   },
 ];
