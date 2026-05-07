@@ -2,10 +2,30 @@
 import languageChangerIcon from '../assets/images/flag-lang.png'
 import malFlag from '../assets/images/mal-flag.png'
 import usaFlag from '../assets/images/usaFlag.png'
-import { ref, watch } from 'vue'
+import defaultProfilePic from '../assets/images/profile.png'
+import { computed } from 'vue'
 import { useUiStore } from '../stores/ui'
+import { useLanguageStore } from '../stores/languageStore'
+import { useAuthStore } from '../stores/authStore'
+import { storeToRefs } from 'pinia'
 
+const languageStore = useLanguageStore()
+const { locale } = storeToRefs(languageStore)
 const ui = useUiStore()
+const authStore = useAuthStore()
+const { user } = storeToRefs(authStore)
+
+const profilePic = computed(() => {
+    console.log("data", user?.value?.full_name);
+    return user.value?.user_profile_pic ? user.value.user_profile_pic : defaultProfilePic
+})
+
+const changeLang = (language) => {
+    languageStore.setLanguage(language)
+}
+const handleLogout = async () => {
+    await authStore.logout();
+};
 </script>
 
 <template>
@@ -262,16 +282,30 @@ const ui = useUiStore()
                                     <div class="card shadow-none m-0 border-0">
                                         <div class=" p-0 ">
                                             <ul class="dropdown-menu-1 list-group list-group-flush">
-                                                <li class="dropdown-item-1 list-group-item  px-2"><a class="p-0"
-                                                        href="#"><img :src="usaFlag" alt="img-flaf"
-                                                            class="img-fluid mr-2"
-                                                            style="width: 20px;height: 15px;min-width: 20px;" />English</a>
+                                                <li class="dropdown-item-1 list-group-item  px-2"
+                                                    @click="changeLang('en')">
+                                                    <a class="p-0 d-flex align-items-center justify-content-between"
+                                                        href="#">
+                                                        <span>
+                                                            <img :src="usaFlag" alt="img-flaf" class="img-fluid mr-2"
+                                                                style="width: 20px;height: 15px;min-width: 20px;" />English
+                                                        </span>
+                                                        <span v-if="locale === 'en'"
+                                                            class="text-success font-weight-bold">✓</span>
+                                                    </a>
                                                 </li>
-                                                <li class="dropdown-item-1 list-group-item  px-2"><a class="p-0"
-                                                        href="#"><img :src="malFlag" alt="img-flaf"
-                                                            class="img-fluid mr-2"
-                                                            style="width:20px;height: 15px;min-width: 20px;" />Bahasa
-                                                        Melayu</a>
+                                                <li class="dropdown-item-1 list-group-item  px-2"
+                                                    @click="changeLang('ms')">
+                                                    <a class="p-0 d-flex align-items-center justify-content-between"
+                                                        href="#">
+                                                        <span>
+                                                            <img :src="malFlag" alt="img-flaf" class="img-fluid mr-2"
+                                                                style="width:20px;height: 15px;min-width: 20px;" />Bahasa
+                                                            Melayu
+                                                        </span>
+                                                        <span v-if="locale === 'ms'"
+                                                            class="text-success font-weight-bold">✓</span>
+                                                    </a>
                                                 </li>
 
                                             </ul>
@@ -279,40 +313,13 @@ const ui = useUiStore()
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item nav-icon search-content">
-                                <a href="#" class="search-toggle rounded" id="dropdownSearch" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <svg class="svg-icon text-secondary" id="h-suns" height="25" width="25"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </a>
-                                <div class="iq-search-bar iq-sub-dropdown dropdown-menu"
-                                    aria-labelledby="dropdownSearch">
-                                    <form action="#" class="searchbox p-2">
-                                        <div class="form-group mb-0 position-relative">
-                                            <input type="text" class="text search-input font-size-12"
-                                                placeholder="type here to search...">
-                                            <a href="#" class="search-link">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="" width="20" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                                </svg>
-                                            </a>
-                                        </div>
-                                    </form>
-                                </div>
-                            </li>
+
                             <li class="nav-item nav-icon dropdown">
                                 <a href="#" class="nav-item nav-icon dropdown-toggle pr-0 search-toggle"
                                     id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
-                                    <img src="../assets/images/user/1.jpg" class="img-fluid avatar-rounded" alt="user">
-                                    <span class="mb-0 ml-2 user-name">John Doe</span>
+                                    <img :src="profilePic" class="img-fluid avatar-rounded" alt="user">
+                                    <span class="mb-0 ml-2 user-name">{{ user?.full_name }}</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                     <li class="dropdown-item d-flex svg-icon">
@@ -353,14 +360,15 @@ const ui = useUiStore()
                                         </svg>
                                         <a href="../app/user-privacy-setting.html">Privacy Settings</a>
                                     </li>
-                                    <li class="dropdown-item  d-flex svg-icon border-top">
-                                        <svg class="svg-icon mr-0 text-secondary" id="h-05-p" width="20"
+                                    <li class="dropdown-item d-flex svg-icon border-top" @click="handleLogout">
+                                        <svg class="svg-icon mr-0 text-secondary" width="20"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                         </svg>
-                                        <a href="../backend/auth-sign-in.html">Logout</a>
+
+                                        <span>Logout</span>
                                     </li>
                                 </ul>
                             </li>

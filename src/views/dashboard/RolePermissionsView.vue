@@ -49,7 +49,7 @@ onMounted(() => {
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
-                        <h4 class="card-title">Role Permissions</h4>
+                        <h4 class="card-title">{{ $t('role_permissions') }}</h4>
                     </div>
                 </div>
                 <div class="card-body">

@@ -11,6 +11,7 @@ import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { handleApiError } from '../helpers/handleApiError'
 import { showErrorAlert } from '../helpers/swal'
+import router from "../router";
 
 const { t } = useI18n()
 const authStore = useAuthStore()
@@ -20,7 +21,8 @@ const handleLogin = async (form) => {
     const response = await login(form)
     authStore.setToken(response.data.token)
     authStore.setUser(response.data.user)
-   
+    router.push("/dashboard");
+
   } catch (error) {
     showErrorAlert(handleApiError(error, t))
   }

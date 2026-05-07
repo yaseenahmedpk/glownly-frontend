@@ -1,18 +1,30 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, computed } from 'vue'
 import { useUiStore } from '../stores/ui'
 import { RouterLink } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import defaultLogo from '../assets/images/glownly_admin.png'
+import { useAuthStore } from '../stores/authStore'
+import { storeToRefs } from 'pinia'
 
 const ui = useUiStore()
+const { t } = useI18n()
+const authStore = useAuthStore()
+const { company } = storeToRefs(authStore)
+
+const companyLogo = computed(() => {
+    return company.value?.logo ? company.value?.logo : defaultLogo
+})
+const companyName = computed(() => {
+    return company.value?.name ? company.value?.name : "glownly"
+})
 </script>
 <template>
     <div class="iq-sidebar  sidebar-default  ">
         <div class="iq-sidebar-logo d-flex align-items-end justify-content-between">
             <a href="../backend/index.html" class="header-logo">
-                <img src="../assets/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo">
-                <img src="../assets/images/logo-dark.png" class="img-fluid rounded-normal d-none sidebar-light-img"
-                    alt="logo">
-                <span>Datum</span>
+                <img :src="companyLogo" class="img-fluid rounded-normal light-logo" alt="logo">
+                <span>{{ companyName }}</span>
             </a>
             <div class="side-menu-bt-sidebar-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="text-light wrapper-menu"
@@ -34,7 +46,7 @@ const ui = useUiStore()
                                         d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                                 </svg>
                             </i>
-                            <span class="ml-2">Dashboard</span>
+                            <span class="ml-2">{{ $t('dashboard') }}</span>
                             <p class="mb-0 w-10 badge badge-pill badge-primary">6</p>
                         </RouterLink>
 
@@ -48,7 +60,7 @@ const ui = useUiStore()
                                         d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </i>
-                            <span class="ml-2">Settings</span>
+                            <span class="ml-2">{{ $t('settings') }}</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon iq-arrow-right arrow-active"
                                 width="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -64,7 +76,7 @@ const ui = useUiStore()
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                         </svg>
-                                    </i><span class="">Roles</span>
+                                    </i><span class="">{{ $t('roles') }}</span>
                                 </RouterLink>
 
                             </li>
@@ -77,7 +89,7 @@ const ui = useUiStore()
                                                 d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
                                         </svg>
 
-                                    </i><span class="">Permission</span>
+                                    </i><span class="">{{ $t('permissions') }}</span>
                                 </RouterLink>
 
                             </li>

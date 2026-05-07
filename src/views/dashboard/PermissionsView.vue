@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, computed } from "vue";
 import Permissions from "../../components/dashboard/Permissions.vue";
 import { getPermissions } from "../../services/permissoinsService";
 import { storePermission } from "../../services/permissoinsService";
@@ -15,6 +15,9 @@ import { Modal } from "bootstrap"
 const { t } = useI18n();
 const loading = ref(false);
 const permissions = ref([]);
+const allRoles = ref([]);
+const searchQuery = ref("");
+const roleFilter = ref("");
 const modalObject = ref(null);
 const permissionName = ref(null);
 const errorsMessage = ref(null);
@@ -26,6 +29,24 @@ const fetchPermissions = async () => {
         loading.value = true;
         const response = await getPermissions();
         permissions.value = response.data.permissions;
+        if (response.data.roles) {
+            allRoles.value = response.data.roles;
+        } else {
+            const roleMap = new Map();
+            permissions.value.forEach((permission) => {
+                const items = Array.isArray(permission.roles)
+                    ? permission.roles
+                    : permission.roles
+                        ? [permission.roles]
+                        : [];
+                items.forEach((role) => {
+                    if (role?.id) {
+                        roleMap.set(role.id, role);
+                    }
+                });
+            });
+            allRoles.value = Array.from(roleMap.values());
+        }
     } catch (error) {
         showErrorAlert(handleApiError(error, t));
     } finally {
@@ -103,12 +124,39 @@ const handleDeletePermission = async (id) => {
         }
     }
 };
+
+const filteredPermissions = computed(() => {
+    let list = permissions.value || [];
+    const query = searchQuery.value.trim().toLowerCase();
+
+    if (query) {
+        list = list.filter((permission) => {
+            const name = String(permission.name || "").toLowerCase();
+            const id = String(permission.id || "");
+            return name.includes(query) || id.includes(query);
+        });
+    }
+
+    if (roleFilter.value) {
+        list = list.filter((permission) => {
+            const items = Array.isArray(permission.roles)
+                ? permission.roles
+                : permission.roles
+                    ? [permission.roles]
+                    : [];
+            return items.some((role) => String(role.id) === String(roleFilter.value));
+        });
+    }
+
+    return list;
+});
+
 </script>
 <template>
 
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6">
-            <h3>Permissions</h3>
+            <h3>{{ $t('permissions') }}</h3>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 d-flex justify-content-end">
             <button class="btn btn-primary" @click="openModal">
@@ -120,7 +168,25 @@ const handleDeletePermission = async (id) => {
             </button>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
-            <Permissions :permissions="permissions" :loading="loading" @permissionData="handlePermissionData" @deletePermission="handleDeletePermission" />
+            <div class="row mb-3">
+                <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search permissions..."
+                        v-model="searchQuery"
+                    />
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
+                    <select class="form-control" v-model="roleFilter">
+                        <option value="">All Roles</option>
+                        <option v-for="role in allRoles" :key="role.id" :value="role.id">
+                            {{ role.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <Permissions :permissions="filteredPermissions" :loading="loading" @permissionData="handlePermissionData" @deletePermission="handleDeletePermission" />
         </div>
 
     </div>

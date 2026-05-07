@@ -111,7 +111,7 @@ const handleDeleteRole = async (id) => {
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
-                        <h4 class="card-title">Role Permissions</h4>
+                        <h4 class="card-title">{{ $t('roles') }}</h4>
                     </div>
                     <div class="header-action">
                         <button class="btn btn-primary" @click="openModal">
@@ -119,7 +119,7 @@ const handleDeleteRole = async (id) => {
                                 stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
-                            Add
+                            {{ $t('add') }}
                         </button>
                     </div>
                 </div>
