@@ -3,7 +3,7 @@ import languageChangerIcon from '../assets/images/flag-lang.png'
 import malFlag from '../assets/images/mal-flag.png'
 import usaFlag from '../assets/images/usaFlag.png'
 import defaultProfilePic from '../assets/images/profile.png'
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useUiStore } from '../stores/ui'
 import { useLanguageStore } from '../stores/languageStore'
 import { useAuthStore } from '../stores/authStore'
@@ -15,13 +15,57 @@ const ui = useUiStore()
 const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
 
+const topbarRef = ref(null)
 const profilePic = computed(() => {
     console.log("data", user?.value?.full_name);
     return user.value?.user_profile_pic ? user.value.user_profile_pic : defaultProfilePic
 })
 
+const showNotifications = ref(false)
+const showLanguage = ref(false)
+const showProfile = ref(false)
+
+const toggleNotifications = () => {
+    showNotifications.value = !showNotifications.value
+    showLanguage.value = false
+    showProfile.value = false
+}
+
+const toggleLanguage = () => {
+    showLanguage.value = !showLanguage.value
+    showNotifications.value = false
+    showProfile.value = false
+}
+
+const toggleProfile = () => {
+    showProfile.value = !showProfile.value
+    showNotifications.value = false
+    showLanguage.value = false
+}
+
+const closeAllDropdowns = () => {
+    showNotifications.value = false
+    showLanguage.value = false
+    showProfile.value = false
+}
+
+const handleClickOutside = (event) => {
+    if (topbarRef.value && !topbarRef.value.contains(event.target)) {
+        closeAllDropdowns()
+    }
+}
+
+onMounted(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+})
+
+onUnmounted(() => {
+    document.removeEventListener('mousedown', handleClickOutside)
+})
+
 const changeLang = (language) => {
     languageStore.setLanguage(language)
+    showLanguage.value = false // close after selection
 }
 const handleLogout = async () => {
     await authStore.logout();
@@ -29,7 +73,7 @@ const handleLogout = async () => {
 </script>
 
 <template>
-    <div class="iq-top-navbar">
+    <div ref="topbarRef" class="iq-top-navbar">
         <div class="iq-navbar-custom">
             <nav class="navbar navbar-expand-lg navbar-light p-0">
                 <div class="side-menu-bt-sidebar">
@@ -54,7 +98,7 @@ const handleLogout = async () => {
                         <ul class="navbar-nav ml-auto navbar-list align-items-center">
                             <li class="nav-item nav-icon dropdown">
                                 <a href="#" class="search-toggle dropdown-toggle" id="notification-dropdown"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @click.prevent="toggleNotifications" aria-haspopup="true" :aria-expanded="showNotifications">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                         class="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24"
                                         stroke="currentColor">
@@ -63,7 +107,7 @@ const handleLogout = async () => {
                                     </svg>
                                     <span class="bg-primary"></span>
                                 </a>
-                                <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="notification-dropdown">
+                                <div class="iq-sub-dropdown dropdown-menu" :class="{ show: showNotifications }" @click.stop aria-labelledby="notification-dropdown">
                                     <div class="card shadow-none m-0 border-0">
                                         <div class="p-3 card-header-border">
                                             <h6 class="text-center">
@@ -130,7 +174,7 @@ const handleLogout = async () => {
                                                         <div class="avatar">
                                                             <div class="avatar-img avatar-success avatar-20">
                                                                 <span><img class="avatar is-squared rounded-circle"
-                                                                        src="../assets/images/user/2.jpg"
+                                                                        :src="defaultProfilePic"
                                                                         alt="2.jpg"></span>
                                                             </div>
                                                         </div>
@@ -273,12 +317,12 @@ const handleLogout = async () => {
                             </li>
                             <li class="nav-item nav-icon dropdown">
                                 <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton2"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @click.prevent="toggleLanguage" aria-haspopup="true" :aria-expanded="showLanguage">
                                     <img :src="languageChangerIcon" class="img-fluid rounded-circle" alt="user"
                                         style="height: 30px; min-width: 30px; width: 30px;">
                                     <span class="bg-primary"></span>
                                 </a>
-                                <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <div class="iq-sub-dropdown dropdown-menu" :class="{ show: showLanguage }" @click.stop aria-labelledby="dropdownMenuButton2">
                                     <div class="card shadow-none m-0 border-0">
                                         <div class=" p-0 ">
                                             <ul class="dropdown-menu-1 list-group list-group-flush">
@@ -316,12 +360,12 @@ const handleLogout = async () => {
 
                             <li class="nav-item nav-icon dropdown">
                                 <a href="#" class="nav-item nav-icon dropdown-toggle pr-0 search-toggle"
-                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
+                                    id="dropdownMenuButton" @click.prevent="toggleProfile" aria-haspopup="true"
+                                    :aria-expanded="showProfile">
                                     <img :src="profilePic" class="img-fluid avatar-rounded" alt="user">
                                     <span class="mb-0 ml-2 user-name">{{ user?.full_name }}</span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                <ul class="dropdown-menu dropdown-menu-right" :class="{ show: showProfile }" @click.stop aria-labelledby="dropdownMenuButton">
                                     <li class="dropdown-item d-flex svg-icon">
                                         <svg class="svg-icon mr-0 text-secondary" id="h-01-p" width="20"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

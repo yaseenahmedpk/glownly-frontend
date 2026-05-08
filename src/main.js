@@ -7,7 +7,6 @@ import { useAuthStore } from "./stores/authStore";
 import i18n from "./i18n";
 import { useLanguageStore } from "./stores/languageStore";
 import $ from 'jquery'
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import tooltip from "../src/helpers/tooltip";
 
 
