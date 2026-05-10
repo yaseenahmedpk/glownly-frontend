@@ -4,6 +4,8 @@ import SignupView from "../views/SignupView.vue";
 import NumberVerificationView from "../views/NumberVerificationView.vue";
 import ForgetPasswordView from "../views/ForgetPasswordView.vue";
 import ResetPasswordView from "../views/ResetPasswordView.vue";
+import BusinessDetailsView from "../views/onboarding/BusinessDetailsView.vue";
+import EmailVerificationView from "../views/EmailVerificationView.vue";
 import DashboardLayout from "../layouts/DashboardLayout.vue";
 import { useAuthStore } from "../stores/authStore";
 
@@ -13,6 +15,8 @@ const routes = [
   { path: "/number-verification", component: NumberVerificationView },
   { path: "/forget-password", component: ForgetPasswordView },
   { path: "/reset-password", component: ResetPasswordView },
+  { path: "/company-details", component: BusinessDetailsView },
+  { path: "/verify-email", component: EmailVerificationView },
   {
     path: "/dashboard",
     meta: { requiresAuth: true },

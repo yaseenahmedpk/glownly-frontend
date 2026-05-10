@@ -34,7 +34,7 @@ const handleSignup = async (form) => {
     authStore.setToken(data.token)
     authStore.setUser(data.user)
     initEcho(data.token)
-    router.push('/number-verification')
+    router.push('/company-details')
 
   } catch (error) {
     console.error('Signup failed:', error)

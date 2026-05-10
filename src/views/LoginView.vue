@@ -12,12 +12,14 @@ import { RouterLink } from 'vue-router'
 import { handleApiError } from '../helpers/handleApiError'
 import { showErrorAlert } from '../helpers/swal'
 import router from "../router";
+import { ref } from 'vue'
 
 const { t } = useI18n()
 const authStore = useAuthStore()
-
+const loading = ref(false)
 const handleLogin = async (form) => {
   try {
+    loading.value = true
     const response = await login(form)
     authStore.setToken(response.data.token)
     authStore.setUser(response.data.user)
@@ -25,6 +27,8 @@ const handleLogin = async (form) => {
 
   } catch (error) {
     showErrorAlert(handleApiError(error, t))
+  } finally {
+    loading.value = false
   }
 }
 </script>
@@ -84,7 +88,7 @@ const handleLogin = async (form) => {
             <p class="line-around text-secondary mb-0"><span class="line-around-1">{{ $t('or_login_with_email')
                 }}</span></p>
           </div>
-          <LoginForm @login="handleLogin" />
+          <LoginForm @login="handleLogin" :loading="loading" />
         </div>
       </div>
       <!-- RIGHT SIDE -->

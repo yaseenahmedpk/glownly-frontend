@@ -14,3 +14,10 @@ export const forgotPassword = (data) =>
   API.post("/v1/user/forget-password", data);
 export const resetPassword = (data) =>
   API.post("/v1/user/reset-password", data);
+export const getBusinessCategories = () =>
+  API.get("/v1/registration/business-categories");
+export const saveBusinessDetails = async (data) => {
+  const res = await API.post("/v1/user/business-details", data);
+  return res.data;
+};
+export const userEmailVerification = (verifyUrl) => API.get(verifyUrl);

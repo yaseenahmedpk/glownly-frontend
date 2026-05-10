@@ -17,7 +17,6 @@ const { user } = storeToRefs(authStore)
 
 const topbarRef = ref(null)
 const profilePic = computed(() => {
-    console.log("data", user?.value?.full_name);
     return user.value?.user_profile_pic ? user.value.user_profile_pic : defaultProfilePic
 })
 

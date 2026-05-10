@@ -6,6 +6,9 @@ const form = reactive({
     email: '',
     password: ''
 })
+defineProps({
+    loading: Boolean
+})
 const emit = defineEmits(['login'])
 
 const handleLogin = () => {
@@ -18,7 +21,8 @@ const handleLogin = () => {
             <div class="col-lg-12">
                 <div class="form-group">
                     <label class="text-secondary">{{ $t('email') }}</label>
-                    <input class="form-control" type="email" id="email" v-model="form.email" :placeholder="$t('enter_email')">
+                    <input class="form-control" type="email" id="email" v-model="form.email"
+                        :placeholder="$t('enter_email')">
                 </div>
             </div>
             <div class="col-lg-12 mt-2">
@@ -32,9 +36,19 @@ const handleLogin = () => {
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-block mt-2">{{ $t('sign_in') }}</button>
+
+        <button type="submit" class="btn btn-primary w-100 d-flex justify-content-center align-items-center"
+            :disabled="loading">
+            <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+
+            <span>
+                {{ loading ? $t('processing') : $t('sign_in') }}
+            </span>
+        </button>
+
         <div class="col-lg-12 mt-3">
-            <p class="mb-0 text-center"> {{ $t('dont_have_an_account') }} <RouterLink :to="`/signup`">{{ $t('sign_up') }}</RouterLink>
+            <p class="mb-0 text-center"> {{ $t('dont_have_an_account') }} <RouterLink :to="`/signup`">{{ $t('sign_up')
+                    }}</RouterLink>
             </p>
         </div>
     </form>

@@ -8,6 +8,7 @@ import Topbar from '../components/Topbar.vue';
 import Footer from '../components/Footer.vue';
 import { computed, watch } from 'vue'
 import { useUiStore } from '../stores/ui'
+import ToastContainer from '../components/common/ToastContainer.vue';
 
 const ui = useUiStore()
 
@@ -32,6 +33,7 @@ watch(
             <div class="content-page">
                 <div class="container-fluid">
                     <router-view />
+                    <ToastContainer />
                 </div>
             </div>
 

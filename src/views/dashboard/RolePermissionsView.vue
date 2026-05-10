@@ -6,11 +6,13 @@ import { useRoute } from "vue-router";
 import { showErrorAlert } from '../../helpers/swal';
 import { handleApiError } from '../../helpers/handleApiError';
 import { useI18n } from 'vue-i18n';
+import { useToast } from '../../helpers/useToast';
 
 const rolePermissions = ref([]);
 const loading = ref(false);
 const saving = ref(false);
 const route = useRoute();
+const { toast } = useToast();
 const { t } = useI18n();
 const id = route.params.id;
 
@@ -19,6 +21,7 @@ const fetchrolePermissions = async () => {
         loading.value = true;
         const response = await gerRolePermissions(id);
         rolePermissions.value = response.data.permissions;
+
     } catch (error) {
         showErrorAlert(handleApiError(error, t));
     } finally {
@@ -28,10 +31,11 @@ const fetchrolePermissions = async () => {
 const saveRolePermissions = async (permissionIds) => {
     try {
         saving.value = true;
-        await storeRolePermissions({
+        const response = await storeRolePermissions({
             roleId: Number(id),
             permissionIds,
         });
+        toast(t(response.data.message));
     } catch (error) {
         showErrorAlert(handleApiError(error, t));
     } finally {
@@ -54,7 +58,8 @@ onMounted(() => {
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <RolePermissions :rolePermissions="rolePermissions" :loading="loading" :saving="saving" @savePermissions="saveRolePermissions" />
+                        <RolePermissions :rolePermissions="rolePermissions" :loading="loading" :saving="saving"
+                            @savePermissions="saveRolePermissions" />
                     </div>
                 </div>
             </div>
