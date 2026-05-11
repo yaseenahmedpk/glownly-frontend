@@ -23,6 +23,8 @@ const handleLogin = async (form) => {
     const response = await login(form)
     authStore.setToken(response.data.token)
     authStore.setUser(response.data.user)
+    authStore.setPermissions(response.data.allPermissions || [])
+    authStore.setCompany(response.data.user?.businesses || null)
     router.push("/dashboard");
 
   } catch (error) {
@@ -86,7 +88,7 @@ const handleLogin = async (form) => {
           </div>
           <div class="mb-5">
             <p class="line-around text-secondary mb-0"><span class="line-around-1">{{ $t('or_login_with_email')
-                }}</span></p>
+            }}</span></p>
           </div>
           <LoginForm @login="handleLogin" :loading="loading" />
         </div>

@@ -20,6 +20,7 @@ const searchQuery = ref("");
 const roleFilter = ref("");
 const modalObject = ref(null);
 const permissionName = ref(null);
+const isPublic = ref(false);
 const errorsMessage = ref(null);
 const modalTitle = ref(null);
 const editingPermissionId = ref(null);
@@ -61,6 +62,9 @@ const openModal = () => {
     const modalEl = document.getElementById("permissionModal")
     modalObject.value = new Modal(modalEl)
     editingPermissionId.value = null;
+    permissionName.value = null;
+    isPublic.value = false;
+    modalTitle.value = t("add");
     modalObject.value.show()
 }
 const closeModal = () => {
@@ -73,12 +77,17 @@ const savePermission = async () => {
     try {
         if (permissionName.value != null) {
             loading.value = true
+            const payload = {
+                name: permissionName.value,
+                is_public: isPublic.value,
+            }
             if (editingPermissionId.value) {
-                await updatePermission(editingPermissionId.value, { name: permissionName.value })
+                await updatePermission(editingPermissionId.value, payload)
             } else {
-                await storePermission({ name: permissionName.value })
+                await storePermission(payload)
             }
             permissionName.value = "";
+            isPublic.value = false;
             editingPermissionId.value = null;
             modalObject.value.hide()
             // refresh table
@@ -96,6 +105,7 @@ const handlePermissionData = (data) => {
     const modalEl = document.getElementById("permissionModal")
     modalObject.value = new Modal(modalEl)
     permissionName.value = data.name;
+    isPublic.value = data.is_public == 1 ? true : false;
     editingPermissionId.value = data.id;
     modalTitle.value = t("edit");
     modalObject.value.show();
@@ -213,6 +223,12 @@ const filteredPermissions = computed(() => {
                         <span class="text-danger" v-if="errorsMessage">
                             {{ errorsMessage }}
                         </span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="permissionIsPublic" v-model="isPublic" />
+                            <label class="form-check-label" for="permissionIsPublic">{{ $t('is_public') }}</label>
+                        </div>
                     </div>
 
                 </div>

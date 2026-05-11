@@ -110,5 +110,6 @@
   "Invalid signature.": "The link has been expired",
   "goto_dashboard": "Go to Dashboard",
   "processing": "processing....",
-  "permissions_updated": "Permissions has been updated"
+  "permissions_updated": "Permissions has been updated",
+  "is_public": "Is Public?"
 }

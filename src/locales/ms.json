@@ -105,5 +105,6 @@
   "Invalid signature.": "Pautan ini telah tamat tempoh",
   "goto_dashboard": "Pergi ke Dashboard",
   "processing": "Memproses",
-  "permissions_updated":"Kebenaran telah dikemas kini"
+  "permissions_updated":"Kebenaran telah dikemas kini",
+  "is_public": "Adakah Awam?"
 }

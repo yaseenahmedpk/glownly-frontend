@@ -5,8 +5,14 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { showErrorAlert } from '../../helpers/swal';
 import { handleApiError } from '../../helpers/handleApiError';
+import { hasRoleId } from '../../helpers/authHelper';
 import { useI18n } from 'vue-i18n';
 import { useToast } from '../../helpers/useToast';
+import { useAuthStore } from '../../stores/authStore';
+import { storeToRefs } from 'pinia';
+
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 
 const rolePermissions = ref([]);
 const loading = ref(false);
@@ -36,11 +42,38 @@ const saveRolePermissions = async (permissionIds) => {
             permissionIds,
         });
         toast(t(response.data.message));
+        updateUserPermissionsForRole(permissionIds);
     } catch (error) {
         showErrorAlert(handleApiError(error, t));
     } finally {
         saving.value = false;
     }
+};
+
+const updateUserPermissionsForRole = (permissionIds) => {
+    if (!hasRoleId(id)) {
+        return;
+    }
+
+    const existingPermissions = Array.isArray(authStore.allPermissions)
+        ? authStore.allPermissions
+        : [];
+    const oldRolePermissionNames = rolePermissions.value.map(
+        (permission) => permission.name
+    );
+
+    const newRolePermissionNames = rolePermissions.value
+        .filter((permission) => permissionIds.includes(permission.id))
+        .map((permission) => permission.name);
+
+    const filteredPermissions = existingPermissions.filter(
+        (permissionName) => !oldRolePermissionNames.includes(permissionName)
+    );
+
+    const mergedPermissions = Array.from(
+        new Set([...filteredPermissions, ...newRolePermissionNames])
+    );
+    authStore.setPermissions(mergedPermissions);
 };
 
 onMounted(() => {

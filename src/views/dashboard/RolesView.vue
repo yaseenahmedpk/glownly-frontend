@@ -10,6 +10,7 @@ import { showErrorAlert } from '../../helpers/swal'
 import Swal from 'sweetalert2'
 import { useI18n } from 'vue-i18n'
 import { Modal } from "bootstrap"
+import { hasRole, hasPermission } from "../../helpers/authHelper";
 
 
 const { t } = useI18n();
@@ -17,6 +18,7 @@ const loading = ref(false);
 const roles = ref([]);
 const modalObject = ref(null);
 const roleName = ref(null);
+const isPublic = ref(false);
 const errorsMessage = ref(null);
 const editingRoleId = ref(null);
 const modalTitle = ref(null);
@@ -40,6 +42,9 @@ const openModal = () => {
     const modalEl = document.getElementById("roleModal")
     modalObject.value = new Modal(modalEl)
     editingRoleId.value = null;
+    roleName.value = null;
+    isPublic.value = false;
+    modalTitle.value = t("add");
     modalObject.value.show()
 }
 const closeModal = () => {
@@ -52,12 +57,18 @@ const saveRole = async () => {
     try {
         if (roleName.value != null) {
             loading.value = true
+            const payload = {
+                name: roleName.value,
+                is_public: isPublic.value,
+            }
+
             if (editingRoleId.value) {
-                await updateRole(editingRoleId.value, { name: roleName.value })
+                await updateRole(editingRoleId.value, payload)
             } else {
-                await storeRole({ name: roleName.value })
+                await storeRole(payload)
             }
             roleName.value = "";
+            isPublic.value = false;
             editingRoleId.value = null;
             modalObject.value.hide()
             // refresh table
@@ -72,9 +83,11 @@ const saveRole = async () => {
     }
 }
 const handleRoleData = (data) => {
+    console.log(data.is_public ?? false);
     const modalEl = document.getElementById("roleModal")
     modalObject.value = new Modal(modalEl)
     roleName.value = data.name;
+    isPublic.value = data.is_public == 1 ? true : false;
     editingRoleId.value = data.id;
     modalTitle.value = t("edit");
     modalObject.value.show();
@@ -148,9 +161,17 @@ const handleDeleteRole = async (id) => {
                     <!-- Permission Name -->
                     <div class="mb-3">
                         <label class="form-label">Name</label>
-
                         <input type="text" class="form-control" v-model="roleName" />
-
+                        <span class="text-danger" v-if="errorsMessage">
+                            {{ errorsMessage }}
+                        </span>
+                    </div>
+                    <div class="mb-3" v-if="hasPermission('can_add_public_role')">
+                        <div class="custom-control custom-checkbox custom-checkbox-color-check custom-control-inline">
+                            <input type="checkbox" class="custom-control-input bg-primary" id="customCheck-1"
+                                v-model="isPublic">
+                            <label class="custom-control-label" for="customCheck-1"> {{ $t('is_public') }}</label>
+                        </div>
                         <span class="text-danger" v-if="errorsMessage">
                             {{ errorsMessage }}
                         </span>

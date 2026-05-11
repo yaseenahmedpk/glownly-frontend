@@ -1,7 +1,9 @@
 <script setup>
 import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { hasPermission } from '../../helpers/authHelper';
 
 const { t } = useI18n();
 defineProps({
@@ -16,24 +18,35 @@ const emit = defineEmits(['permissionData', 'deletePermission'])
 const selectPermission = (permission) => {
     emit('permissionData', {
         id: permission.id,
-        name: permission.name
+        name: permission.name,
+        is_public: permission.is_public ?? 0,
     });
 }
 const deletePermission = (permission) => {
     emit('deletePermission', permission.id);
 }
 
-const headers = [
-    { text: t('id'), value: 'id', sortable: true },
-    { text: t('name'), value: 'name', sortable: true },
-    { text: t('action'), value: 'action', sortable: false }
-];
+const showIsPublicColumn = computed(() => hasPermission('can_add_public_role'));
+
+const headers = computed(() => {
+    const cols = [
+        { text: t('id'), value: 'id', sortable: true },
+        { text: t('name'), value: 'name', sortable: true },
+    ];
+
+    if (showIsPublicColumn.value) {
+        cols.push({ text: t('is Public'), value: 'is_public', sortable: true });
+    }
+
+    cols.push({ text: t('action'), value: 'action', sortable: false });
+    return cols;
+});
 
 const actionsSlot = (item) => {
     return `
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" style="color:green;cursor: pointer;"
-                onclick="window.selectPermission(${item.id}, '${item.name}')" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                onclick="window.selectPermission(${item.id}, '${item.name}', ${item.is_public ?? 0})" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-6"
                 v-tooltip="{ text: 'Edit Permission', placement: 'left' }">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -51,8 +64,8 @@ const actionsSlot = (item) => {
 
 // Make functions global for onclick
 if (typeof window !== 'undefined') {
-    window.selectPermission = (id, name) => {
-        emit('permissionData', { id, name });
+    window.selectPermission = (id, name, is_public = 0) => {
+        emit('permissionData', { id, name, is_public });
     };
     window.deletePermission = (id) => {
         emit('deletePermission', id);
@@ -65,6 +78,9 @@ if (typeof window !== 'undefined') {
         :sort-type="'asc'" :rows-per-page="10" :rows-per-page-message="'Rows per page:'"
         :rows-of-page-separator-message="'of'" :empty-message="'No data found'" :buttons-pagination="true"
         theme-color="#007bff" table-class-name="customize-vue-table table table-bordered">
+        <template #item-is_public="item">
+            <span>{{ item.is_public == 1 ? $t('yes') : $t('no') }}</span>
+        </template>
         <template #item-action="item">
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" style="color:green;cursor: pointer;"
