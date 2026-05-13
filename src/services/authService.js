@@ -21,3 +21,7 @@ export const saveBusinessDetails = async (data) => {
   return res.data;
 };
 export const userEmailVerification = (verifyUrl) => API.get(verifyUrl);
+export const getProfile = () => API.get("/v1/user/profile");
+export const updateProfile = (data) => API.put("/v1/user/profile", data);
+export const changePassword = (data) => API.put("/v1/user/change-password", data);
+export const getStates = (countryId) => API.get(`/v1/states/${countryId}`);

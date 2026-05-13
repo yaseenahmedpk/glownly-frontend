@@ -4,6 +4,7 @@ import malFlag from '../assets/images/mal-flag.png'
 import usaFlag from '../assets/images/usaFlag.png'
 import defaultProfilePic from '../assets/images/profile.png'
 import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useUiStore } from '../stores/ui'
 import { useLanguageStore } from '../stores/languageStore'
 import { useAuthStore } from '../stores/authStore'
@@ -14,6 +15,7 @@ const { locale } = storeToRefs(languageStore)
 const ui = useUiStore()
 const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
+const router = useRouter()
 
 const topbarRef = ref(null)
 const profilePic = computed(() => {
@@ -381,7 +383,7 @@ const handleLogout = async () => {
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
-                                        <a href="../app/user-profile-edit.html">Edit Profile</a>
+                                        <a @click.prevent="router.push('/edit-profile')">Edit Profile</a>
                                     </li>
                                     <li class="dropdown-item d-flex svg-icon">
                                         <svg class="svg-icon mr-0 text-secondary" id="h-03-p" width="20"

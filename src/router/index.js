@@ -43,6 +43,11 @@ const routes = [
         name: "RolePermissions",
         component: () => import("../views/dashboard/RolePermissionsView.vue"),
       },
+      {
+        path: "/edit-profile",
+        name: "EditProfile",
+        component: () => import("../views/dashboard/EditProfileView.vue"),
+      },
     ],
   },
 ];
