@@ -48,14 +48,14 @@
                                                 <div class="crm-profile-img-edit">
                                                     <img class="crm-profile-pic rounded-circle avatar-100"
                                                         :src="profileImage || defaultProfilePic" alt="profile-pic">
-                                                    <div class="crm-p-image bg-primary">
+                                                    <div class="crm-p-image bg-primary" @click="openFileChooser">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
                                                             viewBox="0 0 24 24" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 stroke-width="2"
                                                                 d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                                         </svg>
-                                                        <input class="file-upload" type="file" accept="image/*"
+                                                        <input ref="fileInput" class="file-upload" type="file" accept="image/*"
                                                             @change="onFileChange">
                                                     </div>
                                                 </div>
@@ -134,8 +134,10 @@
                                     </div>
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
                                     }}</button>
-                                    <button type="submit" class="btn btn-primary" :disabled="loading">{{ $t('submit')
-                                    }}</button>
+                                    <button type="submit" class="btn btn-primary" :disabled="loading">
+                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        {{ loading ? $t('submitting') : $t('submit') }}
+                                    </button>
                                 </Form>
                             </div>
                         </div>
@@ -167,8 +169,10 @@
                                     </div>
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
                                     }}</button>
-                                    <button type="submit" class="btn btn-primary" :disabled="loading">{{ $t('submit')
-                                    }}</button>
+                                    <button type="submit" class="btn btn-primary" :disabled="loading">
+                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        {{ loading ? $t('submitting') : $t('submit') }}
+                                    </button>
                                 </Form>
                             </div>
                         </div>
@@ -253,8 +257,10 @@
                                     </div>
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
                                     }}</button>
-                                    <button type="submit" class="btn btn-primary" :disabled="loading">{{ $t('submit')
-                                    }}</button>
+                                    <button type="submit" class="btn btn-primary" :disabled="loading">
+                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        {{ loading ? $t('submitting') : $t('submit') }}
+                                    </button>
                                 </Form>
                             </div>
                         </div>
@@ -288,8 +294,10 @@
                                     </div>
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
                                     }}</button>
-                                    <button type="submit" class="btn btn-primary" :disabled="loading">{{ $t('submit')
-                                    }}</button>
+                                    <button type="submit" class="btn btn-primary" :disabled="loading">
+                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        {{ loading ? $t('submitting') : $t('submit') }}
+                                    </button>
                                 </Form>
                             </div>
                         </div>
@@ -315,6 +323,8 @@ const props = defineProps({
 const emit = defineEmits(['updateProfile', 'changePassword', 'updateNotifications', 'updateContact'])
 
 const profileImage = ref(null)
+const fileInput = ref(null)
+const selectedProfileFile = ref(null)
 
 const personalData = reactive({
     firstName: '',
@@ -331,6 +341,7 @@ const countries = ref([])
 const languages = ref([])
 const timezones = ref([])
 const states = ref([])
+const isCountryInitialized = ref(false)
 
 const passwordData = reactive({
     currentPassword: '',
@@ -356,7 +367,7 @@ const contactData = reactive({
 })
 
 // Populate data when profileData changes
-watch(() => props.profileData, (newData) => {
+watch(() => props.profileData, async (newData) => {
     if (newData) {
         Object.assign(personalData, {
             firstName: newData.profileDetails?.first_name || '',
@@ -376,24 +387,42 @@ watch(() => props.profileData, (newData) => {
         Object.assign(notificationData, newData.notifications || {})
         Object.assign(contactData, newData.contact || {})
         profileImage.value = newData.profileDetails?.user_profile_pic || null
+
+        // Fetch states for the country on initial load
+        if (newData.profileDetails?.country_id) {
+            try {
+                const response = await getStates(newData.profileDetails.country_id)
+                states.value = response.data || []
+                isCountryInitialized.value = true
+            } catch (error) {
+                console.error('Error fetching states:', error)
+                states.value = []
+            }
+        }
     }
 }, { immediate: true })
 
-// Watch for country change to fetch states
-watch(() => personalData.countryId, async (newCountryId) => {
-    if (newCountryId) {
+// Watch for manual country change to reset state and refetch
+watch(() => personalData.countryId, async (newCountryId, oldCountryId) => {
+    // Skip if this is the initial load (already handled by profileData watcher)
+    if (!isCountryInitialized.value) {
+        return
+    }
+
+    // Handle user-triggered country change
+    if (newCountryId && oldCountryId && newCountryId !== oldCountryId) {
         try {
             const response = await getStates(newCountryId)
             states.value = response.data || []
+            personalData.stateId = '' // Reset state selection when country changes
         } catch (error) {
             console.error('Error fetching states:', error)
             states.value = []
         }
-    } else {
+    } else if (!newCountryId) {
         states.value = []
+        personalData.stateId = ''
     }
-    // Reset state when country changes
-    personalData.stateId = ''
 })
 
 const personalSchema = yup.object({
@@ -423,11 +452,15 @@ const contactSchema = yup.object({
     url: yup.string().url('Invalid URL').required('URL is required')
 })
 
+const openFileChooser = () => {
+    fileInput.value?.click()
+}
+
 const onFileChange = (event) => {
-    const file = event.target.files[0]
+    const file = event.target.files?.[0]
     if (file) {
+        selectedProfileFile.value = file
         profileImage.value = URL.createObjectURL(file)
-        // Handle file upload logic here, perhaps emit to parent
     }
 }
 
@@ -441,7 +474,7 @@ const onSubmitPersonal = (values) => {
         gender: values.gender,
         city: values.city,
         state_id: values.stateId,
-        profileImage: profileImage.value
+        profileFile: selectedProfileFile.value
     })
 }
 
