@@ -105,6 +105,13 @@
   "Invalid signature.": "Pautan ini telah tamat tempoh",
   "goto_dashboard": "Pergi ke Dashboard",
   "processing": "Memproses",
-  "permissions_updated":"Kebenaran telah dikemas kini",
-  "is_public": "Adakah Awam?"
+  "permissions_updated": "Kebenaran telah dikemas kini",
+  "is_public": "Adakah Awam",
+  "no": "Tidak",
+  "yes": "Ya",
+  "business": "Perniagaan",
+  "business_settings": "Tetapan Perniagaan",
+  "business_list": "Senarai Perniagaan",
+  "select_your_business": "Pilih perniagaan anda",
+  "choose_business_to_access": "Pilih perniagaan yang ingin anda akses."
 }

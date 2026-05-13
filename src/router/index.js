@@ -17,6 +17,7 @@ const routes = [
   { path: "/reset-password", component: ResetPasswordView },
   { path: "/company-details", component: BusinessDetailsView },
   { path: "/verify-email", component: EmailVerificationView },
+  { path: "/business-selection", name: "BusinessSelection", component: () => import("../views/BusinessSelectionView.vue"), meta: { requiresAuth: true } },
   {
     path: "/dashboard",
     meta: { requiresAuth: true },
@@ -52,13 +53,18 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const authStore = useAuthStore();
   const isAuthenticated = !!authStore.token;
+  const hasSelectedCompany = !!authStore.company;
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     return "/login";
   }
 
   if (to.path === "/login" && isAuthenticated) {
-    return "/dashboard";
+    return hasSelectedCompany ? "/dashboard" : "/business-selection";
+  }
+
+  if (to.meta.requiresAuth && isAuthenticated && !hasSelectedCompany && to.path !== "/business-selection") {
+    return "/business-selection";
   }
 
   return true;

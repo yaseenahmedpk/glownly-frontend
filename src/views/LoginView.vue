@@ -21,11 +21,19 @@ const handleLogin = async (form) => {
   try {
     loading.value = true
     const response = await login(form)
-    authStore.setToken(response.data.token)
-    authStore.setUser(response.data.user)
-    authStore.setPermissions(response.data.allPermissions || [])
-    authStore.setCompany(response.data.user?.businesses || null)
-    router.push("/dashboard");
+    authStore.setToken(response.data.data.token)
+    authStore.setUser(response.data.data.user)
+    authStore.setPermissions(response.data.data.allPermissions || [])
+    const businesses = response.data.data.businesses || []
+    authStore.setBusinesses(businesses)
+    
+    if (businesses.length > 1) {
+      authStore.setCompany(null)
+      router.push("/business-selection")
+    } else {
+      authStore.setCompany(businesses.length === 1 ? businesses[0] : null)
+      router.push("/dashboard")
+    }
 
   } catch (error) {
     showErrorAlert(handleApiError(error, t))

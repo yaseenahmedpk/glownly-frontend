@@ -41,7 +41,7 @@ const headers = computed(() => {
     ];
 
     if (showIsPublicColumn.value) {
-        cols.push({ text: t('is Public'), value: 'is_public', sortable: true });
+        cols.push({ text: t('is_public'), value: 'is_public', sortable: true });
     }
 
     cols.push({ text: t('action'), value: 'action', sortable: false });

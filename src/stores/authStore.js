@@ -8,6 +8,7 @@ export const useAuthStore = defineStore("auth", {
     user: null,
     allPermissions: null,
     company: null,
+    businesses: [],
   }),
 
   actions: {
@@ -28,6 +29,10 @@ export const useAuthStore = defineStore("auth", {
       this.company = company;
       localStorage.setItem("company", JSON.stringify(company));
     },
+    setBusinesses(businesses) {
+      this.businesses = businesses;
+      localStorage.setItem("businesses", JSON.stringify(businesses));
+    },
 
     async logout() {
       try {
@@ -40,10 +45,12 @@ export const useAuthStore = defineStore("auth", {
       this.user = null;
       this.company = null;
       this.allPermissions = null;
+      this.businesses = [];
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("company");
       localStorage.removeItem("allPermissions");
+      localStorage.removeItem("businesses");
       router.push("/login");
     },
     loadFromStorage() {
@@ -51,12 +58,14 @@ export const useAuthStore = defineStore("auth", {
       const token = localStorage.getItem("token");
       const company = localStorage.getItem("company");
       const allPermissions = localStorage.getItem("allPermissions");
+      const businesses = localStorage.getItem("businesses");
 
       if (user && token) {
         this.user = JSON.parse(user);
         this.company = company ? JSON.parse(company) : null;
         this.token = token;
         this.allPermissions = allPermissions ? JSON.parse(allPermissions) : null;
+        this.businesses = businesses ? JSON.parse(businesses) : [];
       }
     },
   },

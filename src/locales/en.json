@@ -111,5 +111,13 @@
   "goto_dashboard": "Go to Dashboard",
   "processing": "processing....",
   "permissions_updated": "Permissions has been updated",
-  "is_public": "Is Public?"
+  "is_public": "Is Public",
+  "no": "No",
+  "yes": "Yes",
+  "business": "Business",
+  "business_settings": "Business Settings",
+  "business_list": "Business List",
+  "select_your_business": "Select your business",
+  "choose_business_to_access": "Choose the business you want to access."
+
 }
