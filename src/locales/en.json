@@ -129,11 +129,11 @@
   "personal_information": "Personal Information",
   "select_your_default_language": "Select your default language",
   "select_your_timezone": "Select your timezone",
-  "manage_contact":"Manage Contact",
-  "contact_number":"Contact Number",
-  "current_password":"Current Password",
-  "new_password":"New Password",
-  "verify_password":"Verify Password",
+  "manage_contact": "Manage Contact",
+  "contact_number": "Contact Number",
+  "current_password": "Current Password",
+  "new_password": "New Password",
+  "verify_password": "Verify Password",
   "email_and_sms": "Email and SMS",
   "submit": "Submit",
   "submitting": "Submitting...",
@@ -149,5 +149,7 @@
   "member_registration": "Member registration",
   "url": "URL",
   "profile_update_error": "We are unable to update your profile right now. Please contact support.",
-  "profile_updated_successfully": "Profile updated successfully"
+  "profile_updated_successfully": "Profile updated successfully",
+  "image_not_allowed": "Only image files are allowed (JPEG, PNG, GIF, WebP)",
+  "file_size_exceeded": "File size must not exceed 5MB"
 }

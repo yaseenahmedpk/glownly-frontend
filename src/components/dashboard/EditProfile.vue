@@ -55,8 +55,8 @@
                                                                 stroke-width="2"
                                                                 d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                                         </svg>
-                                                        <input ref="fileInput" class="file-upload" type="file" accept="image/*"
-                                                            @change="onFileChange">
+                                                        <input ref="fileInput" class="file-upload" type="file"
+                                                            accept="image/*" @change="onFileChange">
                                                     </div>
                                                 </div>
                                             </div>
@@ -135,7 +135,8 @@
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
                                     }}</button>
                                     <button type="submit" class="btn btn-primary" :disabled="loading">
-                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"
+                                            aria-hidden="true"></span>
                                         {{ loading ? $t('submitting') : $t('submit') }}
                                     </button>
                                 </Form>
@@ -170,7 +171,8 @@
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
                                     }}</button>
                                     <button type="submit" class="btn btn-primary" :disabled="loading">
-                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"
+                                            aria-hidden="true"></span>
                                         {{ loading ? $t('submitting') : $t('submit') }}
                                     </button>
                                 </Form>
@@ -258,7 +260,8 @@
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
                                     }}</button>
                                     <button type="submit" class="btn btn-primary" :disabled="loading">
-                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"
+                                            aria-hidden="true"></span>
                                         {{ loading ? $t('submitting') : $t('submit') }}
                                     </button>
                                 </Form>
@@ -295,7 +298,8 @@
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
                                     }}</button>
                                     <button type="submit" class="btn btn-primary" :disabled="loading">
-                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"
+                                            aria-hidden="true"></span>
                                         {{ loading ? $t('submitting') : $t('submit') }}
                                     </button>
                                 </Form>
@@ -314,7 +318,11 @@ import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import defaultProfilePic from '../../assets/images/profile.png'
 import { getStates } from '../../services/authService'
+import { showErrorAlert } from '../../helpers/swal'
+import Swal from 'sweetalert2'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const props = defineProps({
     profileData: Object,
     loading: Boolean
@@ -459,8 +467,26 @@ const openFileChooser = () => {
 const onFileChange = (event) => {
     const file = event.target.files?.[0]
     if (file) {
+        // Validate file type (must be image)
+        // const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+        // if (!allowedImageTypes.includes(file.type)) {
+        //     showErrorAlert(t('image_not_allowed'))
+        //     fileInput.value.value = '' // Clear input
+        //     return
+        // }
+
+        // // Validate file size (max 5MB)
+        // const maxFileSize = 5 * 1024 * 1024 // 5MB in bytes
+        // if (file.size > maxFileSize) {
+        //     showErrorAlert(t('file_size_exceeded'))
+        //     fileInput.value.value = '' // Clear input
+        //     return
+        // }
+
+        // If validation passes, use the file
         selectedProfileFile.value = file
         profileImage.value = URL.createObjectURL(file)
+
     }
 }
 
