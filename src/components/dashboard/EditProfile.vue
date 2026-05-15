@@ -16,13 +16,13 @@
                                 </a>
                             </li>
                             <li class="col-md-3 p-0">
-                                <a class="nav-link" data-toggle="pill" href="#emailandsms">
-                                    {{ $t('email_and_sms') }}
-                                </a>
-                            </li>
-                            <li class="col-md-3 p-0">
                                 <a class="nav-link" data-toggle="pill" href="#manage-contact">
                                     {{ $t('manage_contact') }}
+                                </a>
+                            </li>
+                            <li class="col-md-3 p-0" v-if="hasPermission('can_access_business_info')">
+                                <a class="nav-link" data-toggle="pill" href="#business-details">
+                                    {{ $t('business_details') }} {{ hasPermission('can_access_business_info') }}
                                 </a>
                             </li>
                         </ul>
@@ -151,119 +151,33 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <Form @submit="onSubmitPassword" :validation-schema="passwordSchema">
-                                    <div class="form-group">
+                                <Form ref="passwordFormRef" @submit="onSubmitPassword" enctype="multipart/form-data"
+                                    :validation-schema="passwordSchema">
+                                    <div class="form-group col-md-6">
                                         <label for="cpass">{{ $t('current_password') }}</label>
-                                        <a href="javascript:void();" class="float-right">{{ $t('forgot_password') }}</a>
                                         <Field name="currentPassword" type="password" class="form-control" id="cpass" />
                                         <ErrorMessage name="currentPassword" class="text-danger" />
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group col-md-6">
                                         <label for="npass">{{ $t('new_password') }}</label>
                                         <Field name="newPassword" type="password" class="form-control" id="npass" />
                                         <ErrorMessage name="newPassword" class="text-danger" />
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group col-md-6">
                                         <label for="vpass">{{ $t('verify_password') }}</label>
                                         <Field name="confirmPassword" type="password" class="form-control" id="vpass" />
                                         <ErrorMessage name="confirmPassword" class="text-danger" />
                                     </div>
-                                    <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
-                                    }}</button>
-                                    <button type="submit" class="btn btn-primary" :disabled="loading">
-                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"
-                                            aria-hidden="true"></span>
-                                        {{ loading ? $t('submitting') : $t('submit') }}
-                                    </button>
-                                </Form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="emailandsms" role="tabpanel">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between">
-                                <div class="header-title">
-                                    <h4 class="card-title">{{ $t('email_and_sms') }}</h4>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <Form @submit="onSubmitNotifications" :validation-schema="notificationSchema">
-                                    <div class="form-group row align-items-center">
-                                        <label class="col-md-3" for="emailnotification">{{ $t('email_notification')
-                                        }}</label>
-                                        <div class="col-md-9 custom-control custom-switch">
-                                            <Field name="emailNotification" type="checkbox" class="custom-control-input"
-                                                id="emailnotification" v-model="notificationData.emailNotification" />
-                                            <label class="custom-control-label" for="emailnotification"></label>
-                                        </div>
+                                    <div class="col-md-6">
+                                        <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
+                                            }}</button>
+                                        <button type="submit" class="btn btn-primary" :disabled="loading">
+                                            <span v-if="loading" class="spinner-border spinner-border-sm me-2"
+                                                role="status" aria-hidden="true"></span>
+                                            {{ loading ? $t('submitting') : $t('submit') }}
+                                        </button>
                                     </div>
-                                    <div class="form-group row align-items-center">
-                                        <label class="col-md-3" for="smsnotification">{{ $t('sms_notification')
-                                        }}</label>
-                                        <div class="col-md-9 custom-control custom-switch">
-                                            <Field name="smsNotification" type="checkbox" class="custom-control-input"
-                                                id="smsnotification" v-model="notificationData.smsNotification" />
-                                            <label class="custom-control-label" for="smsnotification"></label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row align-items-center">
-                                        <label class="col-md-3" for="npass">{{ $t('when_to_email') }}</label>
-                                        <div class="col-md-9">
-                                            <div class="custom-control custom-checkbox">
-                                                <Field name="emailNewNotifications" type="checkbox"
-                                                    class="custom-control-input" id="email01"
-                                                    v-model="notificationData.emailNewNotifications" />
-                                                <label class="custom-control-label" for="email01">{{
-                                                    $t('you_have_new_notifications') }}</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <Field name="emailDirectMessage" type="checkbox"
-                                                    class="custom-control-input" id="email02"
-                                                    v-model="notificationData.emailDirectMessage" />
-                                                <label class="custom-control-label" for="email02">{{
-                                                    $t('you_are_sent_a_direct_message') }}</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <Field name="emailConnection" type="checkbox"
-                                                    class="custom-control-input" id="email03"
-                                                    v-model="notificationData.emailConnection" />
-                                                <label class="custom-control-label" for="email03">{{
-                                                    $t('someone_adds_you_as_connection') }}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row align-items-center">
-                                        <label class="col-md-3" for="npass">{{ $t('when_to_escalate_emails') }}</label>
-                                        <div class="col-md-9">
-                                            <div class="custom-control custom-checkbox">
-                                                <Field name="emailNewOrder" type="checkbox" class="custom-control-input"
-                                                    id="email04" v-model="notificationData.emailNewOrder" />
-                                                <label class="custom-control-label" for="email04">{{
-                                                    $t('upon_new_order') }}</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <Field name="emailMembershipApproval" type="checkbox"
-                                                    class="custom-control-input" id="email05"
-                                                    v-model="notificationData.emailMembershipApproval" />
-                                                <label class="custom-control-label" for="email05">{{
-                                                    $t('new_membership_approval') }}</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <Field name="emailMemberRegistration" type="checkbox"
-                                                    class="custom-control-input" id="email06"
-                                                    v-model="notificationData.emailMemberRegistration" />
-                                                <label class="custom-control-label" for="email06">{{
-                                                    $t('member_registration') }}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
-                                    }}</button>
-                                    <button type="submit" class="btn btn-primary" :disabled="loading">
-                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"
-                                            aria-hidden="true"></span>
-                                        {{ loading ? $t('submitting') : $t('submit') }}
-                                    </button>
+
                                 </Form>
                             </div>
                         </div>
@@ -276,33 +190,193 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <Form @submit="onSubmitContact" :validation-schema="contactSchema">
-                                    <div class="form-group">
-                                        <label for="cno">{{ $t('contact_number') }}</label>
-                                        <Field name="contactNumber" type="text" class="form-control" id="cno"
-                                            v-model="contactData.contactNumber" />
-                                        <ErrorMessage name="contactNumber" class="text-danger" />
+                                <div class="form-group col-md-6">
+                                    <label for="cno">{{ $t('contact_number') }}</label>
+                                    <small v-if="isPhoneNumberChanged" class="form-text text-warning d-block mb-1">
+                                        {{ $t('number_change_verification_notice') }}
+                                    </small>
+                                    <div class="d-flex align-items-start">
+                                        <div class="flex-grow-1 mr-2">
+                                            <IntlTelInput v-model="phoneNumber" ref="phoneNumberRef" :inputProps="{
+                                                class: 'form-control',
+                                                placeholder: $t('enter_mobile_number')
+                                            }" initial-country="auto" :geo-ip-lookup="geoIpLookup"
+                                                :load-utils="() => import('intl-tel-input/utils')" />
+                                        </div>
+                                        <div class="">
+                                            <span v-if="isMobileVerified && !isPhoneNumberChanged"
+                                                class="input-group-text bg-success text-white">
+                                                <i class="fas fa-check"></i> {{ $t('verified') }}
+                                            </span>
+                                            <button v-else type="button" class="btn btn-outline-warning"
+                                                @click="confirmVerifyMobile" :disabled="props.verifyingMobile">
+                                                {{ props.verifyingMobile ? $t('sending') : $t('verify') }}
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="email">{{ $t('email') }}</label>
-                                        <Field name="email" type="email" class="form-control" id="email"
-                                            v-model="contactData.email" />
-                                        <ErrorMessage name="email" class="text-danger" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="email">{{ $t('email') }}</label>
+                                    <small class="form-text text-muted d-block mb-1">
+                                        {{ $t('email_change_notice') }}
+                                    </small>
+                                    <div class="d-flex align-items-start">
+                                        <div class="flex-grow-1 mr-2">
+                                            <input type="email" class="form-control" id="email"
+                                                v-model="contactData.email" />
+                                        </div>
+                                        <div class="">
+                                            <span v-if="isEmailVerified" class="input-group-text bg-success text-white">
+                                                <i class="fas fa-check"></i> {{ $t('verified') }}
+                                            </span>
+                                            <button v-else type="button" class="btn btn-outline-warning"
+                                                @click="confirmVerifyEmail(contactData.email)"
+                                                :disabled="props.verifyingEmail">
+                                                {{ props.verifyingEmail ? $t('sending') : $t('verify') }}
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="url">{{ $t('url') }}</label>
-                                        <Field name="url" type="url" class="form-control" id="url"
-                                            v-model="contactData.url" />
-                                        <ErrorMessage name="url" class="text-danger" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="business-details" role="tabpanel"
+                        v-if="hasPermission('can_access_business_info')">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">{{ $t('business_details') }}</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <Form @submit="onSubmitBusiness" :validation-schema="businessSchema">
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-12">
+                                            <div class="profile-img-edit">
+                                                <div class="crm-profile-img-edit">
+                                                    <img class="crm-profile-pic rounded-circle avatar-100"
+                                                        :src="businessLogo || defaultProfilePic" alt="business-logo">
+                                                    <div class="crm-p-image bg-primary"
+                                                        @click="openBusinessLogoChooser">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                        </svg>
+                                                        <input ref="businessLogoFileInput" class="file-upload"
+                                                            type="file" accept="image/*" @change="onBusinessLogoChange">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center">
+                                        <div class="form-group col-sm-6">
+                                            <label for="business_name">{{ $t('business_name') }}</label>
+                                            <Field name="businessName" type="text" class="form-control"
+                                                id="business_name" v-model="businessData.businessName" />
+                                            <ErrorMessage name="businessName" class="text-danger" />
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="website">{{ $t('website') }}</label>
+                                            <Field name="website" type="url" class="form-control" id="website"
+                                                v-model="businessData.website" />
+                                            <ErrorMessage name="website" class="text-danger" />
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="timezone">{{ $t('select_your_timezone') }}</label>
+                                            <Field name="timezoneId" as="select" class="form-control" id="timezone"
+                                                v-model="businessData.timezoneId">
+                                                <option value="" disabled>{{ $t('select_timezone') }}</option>
+                                                <option v-for="timezone in timezones" :key="timezone.id"
+                                                    :value="timezone.id">{{ timezone.label }}</option>
+                                            </Field>
+                                            <ErrorMessage name="timezoneId" class="text-danger" />
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="country">{{ $t('country') }}</label>
+                                            <Field name="countryId" as="select" class="form-control" id="country"
+                                                v-model="businessData.countryId">
+                                                <option value="" disabled>{{ $t('select_country') }}</option>
+                                                <option v-for="country in countries" :key="country.id"
+                                                    :value="country.id">{{ country.name }}</option>
+                                            </Field>
+                                            <ErrorMessage name="countryId" class="text-danger" />
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="city">{{ $t('city') }}</label>
+                                            <Field name="city" type="text" class="form-control" id="city"
+                                                v-model="businessData.city" />
+                                            <ErrorMessage name="city" class="text-danger" />
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="business_state">{{ $t('state') }}</label>
+                                            <Field name="stateId" as="select" class="form-control" id="business_state"
+                                                v-model="businessData.stateId">
+                                                <option value="" disabled>{{ $t('select_state') }}</option>
+                                                <option v-for="state in businessStates" :key="state.id"
+                                                    :value="state.id">{{
+                                                        state.name }}</option>
+                                            </Field>
+                                            <ErrorMessage name="stateId" class="text-danger" />
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="address">{{ $t('address') }}</label>
+                                            <Field name="address" type="text" class="form-control" id="address"
+                                                v-model="businessData.address" />
+                                            <ErrorMessage name="address" class="text-danger" />
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label>{{ $t('company_category') }}</label>
+                                            <div class="row">
+                                                <div class="col-md-6" v-for="category in businessCategories"
+                                                    :key="category.id">
+                                                    <div class="form-check">
+                                                        <Field :id="'category-' + category.id" name="categories"
+                                                            type="checkbox" class="form-check-input"
+                                                            :value="category.id" />
+                                                        <label class="form-check-label"
+                                                            :for="'category-' + category.id">
+                                                            {{ category.name }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ErrorMessage name="categories" class="text-danger" />
+                                        </div>
+                                        <div class="form-group col-sm-3">
+                                            <label>{{ $t('account_type') }}</label>
+                                            <br>
+                                            <span class="badge badge-primary">{{ businessData.accountType }}</span>
+                                        </div>
+                                        <div class="form-group col-sm-3">
+                                            <label>{{ $t('service_type') }}</label>
+                                            <br>
+                                            <span class="badge badge-secondary">{{ businessData.serviceType }}</span>
+                                        </div>
+                                        <div class="form-group col-sm-3">
+                                            <label>{{ $t('status') }}</label>
+                                            <br>
+                                            <span class="badge badge-success">{{ businessData.status }}</span>
+                                        </div>
+                                        <div class="form-group col-sm-3">
+                                            <label>{{ $t('active_package') }}</label>
+                                            <br>
+                                            <span class="badge badge-info">{{ businessData.activePackage }}</span>
+                                        </div>
                                     </div>
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
-                                    }}</button>
-                                    <button type="submit" class="btn btn-primary" :disabled="loading">
+                                        }}</button>
+                                    <button type="submit" class="btn btn-primary"
+                                        :disabled="loading || !hasPermission('can_update_business_info')"
+                                        v-tooltip="!hasPermission('can_update_business_info') ? { text: $t('no_permission_to_update'), placement: 'top' } : { text: $t('save'), placement: 'top' }">
                                         <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"
                                             aria-hidden="true"></span>
                                         {{ loading ? $t('submitting') : $t('submit') }}
                                     </button>
                                 </Form>
+
                             </div>
                         </div>
                     </div>
@@ -313,26 +387,60 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
-import { Form, Field, ErrorMessage } from 'vee-validate'
+import { ref, reactive, watch, computed } from 'vue'
+import IntlTelInput from "intl-tel-input/vue";
+import "intl-tel-input/styles";
+import { Form, Field, ErrorMessage, useForm } from 'vee-validate'
 import * as yup from 'yup'
+import Swal from 'sweetalert2'
 import defaultProfilePic from '../../assets/images/profile.png'
 import { getStates } from '../../services/authService'
 import { showErrorAlert } from '../../helpers/swal'
-import Swal from 'sweetalert2'
 import { useI18n } from 'vue-i18n'
+import { hasPermission } from '../../helpers/authHelper'
 
 const { t } = useI18n()
 const props = defineProps({
     profileData: Object,
-    loading: Boolean
+    loading: Boolean,
+    verifyingEmail: {
+        type: Boolean,
+        default: false
+    },
+    verifyingMobile: {
+        type: Boolean,
+        default: false
+    }
 })
 
-const emit = defineEmits(['updateProfile', 'changePassword', 'updateNotifications', 'updateContact'])
+const emit = defineEmits(['updateProfile', 'changePassword', 'verifyMobile', 'verifyEmail', 'updateBusiness'])
 
 const profileImage = ref(null)
+const businessLogo = ref(null)
+const passwordFormRef = ref(null)
 const fileInput = ref(null)
 const selectedProfileFile = ref(null)
+const businessLogoFileInput = ref(null)
+const selectedBusinessLogoFile = ref(null)
+const { resetForm } = useForm()
+
+const phoneNumber = ref(null)
+const phoneNumberRef = ref(null)
+const originalPhoneNumber = ref(null)
+
+// Sync phoneNumber to contactData.contactNumber
+watch(phoneNumber, (newVal) => {
+    if (newVal) {
+        contactData.contactNumber = newVal
+    }
+})
+
+const geoIpLookup = (success, failure) => {
+    fetch("https://ipapi.co/json")
+        .then(res => res.json())
+        .then(data => success(data.country_code))
+        .catch(() => failure());
+};
 
 const personalData = reactive({
     firstName: '',
@@ -349,30 +457,63 @@ const countries = ref([])
 const languages = ref([])
 const timezones = ref([])
 const states = ref([])
+const businessStates = ref([])
 const isCountryInitialized = ref(false)
+const isBusinessCountryInitialized = ref(false)
 
 const passwordData = reactive({
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
 })
-
-const notificationData = reactive({
-    emailNotification: true,
-    smsNotification: true,
-    emailNewNotifications: false,
-    emailDirectMessage: false,
-    emailConnection: true,
-    emailNewOrder: false,
-    emailMembershipApproval: false,
-    emailMemberRegistration: true
+const resetPasswordFields = () => {
+    passwordFormRef.value?.resetForm({
+        values: {
+            currentPassword: '',
+            newPassword: '',
+            confirmPassword: ''
+        }
+    })
+}
+defineExpose({
+    resetPasswordFields
 })
 
 const contactData = reactive({
     contactNumber: '',
-    email: '',
-    url: ''
+    email: ''
 })
+
+const businessData = reactive({
+    businessName: '',
+    website: '',
+    timezoneId: '',
+    countryId: '',
+    city: '',
+    stateId: '',
+    address: '',
+    categories: [],
+    accountType: '',
+    serviceType: '',
+    status: '',
+    activePackage: ''
+})
+
+const businessCategories = ref([])
+
+const isEmailVerified = computed(() => {
+    return props.profileData?.profileDetails?.email_verified_at != null
+})
+
+const isMobileVerified = computed(() => {
+    return props.profileData?.profileDetails?.is_mobile_verified === 1 || props.profileData?.profileDetails?.is_mobile_verified === true
+})
+
+const isPhoneNumberChanged = computed(() => {
+    return originalPhoneNumber.value && phoneNumber.value && phoneNumber.value !== originalPhoneNumber.value
+})
+
+
 
 // Populate data when profileData changes
 watch(() => props.profileData, async (newData) => {
@@ -385,16 +526,24 @@ watch(() => props.profileData, async (newData) => {
             countryId: newData.profileDetails?.country_id ?? '',
             gender: newData.profileDetails?.gender ?? '',
             city: newData.profileDetails?.city || '',
-            stateId: newData.profileDetails?.state_id ?? ''
+            stateId: newData.profileDetails?.state_id ?? '',
         })
 
         countries.value = Array.isArray(newData.countries) ? newData.countries : []
         languages.value = Array.isArray(newData.languages) ? newData.languages : []
         timezones.value = Array.isArray(newData.timezones) ? newData.timezones : []
 
-        Object.assign(notificationData, newData.notifications || {})
-        Object.assign(contactData, newData.contact || {})
-        profileImage.value = newData.profileDetails?.user_profile_pic || null
+        Object.assign(contactData, {
+            contactNumber: newData.profileDetails?.mobile_number ?? '',
+            email: newData.profileDetails?.email ?? ''
+        })
+
+        // Set phone number for IntlTelInput
+        if (newData.profileDetails?.mobile_number) {
+            phoneNumber.value = newData.profileDetails.mobile_number
+            originalPhoneNumber.value = newData.profileDetails.mobile_number
+        }
+        profileImage.value = newData.profileDetails?.profile_pic || null
 
         // Fetch states for the country on initial load
         if (newData.profileDetails?.country_id) {
@@ -405,6 +554,37 @@ watch(() => props.profileData, async (newData) => {
             } catch (error) {
                 console.error('Error fetching states:', error)
                 states.value = []
+            }
+        }
+
+        // Business data
+        Object.assign(businessData, {
+            businessName: newData.businessDetails?.business_name || '',
+            website: newData.businessDetails?.website || '',
+            timezoneId: newData.businessDetails?.timezone_id ?? '',
+            countryId: newData.businessDetails?.country_id ?? '',
+            city: newData.businessDetails?.city || '',
+            stateId: newData.businessDetails?.state_id ?? '',
+            address: newData.businessDetails?.address || '',
+            categories: newData.businessDetails?.categories || [],
+            accountType: newData.businessDetails?.account_type || '',
+            serviceType: newData.businessDetails?.service_type || '',
+            status: newData.businessDetails?.status || '',
+            activePackage: newData.businessDetails?.active_package || ''
+        })
+
+        businessCategories.value = Array.isArray(newData.businessCategories) ? newData.businessCategories : []
+        businessLogo.value = newData.businessDetails?.logo || null
+
+        // Fetch business states for the country on initial load
+        if (newData.businessDetails?.country_id) {
+            try {
+                const response = await getStates(newData.businessDetails.country_id)
+                businessStates.value = response.data || []
+                isBusinessCountryInitialized.value = true
+            } catch (error) {
+                console.error('Error fetching business states:', error)
+                businessStates.value = []
             }
         }
     }
@@ -433,6 +613,30 @@ watch(() => personalData.countryId, async (newCountryId, oldCountryId) => {
     }
 })
 
+// Watch for business country change
+watch(() => businessData.countryId, async (newCountryId, oldCountryId) => {
+    // Skip if this is the initial load (already handled by profileData watcher)
+    if (!isBusinessCountryInitialized.value) {
+        return
+    }
+
+    // Handle user-triggered country change
+    if (newCountryId && oldCountryId && newCountryId !== oldCountryId) {
+        try {
+            const response = await getStates(newCountryId)
+            // Use separate states for business
+            businessStates.value = response.data || []
+            businessData.stateId = '' // Reset state selection when country changes
+        } catch (error) {
+            console.error('Error fetching states:', error)
+            businessStates.value = []
+        }
+    } else if (!newCountryId) {
+        businessStates.value = []
+        businessData.stateId = ''
+    }
+})
+
 const personalSchema = yup.object({
     firstName: yup.string().required('First Name is required'),
     lastName: yup.string().required('Last Name is required'),
@@ -450,14 +654,15 @@ const passwordSchema = yup.object({
     confirmPassword: yup.string().oneOf([yup.ref('newPassword'), null], 'Passwords must match').required('Confirm Password is required')
 })
 
-const notificationSchema = yup.object({
-    // No required fields for notifications
-})
-
-const contactSchema = yup.object({
-    contactNumber: yup.string().required('Contact Number is required'),
-    email: yup.string().email('Invalid email').required('Email is required'),
-    url: yup.string().url('Invalid URL').required('URL is required')
+const businessSchema = yup.object({
+    businessName: yup.string().required('Business Name is required'),
+    website: yup.string().url('Enter a valid website URL'),
+    timezoneId: yup.string().required('Timezone is required'),
+    countryId: yup.string().required('Country is required'),
+    city: yup.string().required('City is required'),
+    stateId: yup.string().required('State is required'),
+    address: yup.string().required('Address is required'),
+    categories: yup.array().min(1, 'Select at least one category')
 })
 
 const openFileChooser = () => {
@@ -468,24 +673,54 @@ const onFileChange = (event) => {
     const file = event.target.files?.[0]
     if (file) {
         // Validate file type (must be image)
-        // const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
-        // if (!allowedImageTypes.includes(file.type)) {
-        //     showErrorAlert(t('image_not_allowed'))
-        //     fileInput.value.value = '' // Clear input
-        //     return
-        // }
+        const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+        if (!allowedImageTypes.includes(file.type)) {
+            showErrorAlert(t('image_not_allowed'))
+            fileInput.value.value = '' // Clear input
+            return
+        }
 
-        // // Validate file size (max 5MB)
-        // const maxFileSize = 5 * 1024 * 1024 // 5MB in bytes
-        // if (file.size > maxFileSize) {
-        //     showErrorAlert(t('file_size_exceeded'))
-        //     fileInput.value.value = '' // Clear input
-        //     return
-        // }
+        // Validate file size (max 5MB)
+        const maxFileSize = 5 * 1024 * 1024 // 5MB in bytes
+        if (file.size > maxFileSize) {
+            showErrorAlert(t('file_size_exceeded'))
+            fileInput.value.value = '' // Clear input
+            return
+        }
 
         // If validation passes, use the file
         selectedProfileFile.value = file
         profileImage.value = URL.createObjectURL(file)
+
+    }
+}
+
+const openBusinessLogoChooser = () => {
+    businessLogoFileInput.value?.click()
+}
+
+const onBusinessLogoChange = (event) => {
+    const file = event.target.files?.[0]
+    if (file) {
+        // Validate file type (must be image)
+        const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+        if (!allowedImageTypes.includes(file.type)) {
+            showErrorAlert(t('image_not_allowed'))
+            businessLogoFileInput.value.value = '' // Clear input
+            return
+        }
+
+        // Validate file size (max 5MB)
+        const maxFileSize = 5 * 1024 * 1024 // 5MB in bytes
+        if (file.size > maxFileSize) {
+            showErrorAlert(t('file_size_exceeded'))
+            businessLogoFileInput.value.value = '' // Clear input
+            return
+        }
+
+        // If validation passes, use the file
+        selectedBusinessLogoFile.value = file
+        businessLogo.value = URL.createObjectURL(file)
 
     }
 }
@@ -508,15 +743,59 @@ const onSubmitPassword = (values) => {
     emit('changePassword', values)
 }
 
-const onSubmitNotifications = (values) => {
-    emit('updateNotifications', values)
+const onSubmitBusiness = (values) => {
+    emit('updateBusiness', {
+        business_name: values.businessName,
+        website: values.website,
+        timezone_id: values.timezoneId,
+        country_id: values.countryId,
+        city: values.city,
+        state_id: values.stateId,
+        address: values.address,
+        categories: values.categories,
+        businessLogoFile: selectedBusinessLogoFile.value
+    })
 }
 
-const onSubmitContact = (values) => {
-    emit('updateContact', values)
+const confirmVerifyEmail = async (email) => {
+    const result = await Swal.fire({
+        title: t('confirm_email_verification'),
+        html: t('email_verification_consent'),
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: t('yes_verify'),
+        cancelButtonText: t('cancel')
+    })
+    if (result.isConfirmed) {
+        emit('verifyEmail', email)
+    }
+}
+
+const confirmVerifyMobile = async () => {
+    const result = await Swal.fire({
+        title: t('confirm_mobile_verification'),
+        html: t('mobile_verification_consent'),
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: t('yes_verify'),
+        cancelButtonText: t('cancel')
+    })
+    if (result.isConfirmed) {
+        emit('verifyMobile', phoneNumber.value)
+    }
 }
 </script>
 
 <style scoped>
-/* Add any custom styles if needed */
+:deep(.iti) {
+    width: 100%;
+}
+
+:deep(.iti__dropdown-content) {
+    z-index: 1000 !important;
+}
 </style>

@@ -22,6 +22,24 @@ export const saveBusinessDetails = async (data) => {
 };
 export const userEmailVerification = (verifyUrl) => API.get(verifyUrl);
 export const getProfile = () => API.get("/v1/user/profile");
-export const updateProfile = (data) => API.put("/v1/user/profile", data);
-export const changePassword = (data) => API.put("/v1/user/change-password", data);
+export const updateProfile = (data) => {
+  if (data instanceof FormData) {
+    data.append("_method", "PUT");
+    return API.post("/v1/user/profile", data);
+  }
+  return API.put("/v1/user/profile", data);
+};
+export const changePassword = (data) =>
+  API.put("/v1/user/change-password", data);
 export const getStates = (countryId) => API.get(`/v1/states/${countryId}`);
+export const verifyEmail = (data) =>
+  API.post("/v1/user/profile/verify-email", data);
+export const requestMobileVerification = (data) =>
+  API.post("/v1/user/profile/verify-number", data);
+export const updateBusinessDetails = (data) => {
+  if (data instanceof FormData) {
+    data.append("_method", "PUT");
+    return API.post("/v1/user/business-details", data);
+  }
+  return API.put("/v1/user/business-details", data);
+};

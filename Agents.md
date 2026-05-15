@@ -54,6 +54,8 @@ This file serves as a summary of changes and updates made to the BarberWebApp-fr
   - Configured pagination, loading state, and Bootstrap styling.
   - Maintained existing action buttons (edit/delete/view permissions) in template slots.
 - **Validation**: No errors; table now supports filtering across all columns.
+
+### Permissions Delete Functionality (May 6, 2026)
 - **Files Modified**: `src/views/dashboard/PermissionsView.vue`, `src/components/dashboard/Permissions.vue`
 - **Service Updated**: `src/services/permissoinsService.js`
 - **Changes**:
@@ -92,3 +94,18 @@ This file serves as a summary of changes and updates made to the BarberWebApp-fr
 - Pusher.js
 
 This overview will be updated with future changes to maintain a clear record of project modifications.
+
+### Email/Mobile Verification Status in EditProfile (May 15, 2026)
+
+### Email/Mobile Verification Status in EditProfile (May 15, 2026)
+- **Files Modified**: `src/components/dashboard/EditProfile.vue`, `src/services/authService.js`
+- **Locales Updated**: `src/locales/en.json`, `src/locales/ms.json`
+- **Changes**:
+  - Added email and mobile verification status display in Manage Contact tab.
+  - Added `IntlTelInput` component for phone number input with geo-ip-lookup.
+  - Added computed properties `isEmailVerified` and `isMobileVerified` to check verification status.
+  - Added verification badges: green "Verified" badge when verified, "Verify" button when not.
+  - Added `verifyEmail` and `requestMobileVerification` service functions.
+  - Fixed z-index issue for intl-tel-input dropdown to prevent overlap with other elements.
+  - Added translation keys: `verified`, `verify`, `verification_email_sent`, `verification_sms_sent`.
+- **Validation**: Dev server compiles without errors.

@@ -19,7 +19,7 @@ const router = useRouter()
 
 const topbarRef = ref(null)
 const profilePic = computed(() => {
-    return user.value?.user_profile_pic ? user.value.user_profile_pic : defaultProfilePic
+    return user.value?.profile_pic ? user.value.profile_pic : defaultProfilePic
 })
 
 const showNotifications = ref(false)
@@ -176,7 +176,7 @@ const handleLogout = async () => {
                                                             <div class="avatar-img avatar-success avatar-20">
                                                                 <span><img class="avatar is-squared rounded-circle"
                                                                         :src="defaultProfilePic"
-                                                                        alt="2.jpg"></span>
+                                                                        alt="profile_picture"></span>
                                                             </div>
                                                         </div>
                                                         <div class="list-style-detail ml-2 mr-2">
