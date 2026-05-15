@@ -39,7 +39,7 @@ export const requestMobileVerification = (data) =>
 export const updateBusinessDetails = (data) => {
   if (data instanceof FormData) {
     data.append("_method", "PUT");
-    return API.post("/v1/user/business-details", data);
+    return API.post("/v1/user/business-profile", data);
   }
-  return API.put("/v1/user/business-details", data);
+  return API.put("/v1/user/business-profile", data);
 };

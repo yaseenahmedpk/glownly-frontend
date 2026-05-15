@@ -94,6 +94,7 @@ const handleUpdateBusiness = async (data) => {
         if (data.businessLogoFile instanceof File) {
             // Create FormData directly for file upload
             const formData = new FormData()
+            formData.append('business_id', data.business_id)
             formData.append('business_name', data.business_name)
             formData.append('website', data.website)
             formData.append('timezone_id', data.timezone_id)
@@ -101,9 +102,10 @@ const handleUpdateBusiness = async (data) => {
             formData.append('city', data.city)
             formData.append('state_id', data.state_id)
             formData.append('address', data.address)
-            formData.append('categories', JSON.stringify(data.categories))
             formData.append('logo', data.businessLogoFile)
-
+            data.categories.forEach(id => {
+                formData.append("categories[]", id);
+            });
             response = await updateBusinessDetails(formData)
         } else {
             response = await updateBusinessDetails(data)

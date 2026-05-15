@@ -504,6 +504,7 @@ const businessData = reactive({
 })
 
 const businessCategories = ref([])
+const currentBusinessId = ref(null)
 
 const isEmailVerified = computed(() => {
     return props.profileData?.profileDetails?.email_verified_at != null
@@ -563,6 +564,7 @@ watch(() => props.profileData, async (newData) => {
 
         // Find matching business from businesses array
         const matchedBusiness = newData.profileDetails?.businesses?.find(business => business.id === authStore.company?.id)
+        currentBusinessId.value = matchedBusiness?.id || null
 
         // Business data
         Object.assign(businessData, {
@@ -577,7 +579,7 @@ watch(() => props.profileData, async (newData) => {
             accountType: matchedBusiness?.account_type_name || '',
             serviceType: matchedBusiness?.service_type_name || '',
             status: matchedBusiness?.status_name || '',
-            activePackage: matchedBusiness?.active_package || ''
+            activePackage: matchedBusiness?.subscription?.package?.name || ''
         })
 
         // Update form values
@@ -586,7 +588,7 @@ watch(() => props.profileData, async (newData) => {
         })
 
         businessCategories.value = Array.isArray(newData.business_categories) ? newData.business_categories : []
-        businessLogo.value = matchedBusiness?.logo || null
+        businessLogo.value = matchedBusiness?.business_logo_url || null
 
         // Fetch business states for the country on initial load
         if (businessData.countryId) {
@@ -756,7 +758,9 @@ const onSubmitPassword = (values) => {
 }
 
 const onSubmitBusiness = (values) => {
+    
     emit('updateBusiness', {
+        business_id: currentBusinessId.value,
         business_name: values.businessName,
         website: values.website,
         timezone_id: values.timezoneId,
