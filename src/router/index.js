@@ -6,6 +6,7 @@ import ForgetPasswordView from "../views/ForgetPasswordView.vue";
 import ResetPasswordView from "../views/ResetPasswordView.vue";
 import BusinessDetailsView from "../views/onboarding/BusinessDetailsView.vue";
 import EmailVerificationView from "../views/EmailVerificationView.vue";
+import AccountVerificationChecker from "../views/AccountVerificationChecker.vue";
 import DashboardLayout from "../layouts/DashboardLayout.vue";
 import { useAuthStore } from "../stores/authStore";
 
@@ -17,7 +18,13 @@ const routes = [
   { path: "/reset-password", component: ResetPasswordView },
   { path: "/company-details", component: BusinessDetailsView },
   { path: "/verify-email", component: EmailVerificationView },
-  { path: "/business-selection", name: "BusinessSelection", component: () => import("../views/BusinessSelectionView.vue"), meta: { requiresAuth: true } },
+  { path: "/account-verification", component: AccountVerificationChecker },
+  {
+    path: "/business-selection",
+    name: "BusinessSelection",
+    component: () => import("../views/BusinessSelectionView.vue"),
+    meta: { requiresAuth: true },
+  },
   {
     path: "/dashboard",
     meta: { requiresAuth: true },
@@ -65,11 +72,7 @@ router.beforeEach((to, from) => {
   }
 
   if (to.path === "/login" && isAuthenticated) {
-    return hasSelectedCompany ? "/dashboard" : "/business-selection";
-  }
-
-  if (to.meta.requiresAuth && isAuthenticated && !hasSelectedCompany && to.path !== "/business-selection") {
-    return "/business-selection";
+    return "/dashboard";
   }
 
   return true;

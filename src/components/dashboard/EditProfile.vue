@@ -249,7 +249,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <Form @submit="onSubmitBusiness" :validation-schema="businessSchema">
+                                <Form ref="businessForm" @submit="onSubmitBusiness" :validation-schema="businessSchema" :initialValues="businessData">
                                     <div class="form-group row align-items-center">
                                         <div class="col-md-12">
                                             <div class="profile-img-edit">
@@ -327,24 +327,7 @@
                                                 v-model="businessData.address" />
                                             <ErrorMessage name="address" class="text-danger" />
                                         </div>
-                                        <div class="form-group col-sm-6">
-                                            <label>{{ $t('company_category') }}</label>
-                                            <div class="row">
-                                                <div class="col-md-6" v-for="category in businessCategories"
-                                                    :key="category.id">
-                                                    <div class="form-check">
-                                                        <Field :id="'category-' + category.id" name="categories"
-                                                            type="checkbox" class="form-check-input"
-                                                            :value="category.id" />
-                                                        <label class="form-check-label"
-                                                            :for="'category-' + category.id">
-                                                            {{ category.name }}
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <ErrorMessage name="categories" class="text-danger" />
-                                        </div>
+
                                         <div class="form-group col-sm-3">
                                             <label>{{ $t('account_type') }}</label>
                                             <br>
@@ -364,6 +347,24 @@
                                             <label>{{ $t('active_package') }}</label>
                                             <br>
                                             <span class="badge badge-info">{{ businessData.activePackage }}</span>
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label>{{ $t('company_category') }}</label>
+                                            <div class="row">
+                                                <div class="col-md-6" v-for="category in businessCategories"
+                                                    :key="category.id">
+                                                    <div class="form-check">
+                                                        <Field :id="'category-' + category.id" name="categories"
+                                                            type="checkbox" class="form-check-input"
+                                                            :value="category.id" />
+                                                        <label class="form-check-label"
+                                                            :for="'category-' + category.id">
+                                                            {{ category.name }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ErrorMessage name="categories" class="text-danger" />
                                         </div>
                                     </div>
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
@@ -387,7 +388,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, computed } from 'vue'
+import { ref, reactive, watch, computed, nextTick } from 'vue'
 import IntlTelInput from "intl-tel-input/vue";
 import "intl-tel-input/styles";
 import { Form, Field, ErrorMessage, useForm } from 'vee-validate'
@@ -398,8 +399,10 @@ import { getStates } from '../../services/authService'
 import { showErrorAlert } from '../../helpers/swal'
 import { useI18n } from 'vue-i18n'
 import { hasPermission } from '../../helpers/authHelper'
+import { useAuthStore } from "../../stores/authStore";
 
 const { t } = useI18n()
+const authStore = useAuthStore()
 const props = defineProps({
     profileData: Object,
     loading: Boolean,
@@ -422,6 +425,7 @@ const fileInput = ref(null)
 const selectedProfileFile = ref(null)
 const businessLogoFileInput = ref(null)
 const selectedBusinessLogoFile = ref(null)
+const businessForm = ref(null)
 const { resetForm } = useForm()
 
 const phoneNumber = ref(null)
@@ -557,29 +561,37 @@ watch(() => props.profileData, async (newData) => {
             }
         }
 
+        // Find matching business from businesses array
+        const matchedBusiness = newData.profileDetails?.businesses?.find(business => business.id === authStore.company?.id)
+
         // Business data
         Object.assign(businessData, {
-            businessName: newData.businessDetails?.business_name || '',
-            website: newData.businessDetails?.website || '',
-            timezoneId: newData.businessDetails?.timezone_id ?? '',
-            countryId: newData.businessDetails?.country_id ?? '',
-            city: newData.businessDetails?.city || '',
-            stateId: newData.businessDetails?.state_id ?? '',
-            address: newData.businessDetails?.address || '',
-            categories: newData.businessDetails?.categories || [],
-            accountType: newData.businessDetails?.account_type || '',
-            serviceType: newData.businessDetails?.service_type || '',
-            status: newData.businessDetails?.status || '',
-            activePackage: newData.businessDetails?.active_package || ''
+            businessName: matchedBusiness?.business_name || '',
+            website: matchedBusiness?.website || '',
+            timezoneId: matchedBusiness?.timezone_id || personalData.timezoneId || '',
+            countryId: matchedBusiness?.country_id || personalData.countryId || '',
+            city: matchedBusiness?.city || personalData.city || '',
+            stateId: matchedBusiness?.state_id || personalData.stateId || '',
+            address: matchedBusiness?.address || '',
+            categories: matchedBusiness?.categories?.map(c => c.id) || [],
+            accountType: matchedBusiness?.account_type_name || '',
+            serviceType: matchedBusiness?.service_type_name || '',
+            status: matchedBusiness?.status_name || '',
+            activePackage: matchedBusiness?.active_package || ''
         })
 
-        businessCategories.value = Array.isArray(newData.businessCategories) ? newData.businessCategories : []
-        businessLogo.value = newData.businessDetails?.logo || null
+        // Update form values
+        nextTick(() => {
+            businessForm.value?.setValues(businessData)
+        })
+
+        businessCategories.value = Array.isArray(newData.business_categories) ? newData.business_categories : []
+        businessLogo.value = matchedBusiness?.logo || null
 
         // Fetch business states for the country on initial load
-        if (newData.businessDetails?.country_id) {
+        if (businessData.countryId) {
             try {
-                const response = await getStates(newData.businessDetails.country_id)
+                const response = await getStates(businessData.countryId)
                 businessStates.value = response.data || []
                 isBusinessCountryInitialized.value = true
             } catch (error) {

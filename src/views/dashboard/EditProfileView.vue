@@ -111,6 +111,8 @@ const handleUpdateBusiness = async (data) => {
 
         if (response?.data?.message) {
             toast(t(response.data.message))
+            // Refresh profile to update business logo
+            fetchProfile()
         }
     } catch (err) {
         showErrorAlert(handleApiError(err, t))

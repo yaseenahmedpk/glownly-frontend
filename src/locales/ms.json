@@ -169,5 +169,6 @@
    "service_type": "Jenis Perkhidmatan",
    "status": "Status",
    "active_package": "Pakej Aktif",
-   "no_permission_to_update": "Anda tidak mempunyai kebenaran untuk mengemas kini butiran perniagaan."
+   "no_permission_to_update": "Anda tidak mempunyai kebenaran untuk mengemas kini butiran perniagaan.",
+   "goto_login": "Pergi ke Login"
 }

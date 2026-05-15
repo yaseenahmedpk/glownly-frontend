@@ -26,7 +26,6 @@ const handleLogin = async (form) => {
     authStore.setPermissions(response.data.data.allPermissions || [])
     const businesses = response.data.data.businesses || []
     authStore.setBusinesses(businesses)
-    
     if (businesses.length > 1) {
       authStore.setCompany(null)
       router.push("/business-selection")
@@ -96,7 +95,7 @@ const handleLogin = async (form) => {
           </div>
           <div class="mb-5">
             <p class="line-around text-secondary mb-0"><span class="line-around-1">{{ $t('or_login_with_email')
-            }}</span></p>
+                }}</span></p>
           </div>
           <LoginForm @login="handleLogin" :loading="loading" />
         </div>

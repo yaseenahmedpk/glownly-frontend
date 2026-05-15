@@ -174,5 +174,6 @@
    "service_type": "Service Type",
    "status": "Status",
    "active_package": "Active Package",
-   "no_permission_to_update": "You do not have permission to update business details."
+   "no_permission_to_update": "You do not have permission to update business details.",
+   "goto_login": "Go to Login"
 }
