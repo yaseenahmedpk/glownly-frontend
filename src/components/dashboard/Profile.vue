@@ -49,27 +49,196 @@
       </div>
     </div>
     <div class="col-lg-8">
-      <div class="card card-block">
-        <div class="card-header d-flex justify-content-between pb-0">
-          <div class="header-title">
-            <h4 class="card-title mb-0">{{ $t('about_me') }}</h4>
+      <div class="card card-block card-stretch card-height shadow-sm border-0">
+        <div class="card-body p-4">
+          <!-- Header -->
+          <div class="d-flex align-items-center mb-4">
+            <div class="p-icon mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="text-primary" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <h4 class="card-title mb-0 font-weight-bold">{{ $t('about_me') }}</h4>
+          </div>
+
+          <!-- Personal Details Grid -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-venus-mars fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('gender') }}</div>
+                  <div class="font-weight-bold">{{ profileData?.profileDetails?.gender === 0 ? 'Male' : 'Female' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-language fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('language') }}</div>
+                  <div class="font-weight-bold">{{ profileData?.profileDetails?.language_name || 'N/A' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-clock fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('timezone') }}</div>
+                  <div class="font-weight-bold">{{ profileData?.profileDetails?.timezone_name || 'N/A' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-globe-americas fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('country') }}</div>
+                  <div class="font-weight-bold">{{ profileData?.profileDetails?.country_name || 'N/A' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-city fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('city') }}</div>
+                  <div class="font-weight-bold">{{ profileData?.profileDetails?.city || 'N/A' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-map fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('state') }}</div>
+                  <div class="font-weight-bold">{{ profileData?.profileDetails?.state_name || 'N/A' }}</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="card-body">
-          <h5 class="mb-2 mt-4">{{ $t('details') }}</h5>
-          <ul class="list-unstyled mb-0">
-            <li class="mb-3"><strong>{{ $t('gender') }}:</strong> {{ profileData?.profileDetails?.gender === 0 ? 'Male'
-              : 'Female' }}</li>
-            <li class="mb-3"><strong>{{ $t('language') }}:</strong> {{ profileData?.profileDetails?.language_name ||
-              'N/A' }}</li>
-            <li class="mb-3"><strong>{{ $t('timezone') }}:</strong> {{ profileData?.profileDetails?.timezone_name ||
-              'N/A' }}</li>
-            <li class="mb-3"><strong>{{ $t('country') }}:</strong> {{ profileData?.profileDetails?.country_name || 'N/A'
-              }}</li>
-            <li class="mb-3"><strong>{{ $t('city') }}:</strong> {{ profileData?.profileDetails?.city || 'N/A' }}</li>
-            <li class="mb-3"><strong>{{ $t('state') }}:</strong> {{ profileData?.profileDetails?.state_name || 'N/A' }}
-            </li>
-          </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card card-block card-stretch card-height shadow-sm border-0">
+        <div class="card-body p-4">
+          <!-- Header -->
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="d-flex align-items-center">
+              <div class="p-icon mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="text-primary" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 01-2-2H7a2 2 0 01-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <h4 class="card-title mb-0 font-weight-bold">{{ $t('company_details') }}</h4>
+            </div>
+            <div v-if="businessDetails?.business_logo_url" class="text-right">
+              <img :src="businessDetails.business_logo_url" alt="Business Logo" class="rounded border" style="max-height: 48px; max-width: 120px; object-fit: contain;">
+            </div>
+          </div>
+
+          <!-- Business Info Grid -->
+          <div class="row">
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-building fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('business_name') }}</div>
+                  <div class="font-weight-bold">{{ businessDetails?.business_name || 'N/A' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-globe fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('website') }}</div>
+                  <div class="font-weight-bold"><a v-if="businessDetails?.website" :href="businessDetails.website" target="_blank" class="text-primary">{{ businessDetails.website }}</a><span v-else>N/A</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-map-marker-alt fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('address') }}</div>
+                  <div class="font-weight-bold">{{ businessDetails?.address || 'N/A' }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-city fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('city') }}</div>
+                  <div class="font-weight-bold">{{ businessDetails?.city || 'N/A' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-map fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('state') }}</div>
+                  <div class="font-weight-bold">{{ businessDetails?.state_name || 'N/A' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-globe-americas fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('country') }}</div>
+                  <div class="font-weight-bold">{{ businessDetails?.country_name || 'N/A' }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="d-flex align-items-start">
+                <div class="p-icon mr-3 text-primary"><i class="fas fa-clock fa-lg"></i></div>
+                <div>
+                  <div class="text-muted small">{{ $t('timezone') }}</div>
+                  <div class="font-weight-bold">{{ businessDetails?.timezone_name || 'N/A' }}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Status Badges Row -->
+            <div class="col-12 mt-2">
+              <div class="d-flex flex-wrap align-items-center gap-2">
+                <div class="mr-3">
+                  <span class="text-muted small d-block mb-1">{{ $t('account_type') }}</span>
+                  <span class="badge badge-primary px-3 py-1">{{ businessDetails?.account_type_name || 'N/A' }}</span>
+                </div>
+                <div class="mr-3">
+                  <span class="text-muted small d-block mb-1">{{ $t('service_type') }}</span>
+                  <span class="badge badge-secondary px-3 py-1">{{ businessDetails?.service_type_name || 'N/A' }}</span>
+                </div>
+                <div class="mr-3">
+                  <span class="text-muted small d-block mb-1">{{ $t('status') }}</span>
+                  <span class="badge badge-success px-3 py-1">{{ businessDetails?.status_name || 'N/A' }}</span>
+                </div>
+                <div class="mr-3">
+                  <span class="text-muted small d-block mb-1">{{ $t('active_package') }}</span>
+                  <span class="badge badge-info px-3 py-1">{{ businessDetails?.subscription?.package?.name || 'N/A' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="col-12 mt-3" v-if="businessDetails?.categories?.length">
+              <div class="text-muted small mb-2">{{ $t('company_category') }}</div>
+              <div>
+                <span v-for="cat in businessDetails.categories" :key="cat.id" class="badge badge-pill badge-light text-dark border mr-2 mb-1 px-3 py-1">{{ cat.name }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -85,4 +254,10 @@ const props = defineProps({
 })
 
 const profileImage = computed(() => props.profileData?.profileDetails?.profile_pic)
+
+const businessDetails = computed(() => {
+  const businesses = props.profileData?.profileDetails?.businesses || []
+  const authCompanyId = props.profileData?.profileDetails?.company?.id
+  return businesses.find(b => b.id === authCompanyId) || businesses[0] || null
+})
 </script>
