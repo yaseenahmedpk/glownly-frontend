@@ -22,7 +22,7 @@
                             </li>
                             <li class="col-md-3 p-0" v-if="hasPermission('can_access_business_info')">
                                 <a class="nav-link" data-toggle="pill" href="#business-details">
-                                    {{ $t('business_details') }} {{ hasPermission('can_access_business_info') }}
+                                    {{ $t('business_details') }}
                                 </a>
                             </li>
                         </ul>

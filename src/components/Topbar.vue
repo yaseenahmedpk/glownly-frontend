@@ -99,7 +99,8 @@ const handleLogout = async () => {
                         <ul class="navbar-nav ml-auto navbar-list align-items-center">
                             <li class="nav-item nav-icon dropdown">
                                 <a href="#" class="search-toggle dropdown-toggle" id="notification-dropdown"
-                                    @click.prevent="toggleNotifications" aria-haspopup="true" :aria-expanded="showNotifications">
+                                    @click.prevent="toggleNotifications" aria-haspopup="true"
+                                    :aria-expanded="showNotifications">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                         class="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24"
                                         stroke="currentColor">
@@ -108,7 +109,8 @@ const handleLogout = async () => {
                                     </svg>
                                     <span class="bg-primary"></span>
                                 </a>
-                                <div class="iq-sub-dropdown dropdown-menu" :class="{ show: showNotifications }" @click.stop aria-labelledby="notification-dropdown">
+                                <div class="iq-sub-dropdown dropdown-menu" :class="{ show: showNotifications }"
+                                    @click.stop aria-labelledby="notification-dropdown">
                                     <div class="card shadow-none m-0 border-0">
                                         <div class="p-3 card-header-border">
                                             <h6 class="text-center">
@@ -323,7 +325,8 @@ const handleLogout = async () => {
                                         style="height: 30px; min-width: 30px; width: 30px;">
                                     <span class="bg-primary"></span>
                                 </a>
-                                <div class="iq-sub-dropdown dropdown-menu" :class="{ show: showLanguage }" @click.stop aria-labelledby="dropdownMenuButton2">
+                                <div class="iq-sub-dropdown dropdown-menu" :class="{ show: showLanguage }" @click.stop
+                                    aria-labelledby="dropdownMenuButton2">
                                     <div class="card shadow-none m-0 border-0">
                                         <div class=" p-0 ">
                                             <ul class="dropdown-menu-1 list-group list-group-flush">
@@ -366,7 +369,8 @@ const handleLogout = async () => {
                                     <img :src="profilePic" class="img-fluid avatar-rounded" alt="user">
                                     <span class="mb-0 ml-2 user-name">{{ user?.full_name }}</span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-right" :class="{ show: showProfile }" @click.stop aria-labelledby="dropdownMenuButton">
+                                <ul class="dropdown-menu dropdown-menu-right" :class="{ show: showProfile }" @click.stop
+                                    aria-labelledby="dropdownMenuButton">
                                     <li class="dropdown-item d-flex svg-icon">
                                         <svg class="svg-icon mr-0 text-secondary" id="h-01-p" width="20"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -374,7 +378,7 @@ const handleLogout = async () => {
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <a href="../app/user-profile.html">My Profile</a>
+                                        <RouterLink to="/profile">My Profile</RouterLink>
                                     </li>
                                     <li class="dropdown-item d-flex svg-icon">
                                         <svg class="svg-icon mr-0 text-secondary" id="h-02-p" width="20"

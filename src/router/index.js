@@ -51,9 +51,14 @@ const routes = [
         component: () => import("../views/dashboard/RolePermissionsView.vue"),
       },
       {
+        path: "/profile",
+        name: "Profile",
+        component: () => import("../views/dashboard/ProfileView.vue"),
+      },
+      {
         path: "/edit-profile",
         name: "EditProfile",
-        component: () => import("../views/dashboard/EditProfileView.vue"),
+        component: () => import("../views/dashboard/ProfileEditView.vue"),
       },
     ],
   },

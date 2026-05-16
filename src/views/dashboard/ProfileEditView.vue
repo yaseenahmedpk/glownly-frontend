@@ -22,7 +22,7 @@ import { getProfile, updateProfile, changePassword, verifyEmail, requestMobileVe
 import { handleApiError } from '../../helpers/handleApiError'
 import { showErrorAlert } from '../../helpers/swal'
 import { useToast } from '../../helpers/useToast'
-import EditProfile from '../../components/dashboard/EditProfile.vue'
+import EditProfile from '../../components/dashboard/ProfileEdit.vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from "../../stores/authStore";
 import { getEcho } from '../../services/echo'

@@ -175,5 +175,7 @@
    "status": "Status",
    "active_package": "Active Package",
    "no_permission_to_update": "You do not have permission to update business details.",
-   "goto_login": "Go to Login"
+   "goto_login": "Go to Login",
+   "about_me": "About Me",
+   "details": "Details"
 }
