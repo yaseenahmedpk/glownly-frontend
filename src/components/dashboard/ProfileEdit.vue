@@ -39,6 +39,14 @@
                                 <div class="header-title">
                                     <h4 class="card-title">{{ $t('personal_information') }}</h4>
                                 </div>
+                                <RouterLink to="/profile" class="btn btn-sm btn-outline-secondary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                                    </svg>
+                                    {{ $t('back') }}
+                                </RouterLink>
                             </div>
                             <div class="card-body">
                                 <Form @submit="onSubmitPersonal" :validation-schema="personalSchema">
@@ -133,7 +141,7 @@
                                         </div>
                                     </div>
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
-                                    }}</button>
+                                        }}</button>
                                     <button type="submit" class="btn btn-primary" :disabled="loading">
                                         <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"
                                             aria-hidden="true"></span>
@@ -170,7 +178,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
-                                            }}</button>
+                                        }}</button>
                                         <button type="submit" class="btn btn-primary" :disabled="loading">
                                             <span v-if="loading" class="spinner-border spinner-border-sm me-2"
                                                 role="status" aria-hidden="true"></span>
@@ -249,7 +257,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <Form ref="businessForm" @submit="onSubmitBusiness" :validation-schema="businessSchema" :initialValues="businessData">
+                                <Form ref="businessForm" @submit="onSubmitBusiness" :validation-schema="businessSchema"
+                                    :initialValues="businessData">
                                     <div class="form-group row align-items-center">
                                         <div class="col-md-12">
                                             <div class="profile-img-edit">
@@ -368,7 +377,7 @@
                                         </div>
                                     </div>
                                     <button type="reset" class="btn btn-outline-primary mr-2">{{ $t('cancel')
-                                        }}</button>
+                                    }}</button>
                                     <button type="submit" class="btn btn-primary"
                                         :disabled="loading || !hasPermission('can_update_business_info')"
                                         v-tooltip="!hasPermission('can_update_business_info') ? { text: $t('no_permission_to_update'), placement: 'top' } : { text: $t('save'), placement: 'top' }">
@@ -758,7 +767,7 @@ const onSubmitPassword = (values) => {
 }
 
 const onSubmitBusiness = (values) => {
-    
+
     emit('updateBusiness', {
         business_id: currentBusinessId.value,
         business_name: values.businessName,

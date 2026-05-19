@@ -60,6 +60,11 @@ const routes = [
         name: "EditProfile",
         component: () => import("../views/dashboard/ProfileEditView.vue"),
       },
+      {
+        path: "/branches",
+        name: "Branches",
+        component: () => import("../views/dashboard/BranchesView.vue"),
+      },
     ],
   },
 ];
