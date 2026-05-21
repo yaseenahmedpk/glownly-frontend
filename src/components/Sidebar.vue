@@ -20,7 +20,7 @@ const isRolesActive = computed(() => route.name === 'Roles')
 const isPermissionsActive = computed(() => route.name === 'Permissions')
 
 const companyLogo = computed(() => {
-    return company.value?.logo ? company.value?.logo : defaultLogo
+    return company.value?.business_logo_url ? company.value?.business_logo_url : defaultLogo
 })
 const companyName = computed(() => {
     return company.value?.name ? company.value?.name : "glownly"
