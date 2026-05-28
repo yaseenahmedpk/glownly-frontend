@@ -12,6 +12,7 @@ function createEcho(token) {
     wsHost: "localhost",
     wsPort: 8080,
     forceTLS: false,
+    encrypted: false,
     authEndpoint: `${import.meta.env.VITE_API_BASE_URL}/v1/broadcasting/auth`,
     auth: {
       headers: {

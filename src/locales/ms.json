@@ -194,5 +194,13 @@
   "business_not_found_or_unauthorized": "Perniagaan tidak dijumpai atau anda tidak mempunyai kebenaran untuk mengaksesnya.",
   "branch_updated_successfully": "Cawangan berjaya dikemas kini",
   "branch_created_successfully": "Cawangan berjaya dicipta",
-  "branch_deleted_successfully": "Cawangan berjaya dipadam"
+  "branch_deleted_successfully": "Cawangan berjaya dipadam",
+  "notifications": "Notifikasi",
+  "system_notifications": "Notifikasi Sistem",
+  "delete_notification_confirm": "Padam notifikasi ini?",
+  "delete_system_notification_confirm": "Padam notifikasi sistem ini?",
+  "notification": "Notifikasi",
+  "title": "Tajuk",
+  "message": "Mesej",
+  "add_system_notification": "Tambah Notifikasi Sistem"
 }
