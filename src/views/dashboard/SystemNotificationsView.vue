@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted } from "vue";
 import SystemNotifications from "../../components/dashboard/SystemNotifications.vue";
 import { getSystemNotifications } from "../../services/systemNotificationService";
 import { storeSystemNotification } from "../../services/systemNotificationService";
@@ -191,11 +191,11 @@ const goToNotifications = () => {
                         </span>
                     </div>
                     <!-- System Notification Active Status -->
-                    <div class="mb-3" v-if="hasPermission('can_edit_system_notification')">
+                    <div class="mb-3">
                         <div class="custom-control custom-checkbox custom-checkbox-color-check custom-control-inline">
-                            <input type="checkbox" class="custom-control-input bg-primary" id="customCheck-1"
+                            <input type="checkbox" class="custom-control-input bg-primary" id="systemCustomCheck-1"
                                 v-model="isActive">
-                            <label class="custom-control-label" for="customCheck-1"> {{ $t('is_active') }}</label>
+                            <label class="custom-control-label" for="systemCustomCheck-1"> {{ $t('is_active') }}</label>
                         </div>
                         <span class="text-danger" v-if="errorsMessage">
                             {{ errorsMessage }}

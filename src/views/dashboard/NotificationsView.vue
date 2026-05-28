@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted } from "vue";
 import Notifications from "../../components/dashboard/Notifications.vue";
 import { getNotifications } from "../../services/notificationService";
 import { storeNotification } from "../../services/notificationService";
@@ -25,6 +25,10 @@ const isActive = ref(false);
 const errorsMessage = ref(null);
 const editingNotificationId = ref(null);
 const modalTitle = ref(null);
+
+const goToSystemNotifications = () => {
+    router.push('/system-notifications');
+}
 
 const fetchNotifications = async () => {
     try {
@@ -191,11 +195,11 @@ const handleDeleteNotification = async (id) => {
                         </span>
                     </div>
                     <!-- Notification Active Status -->
-                    <div class="mb-3" v-if="hasPermission('can_edit_notification')">
+                    <div class="mb-3">
                         <div class="custom-control custom-checkbox custom-checkbox-color-check custom-control-inline">
-                            <input type="checkbox" class="custom-control-input bg-primary" id="customCheck-1"
+                            <input type="checkbox" class="custom-control-input bg-primary" id="notificationCustomCheck-1"
                                 v-model="isActive">
-                            <label class="custom-control-label" for="customCheck-1"> {{ $t('is_active') }}</label>
+                            <label class="custom-control-label" for="notificationCustomCheck-1"> {{ $t('is_active') }}</label>
                         </div>
                         <span class="text-danger" v-if="errorsMessage">
                             {{ errorsMessage }}

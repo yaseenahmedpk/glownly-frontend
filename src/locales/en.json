@@ -180,12 +180,14 @@
   "branch_deleted_successfully": "Branch deleted successfully",
   "notifications": "Notifications",
   "system_notifications": "System Notifications",
+  "notification": "Notification",
+  "system_notification": "System Notification",
   "delete_notification_confirm": "Delete notification confirmation",
   "delete_system_notification_confirm": "Delete system notification confirmation",
   "branches": "Branches",
   "my_profile": "My Profile",
-  "notification": "Notification",
   "title": "Title",
   "message": "Message",
+  "is_active": "Is Active",
   "add_system_notification": "Add System Notification"
 }

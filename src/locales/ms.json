@@ -197,10 +197,12 @@
   "branch_deleted_successfully": "Cawangan berjaya dipadam",
   "notifications": "Notifikasi",
   "system_notifications": "Notifikasi Sistem",
+  "notification": "Notifikasi",
+  "system_notification": "Notifikasi Sistem",
   "delete_notification_confirm": "Padam notifikasi ini?",
   "delete_system_notification_confirm": "Padam notifikasi sistem ini?",
-  "notification": "Notifikasi",
   "title": "Tajuk",
   "message": "Mesej",
-  "add_system_notification": "Tambah Notifikasi Sistem"
+  "add_system_notification": "Tambah Notifikasi Sistem",
+  "is_active": "Aktif"
 }
