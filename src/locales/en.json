@@ -189,5 +189,15 @@
   "title": "Title",
   "message": "Message",
   "is_active": "Is Active",
-  "add_system_notification": "Add System Notification"
+  "add_system_notification": "Add System Notification",
+  "branch": "Branch",
+  "code": "Code",
+  "phone": "Phone",
+  "postcode": "Postcode",
+  "address_line_1": "Address Line 1",
+  "address_line_2": "Address Line 2",
+  "opening_time": "Opening Time",
+  "closing_time": "Closing Time",
+  "select": "Select",
+  "is_main_branch": "Is Main Branch"
 }

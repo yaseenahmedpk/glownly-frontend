@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import Notifications from "../../components/dashboard/Notifications.vue";
-import { getNotifications } from "../../services/notificationService";
+import { getSystemNotification } from "../../services/notificationService";
 import { storeNotification } from "../../services/notificationService";
 import { updateNotification } from "../../services/notificationService";
 import { deleteNotification } from "../../services/notificationService";
@@ -26,14 +26,10 @@ const errorsMessage = ref(null);
 const editingNotificationId = ref(null);
 const modalTitle = ref(null);
 
-const goToSystemNotifications = () => {
-    router.push('/system-notifications');
-}
-
 const fetchNotifications = async () => {
     try {
         loading.value = true;
-        const response = await getNotifications();
+        const response = await getSystemNotification();
         notifications.value = response.data.notifications;
     } catch (error) {
         showErrorAlert(handleApiError(error, t));
@@ -137,23 +133,15 @@ const handleDeleteNotification = async (id) => {
                         <h4 class="card-title">{{ $t('notifications') }}</h4>
                     </div>
                     <div class="header-action">
-                        <button v-if="hasPermission('can_access_system_notification')" class="btn btn-primary mr-2"
+                        <button v-if="hasPermission('can_create_notification')" class="btn btn-primary mr-2"
                             @click="openModal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
-                            {{ $t('add_system_notification') }}
+                            {{ $t('add') }}
                         </button>
-                        <button v-if="hasPermission('can_access_system_notification')" class="btn btn-success ms-2"
-                            @click="goToSystemNotifications">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
-                            </svg>
-                            {{ $t('system_notifications') }}
-                        </button>
+
                     </div>
                 </div>
                 <div class="card-body">
@@ -197,9 +185,10 @@ const handleDeleteNotification = async (id) => {
                     <!-- Notification Active Status -->
                     <div class="mb-3">
                         <div class="custom-control custom-checkbox custom-checkbox-color-check custom-control-inline">
-                            <input type="checkbox" class="custom-control-input bg-primary" id="notificationCustomCheck-1"
-                                v-model="isActive">
-                            <label class="custom-control-label" for="notificationCustomCheck-1"> {{ $t('is_active') }}</label>
+                            <input type="checkbox" class="custom-control-input bg-primary"
+                                id="notificationCustomCheck-1" v-model="isActive">
+                            <label class="custom-control-label" for="notificationCustomCheck-1"> {{ $t('is_active')
+                            }}</label>
                         </div>
                         <span class="text-danger" v-if="errorsMessage">
                             {{ errorsMessage }}
