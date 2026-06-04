@@ -10,7 +10,7 @@ import { useLanguageStore } from '../stores/languageStore'
 import { useAuthStore } from '../stores/authStore'
 import { storeToRefs } from 'pinia'
 import { getEcho } from '../services/echo';
-import { getNotifications } from '../services/notificationService';
+import { getNotifications, markAsRead, markAllAsRead } from '../services/notificationService';
 
 const languageStore = useLanguageStore()
 const { locale } = storeToRefs(languageStore)
@@ -28,6 +28,34 @@ const showNotifications = ref(false)
 const showLanguage = ref(false)
 const showProfile = ref(false)
 const notifications = ref([]) // To store notifications
+const selectedNotification = ref(null)
+const showNotificationDetail = ref(false)
+
+const handleNotificationClick = async (notification) => {
+  try {
+    await markAsRead(notification.id, notification.type)
+    // Remove the notification from the list
+    notifications.value = notifications.value.filter(n => n.id !== notification.id)
+    // Show the notification details in modal
+    selectedNotification.value = notification
+    showNotificationDetail.value = true
+  } catch (error) {
+    console.error('Failed to mark notification as read:', error)
+    // Still show the notification details but we'll handle errors in the modal if needed
+    selectedNotification.value = notification
+    showNotificationDetail.value = true
+  }
+}
+
+const handleMarkAllAsRead = async () => {
+  try {
+    await markAllAsRead()
+    // Clear all notifications from the list
+    notifications.value = []
+  } catch (error) {
+    console.error('Failed to mark all notifications as read:', error)
+  }
+}
 
 const toggleNotifications = () => {
     showNotifications.value = !showNotifications.value
@@ -61,10 +89,10 @@ const handleClickOutside = (event) => {
 
 onMounted(() => {
     document.addEventListener('mousedown', handleClickOutside)
-    
+
     // Fetch initial notifications
     fetchInitialNotifications();
-    
+
     // Subscribe to system_all private channel for real-time notifications
     const echo = getEcho();
     if (echo && user.value) {
@@ -143,57 +171,79 @@ const fetchInitialNotifications = async () => {
                                     <div class="card shadow-none m-0 border-0">
                                         <div class="p-3 card-header-border">
                                             <h6 class="text-center">
-                                                Notifications
+                                                {{ $t('notifications') }}
                                             </h6>
                                         </div>
-                                         <div class="card-body overflow-auto card-header-border p-0 card-body-list"
-                                             style="max-height: 500px;">
-                                             <ul class="dropdown-menu-1 overflow-auto list-style-1 mb-0">
-                                                 <li v-for="notification in notifications" :key="notification.id" class="dropdown-item-1 float-none p-3">
-                                                     <div class="list-item d-flex justify-content-start align-items-start">
-                                                         <div class="avatar">
-                                                             <div class="avatar-img avatar-info avatar-20">
-                                                                 <span>
-                                                                     <svg class="icon line" width="30" height="30"
-                                                                         id="notification-icon" stroke="white"
-                                                                         xmlns="http://www.w3.org/2000/svg"
-                                                                         viewBox="0 0 24 24">
-                                                                         <path
-                                                                             d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-                                                                             style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2"/>
-                                                                         </svg>
-                                                                 </span>
-                                                             </div>
-                                                         </div>
-                                                         <div class="list-style-detail ml-2 mr-2">
-                                                             <h6 class="font-weight-bold">{{ notification.title }}</h6>
-                                                             <p class="m-0">
-                                                                 <small class="text-secondary">{{ notification.message }}</small>
-                                                             </p>
-                                                             <p class="m-0">
-                                                                 <small class="text-secondary">
-                                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                                         class="text-secondary mr-1" width="15"
-                                                                         fill="none" viewBox="0 0 24 24"
-                                                                         stroke="currentColor">
-                                                                         <path stroke-linecap="round"
-                                                                             stroke-linejoin="round" stroke-width="2"
-                                                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                         </svg>
-                                                                     {{ notification.created_at || 'Just now' }}</small>
-                                                             </p>
-                                                         </div>
-                                                     </div>
-                                                 </li>
-                                                 <li v-if="notifications.length === 0" class="dropdown-item-1 float-none p-3 text-center">
-                                                     <span class="text-muted">No notifications</span>
-                                                 </li>
-                                             </ul>
+                                        <div class="card-body overflow-auto card-header-border p-0 card-body-list"
+                                            style="max-height: 500px;">
+                                            <ul class="dropdown-menu-1 overflow-auto list-style-1 mb-0">
+                                                <li v-for="notification in notifications" :key="notification.id"
+                                                    class="dropdown-item-1 float-none p-3"
+                                                    @click="handleNotificationClick(notification)">
+                                                    <div
+                                                        class="list-item d-flex justify-content-start align-items-start">
+                                                        <div class="avatar">
+                                                            <div class="avatar-img avatar-info avatar-20">
+                                                                <span>
+                                                                    <template
+                                                                        v-if="notification.type === 'system_notification'">
+                                                                        <!-- system SVG -->
+                                                                        <svg class="icon line" width="30" height="30"
+                                                                            id="system-icon" stroke="white"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            viewBox="0 0 24 24">
+                                                                            <path
+                                                                                d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+                                                                                style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" />
+                                                                        </svg>
+                                                                    </template>
+                                                                    <template v-else>
+                                                                        <!-- normal notification SVG -->
+                                                                        <svg class="icon line" width="30" height="30"
+                                                                            id="notification-icon" stroke="white"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            viewBox="0 0 24 24">
+                                                                            <path
+                                                                                d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+                                                                                style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2" />
+                                                                        </svg>
+                                                                    </template>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="list-style-detail ml-2 mr-2">
+                                                            <h6 class="font-weight-bold">{{ notification.title }}</h6>
+                                                            <p class="m-0">
+                                                                <small class="text-secondary">{{ notification.message
+                                                                    }}</small>
+                                                            </p>
+                                                            <p class="m-0">
+                                                                <small class="text-secondary">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        class="text-secondary mr-1" width="15"
+                                                                        fill="none" viewBox="0 0 24 24"
+                                                                        stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round" stroke-width="2"
+                                                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                    </svg>
+                                                                    {{ notification.created_at || 'Just now' }}
+                                                                </small>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li v-if="notifications.length === 0"
+                                                    class="dropdown-item-1 float-none p-3 text-center">
+                                                    <span class="text-muted">{{ $t('no_notifications') }}</span>
+                                                </li>
+                                            </ul>
                                         </div>
-                                        <div class="card-footer text-muted p-3">
-                                            <p class="mb-0 text-primary text-center font-weight-bold">Show all
-                                                notifications</p>
-                                        </div>
+                                         <div class="card-footer text-muted p-3">
+                                             <p class="mb-0 text-primary text-center font-weight-bold" @click="handleMarkAllAsRead">
+                                                 {{ $t('mark_all_as_read') }}
+                                             </p>
+                                         </div>
                                     </div>
                                 </div>
                             </li>
@@ -259,7 +309,7 @@ const fetchInitialNotifications = async () => {
                                         </svg>
                                         <RouterLink to="/profile">{{ $t('my_profile') }}</RouterLink>
                                     </li>
-                                  
+
                                     <li class="dropdown-item d-flex svg-icon">
                                         <svg class="svg-icon mr-0 text-secondary" id="h-03-p" width="20"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -298,4 +348,65 @@ const fetchInitialNotifications = async () => {
             </nav>
         </div>
     </div>
+    <div v-if="showNotificationDetail" class="notification-detail-modal" @click.self="showNotificationDetail = false">
+        <div class="notification-detail-content">
+            <h3>{{ selectedNotification.title }}</h3>
+            <p>{{ selectedNotification.message }}</p>
+            <small>{{ selectedNotification.created_at }}</small>
+            <button @click="showNotificationDetail = false">Close</button>
+        </div>
+    </div>
 </template>
+<style scoped>
+.notification-detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.notification-detail-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notification-detail-content h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.notification-detail-content p {
+    color: #666;
+    margin: 15px 0;
+}
+
+.notification-detail-content small {
+    display: block;
+    color: #999;
+    margin-bottom: 15px;
+}
+
+.notification-detail-content button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.notification-detail-content button:hover {
+    background: #0056b3;
+}
+</style>

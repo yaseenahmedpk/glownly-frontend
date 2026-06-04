@@ -199,5 +199,10 @@
   "opening_time": "Opening Time",
   "closing_time": "Closing Time",
   "select": "Select",
-  "is_main_branch": "Is Main Branch"
+  "is_main_branch": "Is Main Branch",
+  "mark_all_as_read": "Mark all as read",
+  "no_notifications": "No notification",
+  "company_details": "Company Details",
+  "about_me": "About Me",
+  "edit_profile": "Edit Profile"
 }
