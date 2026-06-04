@@ -204,5 +204,10 @@
   "no_notifications": "No notification",
   "company_details": "Company Details",
   "about_me": "About Me",
-  "edit_profile": "Edit Profile"
+  "edit_profile": "Edit Profile",
+  "overview": "Overview",
+  "total_employees": "Total Employees",
+  "present_employees": "Present Employees",
+  "absent_employees": "Absent Employees",
+  "total_branches": "Total Branches"
 }

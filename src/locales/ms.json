@@ -206,5 +206,10 @@
   "add_system_notification": "Tambah Notifikasi Sistem",
   "is_active": "Aktif",
   "mark_all_as_read": "Tandai Semua Sebagai Dibaca",
-  "no_notifications": "Tidak ada notifikasi"
+  "no_notifications": "Tidak ada notifikasi",
+  "overview": "Gambaran Keseluruhan",
+  "total_employees": "Jumlah Pekerja",
+  "present_employees": "Pekerja Hadir",
+  "absent_employees": "Pekerja Tidak Hadir",
+  "total_branches": "Jumlah Cabang"
 }

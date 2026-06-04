@@ -9,11 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^14.0.0",
     "axios": "^1.15.2",
     "bootstrap": "^4.6.2",
+    "daterangepicker": "^3.1.0",
     "intl-tel-input": "^27.2.1",
     "jquery": "^3.7.1",
     "laravel-echo": "^2.3.4",
+    "moment": "^2.29.1",
     "pinia": "^3.0.4",
     "popper.js": "^1.16.1",
     "pusher-js": "^8.5.0",
