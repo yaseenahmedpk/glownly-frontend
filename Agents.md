@@ -1,111 +1,68 @@
-# Project Overview - Agents.md
+# AI Agents Reference
 
-This file serves as a summary of changes and updates made to the BarberWebApp-frontend project. It is updated with each modification to provide a quick overview of the project's evolution.
+This document provides a reference to AI agents used or referenced in the BarberWebApp-frontend project.
 
-### Roles Edit and Delete Functionality (May 5, 2026)
-- **Files Modified**: `src/views/dashboard/RolesView.vue`, `src/components/dashboard/Roles.vue`
-- **Service Updated**: `src/services/roleService.js`
-- **Changes**:
-  - Added `updateRole(id, data)` and `deleteRole(id)` functions to the roles service.
-  - Implemented edit and delete functionality in RolesView.vue:
-    - Added `editingRoleId` ref and `modalTitle` ref for edit mode.
-    - Imported Swal for confirmation dialogs.
-    - Modified `saveRole` to call `updateRole` for edits or `storeRole` for new entries.
-    - Added `handleRoleData` to populate modal for editing.
-    - Added `handleDeleteRole` with confirmation prompt before deletion.
-    - Added event listeners for `@roleData` and `@deleteRole`.
-  - Updated Roles.vue component:
-    - Added `roleData` and `deleteRole` emit events.
-    - Added `selectRole` and `deleteRole` functions to emit events.
-    - Added `@click` handlers to edit and delete icons.
-  - Follows existing patterns: service calls, error handling, and user confirmation via SweetAlert2.
-- **Validation**: Code compiles without errors; functionality mirrors permissions implementation.
+## Available Agents (from Kilo)
 
-### Role Permissions Save Functionality (May 6, 2026)
-- **Files Modified**: `src/components/dashboard/RolePermissions.vue`, `src/views/dashboard/RolePermissionsView.vue`
-- **Service Updated**: `src/services/roleService.js`
-- **Changes**:
-  - Added `storeRolePermissions(data)` service function for posting to `/store-roles-permissions`.
-  - Implemented save flow in RolePermissions.vue:
-    - Added `roleId` prop and `selectedPermissionIds` local state.
-    - Synchronized selected checkboxes with permissions whose `status === 1`.
-    - Added checkbox change handling to build `permissionIds`.
-    - Added save button calling `storeRolePermissions({ roleId, permissionIds })`.
-    - Added save loading state and error handling.
-  - Updated RolePermissionsView.vue to pass `:roleId="id"` into the component.
-- **Validation**: No lint/type errors in modified files.
+The project utilizes [Kilo](https://kilo.ai/) as an AI-powered software engineering assistant. Kilo provides various specialized agents for different tasks. For a complete list of available agents, refer to the [Kilo documentation](https://kilo.ai/docs).
 
-### Permissions Table Filter Enable (May 6, 2026)
-- **File Modified**: `src/components/dashboard/Permissions.vue`
-- **Changes**:
-  - Replaced standard HTML table with `vue3-easy-data-table` component.
-  - Enabled global search/filter with `:search-field="true"` prop.
-  - Added sortable columns for ID and Name.
-  - Configured pagination, loading state, and Bootstrap styling.
-  - Maintained existing action buttons (edit/delete) in template slots.
-- **Validation**: No errors; table now supports filtering across all columns.
+## Project-Specific Agent Guidelines
 
-### Roles Table Filter Enable (May 6, 2026)
-- **File Modified**: `src/components/dashboard/Roles.vue`
-- **Changes**:
-  - Replaced standard HTML table with `vue3-easy-data-table` component.
-  - Enabled global search/filter with `:search-field="true"` prop.
-  - Added sortable columns for ID and Name.
-  - Configured pagination, loading state, and Bootstrap styling.
-  - Maintained existing action buttons (edit/delete/view permissions) in template slots.
-- **Validation**: No errors; table now supports filtering across all columns.
+When working with AI agents in this project, follow these guidelines:
 
-### Permissions Delete Functionality (May 6, 2026)
-- **Files Modified**: `src/views/dashboard/PermissionsView.vue`, `src/components/dashboard/Permissions.vue`
-- **Service Updated**: `src/services/permissoinsService.js`
-- **Changes**:
-  - Added `deletePermission(id)` function to the permissions service for deleting permissions.
-  - Implemented delete functionality in PermissionsView.vue:
-    - Imported Swal for confirmation dialogs.
-    - Added `handleDeletePermission(id)` function with confirmation prompt before deletion.
-    - Added `@deletePermission` event listener to Permissions component.
-  - Updated Permissions.vue component:
-    - Added `deletePermission` emit event.
-    - Added `@click` handler to delete icon to emit delete event with permission ID.
-  - Follows existing patterns: service calls, error handling, and user confirmation via SweetAlert2.
-- **Validation**: Code compiles without errors; functionality includes confirmation dialog to prevent accidental deletions.
+1. **Context Awareness**: Agents should be provided with relevant project context, including:
+   - File paths and structures
+   - Existing code patterns and conventions
+   - Configuration files (package.json, vite.config.js, etc.)
+   - Related services and components
 
-## Project Structure
-- **Framework**: Vue.js with Vite
-- **Styling**: Bootstrap
-- **State Management**: Pinia
-- **API**: Axios for HTTP requests
-- **Internationalization**: Vue I18n
-- **Real-time**: Laravel Echo with Pusher
+2. **Task Definition**: Clearly define the task for the agent, including:
+   - Specific files to modify
+   - Expected outcomes
+   - Any constraints or requirements
 
-## Key Components
-- Authentication system with login, signup, password reset
-- Dashboard layout with sidebar and topbar
-- Permissions and roles management
-- Multilingual support (English and Malay)
+3. **Validation**: After agent execution, always:
+   - Review the changes made
+   - Run linting and type checking (if applicable)
+   - Verify functionality aligns with requirements
 
-## Dependencies
-- Vue 3
-- Bootstrap 4
-- Axios
-- Pinia
-- SweetAlert2
-- Laravel Echo
-- Pusher.js
+## Common Agent Usage Patterns
 
-This overview will be updated with future changes to maintain a clear record of project modifications.
+### Code Modification
+When requesting code changes:
+- Specify the exact file path
+- Describe the change in detail
+- Indicate if new files should be created
+- Note any dependencies that might be affected
 
-### Email/Mobile Verification Status in EditProfile (May 15, 2026)
+### File Operations
+For file-related tasks:
+- Use absolute paths from the project root
+- Clarify if files should be read, written, or edited
+- Specify encoding or format requirements when relevant
 
-### Email/Mobile Verification Status in EditProfile (May 15, 2026)
-- **Files Modified**: `src/components/dashboard/EditProfile.vue`, `src/services/authService.js`
-- **Locales Updated**: `src/locales/en.json`, `src/locales/ms.json`
-- **Changes**:
-  - Added email and mobile verification status display in Manage Contact tab.
-  - Added `IntlTelInput` component for phone number input with geo-ip-lookup.
-  - Added computed properties `isEmailVerified` and `isMobileVerified` to check verification status.
-  - Added verification badges: green "Verified" badge when verified, "Verify" button when not.
-  - Added `verifyEmail` and `requestMobileVerification` service functions.
-  - Fixed z-index issue for intl-tel-input dropdown to prevent overlap with other elements.
-  - Added translation keys: `verified`, `verify`, `verification_email_sent`, `verification_sms_sent`.
-- **Validation**: Dev server compiles without errors.
+### Dependency Management
+When modifying dependencies:
+- Clearly state which packages to add/remove/update
+- Specify versions if required
+- Note if the change affects both frontend and backend (though this is frontend-only)
+
+## Example Agent Interaction
+
+```
+User: Update the HomeView.vue to use VueDatePicker with a submit button and remove moment/daterangepicker dependencies.
+
+Agent: [Would process this request by:
+  1. Reading package.json to identify dependencies
+  2. Reading HomeView.vue to understand current implementation
+  3. Editing package.json to remove moment and daterangepicker
+  4. Editing HomeView.vue to implement VueDatePicker with submit button
+  5. Verifying the changes]
+```
+
+## Maintenance
+
+This document should be updated as:
+- New agent capabilities are discovered or utilized
+- Project-specific agent workflows are established
+- Changes are made to how agents interact with the project
