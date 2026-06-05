@@ -4,6 +4,9 @@ import { VueDatePicker } from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const dateRange = ref(null)
+const submitDates = () => {
+  console.log('Selected date range:', dateRange.value)
+}
 onMounted(() => {
 
 })
@@ -13,8 +16,9 @@ onMounted(() => {
         <div class="col-md-12 mb-4 mt-1">
             <div class="d-flex flex-wrap justify-content-between align-items-center">
                 <h4 class="font-weight-bold">{{ $t('overview') }}</h4>
-                <div class="form-group mb-0 vanila-daterangepicker d-flex flex-row">
-                    <VueDatePicker v-model="dateRange" range placeholder="Select Date Range" />
+                <div class="form-group mb-0 d-flex flex-row">
+                    <VueDatePicker v-model="dateRange" range placeholder="Select Date Range" class="me-2" />
+                    <button type="button" class="btn btn-primary" @click="submitDates">Submit</button>
                 </div>
             </div>
         </div>
