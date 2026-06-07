@@ -86,7 +86,7 @@
                 </div>
                 <div>
                   <div class="text-muted small">{{ $t('gender') }}</div>
-                  <div class="font-weight-bold">{{ profileData?.profileDetails?.gender === 0 ? 'Male' : 'Female' }}
+                  <div class="font-weight-bold">{{ profileData?.profileDetails?.gender === 0 ? 'Female' : 'Male' }}
                   </div>
                 </div>
               </div>
