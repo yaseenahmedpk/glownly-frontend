@@ -51,6 +51,7 @@
   "sending": "Mengirim...",
   "reset_password": "Reset Kata Laluan",
   "change_password": "Ubah Kata Laluan",
+  "set_password": "Tetapkan Kata Laluan",
   "change_password_message": "Masukkan kata sandi baru Anda di bawah ini untuk mengubah kata sandi Anda.",
   "changing_password": "Mengubah Kata Laluan...",
   "passwords_do_not_match": "Kata sandi tidak cocok",
@@ -211,5 +212,16 @@
   "total_employees": "Jumlah Pekerja",
   "present_employees": "Pekerja Hadir",
   "absent_employees": "Pekerja Tidak Hadir",
-  "total_branches": "Jumlah Cabang"
+  "total_branches": "Jumlah Cabang",
+  "staff_invitation_title": "Jemputan Staf",
+  "verifying_invitation": "Memverifikasi jemputan anda, sila tunggu...",
+  "set_new_password": "Tetapkan kata laluan baru",
+  "invitation_expired": "Pautan jemputan ini tidak sah atau telah tamat tempoh",
+  "set_password": "Tetapkan Kata Laluan",
+  "setting_password": "Menetapkan kata laluan...",
+  "goto_login": "Pergi ke Log Masuk",
+  "download_apps_title": "Akaun Dicapai",
+  "download_apps_message": "Akaun anda telah dicipta. Sila unduh aplikasi kami untuk log masuk ke akaun anda.",
+  "app_store": "App Store",
+  "google_play": "Google Play"
 }

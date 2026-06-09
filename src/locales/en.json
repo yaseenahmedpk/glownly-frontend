@@ -52,6 +52,7 @@
   "sending": "Sending...",
   "reset_password": "Reset Password",
   "change_password": "Change Password",
+  "set_password": "Set Password",
   "change_password_message": "Enter your new password below to change your password.",
   "changing_password": "Changing Password...",
   "passwords_do_not_match": "Passwords do not match",
@@ -209,5 +210,16 @@
   "total_employees": "Total Employees",
   "present_employees": "Present Employees",
   "absent_employees": "Absent Employees",
-  "total_branches": "Total Branches"
+  "total_branches": "Total Branches",
+  "staff_invitation_title": "Staff Invitation",
+  "verifying_invitation": "Verifying your invitation, please wait...",
+  "set_new_password": "Set your new password",
+  "invitation_expired": "This invitation link is invalid or has expired",
+  "set_password": "Set Password",
+  "setting_password": "Setting password...",
+  "goto_login": "Go to Login",
+  "download_apps_title": "Account Created Successfully",
+  "download_apps_message": "Your account has been created. Please download our app to log in to your account.",
+  "app_store": "App Store",
+  "google_play": "Google Play"
 }

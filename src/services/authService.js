@@ -43,3 +43,7 @@ export const updateBusinessDetails = (data) => {
   }
   return API.put("/v1/user/business-profile", data);
 };
+export const verifyStaffInvitation = (token) =>
+  API.post("/v1/staff/verify-invitation", { token });
+export const setStaffPassword = (data) =>
+  API.post("/v1/staff/set-password", data);
