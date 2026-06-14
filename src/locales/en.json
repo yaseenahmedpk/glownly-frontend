@@ -215,11 +215,11 @@
   "verifying_invitation": "Verifying your invitation, please wait...",
   "set_new_password": "Set your new password",
   "invitation_expired": "This invitation link is invalid or has expired",
-  "set_password": "Set Password",
   "setting_password": "Setting password...",
   "goto_login": "Go to Login",
   "download_apps_title": "Account Created Successfully",
   "download_apps_message": "Your account has been created. Please download our app to log in to your account.",
   "app_store": "App Store",
-  "google_play": "Google Play"
+  "google_play": "Google Play",
+  "delete": "Delete"
 }
