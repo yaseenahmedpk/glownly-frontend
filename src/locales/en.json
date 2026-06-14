@@ -221,5 +221,6 @@
   "download_apps_message": "Your account has been created. Please download our app to log in to your account.",
   "app_store": "App Store",
   "google_play": "Google Play",
-  "delete": "Delete"
+  "delete": "Delete",
+  "show_qr_code": "Show QR Code"
 }

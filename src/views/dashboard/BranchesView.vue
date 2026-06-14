@@ -168,6 +168,14 @@ const handleBranchData = async (data) => {
     modalObject.value.show();
 };
 
+const handleQrCodeUpdated = (branchId, newQrCodeUrl) => {
+    branches.value = branches.value.map(branch => 
+        branch.id === branchId 
+            ? { ...branch, qr_code_url: newQrCodeUrl }
+            : branch
+    );
+};
+
 const handleDeleteBranch = async (id) => {
     const result = await Swal.fire({
         title: t('are_you_sure'),
@@ -228,7 +236,7 @@ const onCountryChange = async () => {
             </button>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
-            <Branches :branches="branches" :loading="loading" @branchData="handleBranchData" @deleteBranch="handleDeleteBranch" />
+            <Branches :branches="branches" :loading="loading" @branchData="handleBranchData" @deleteBranch="handleDeleteBranch" @qrCodeUpdated="handleQrCodeUpdated" />
         </div>
     </div>
 
