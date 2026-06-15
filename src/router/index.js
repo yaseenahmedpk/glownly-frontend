@@ -77,12 +77,17 @@ const routes = [
           name: "SystemNotifications",
           component: () => import("../views/dashboard/SystemNotificationsView.vue"),
         },
-        {
+{
           path: "/service-categories",
           name: "ServiceCategories",
           component: () => import("../views/dashboard/ServiceCategoriesView.vue"),
         },
-     ],
+        {
+          path: "/services",
+          name: "Services",
+          component: () => import("../views/dashboard/ServicesView.vue"),
+        },
+      ],
   },
 ];
 const router = createRouter({

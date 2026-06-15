@@ -21,6 +21,7 @@ const isPermissionsActive = computed(() => route.name === 'Permissions')
 const isNotificationsActive = computed(() => route.name === 'Notifications')
 const isSystemNotificationsActive = computed(() => route.name === 'SystemNotifications')
 const isServiceCategoriesActive = computed(() => route.name === 'ServiceCategories')
+const isServicesActive = computed(() => route.name === 'Services')
 
 const companyLogo = computed(() => {
     return company.value?.business_logo_url ? company.value?.business_logo_url : defaultLogo
@@ -157,6 +158,18 @@ const companyName = computed(() => {
                                                   d="M8.25 18.75V17.25A4.5 4.5 0 0112 15.75c1.654 0 3.104.448 4.375 1.228M15 18h.009a.009.009 0 00.009-.009v-.009a.009.009 0 00-.009-.009H15v.009a.009.009 0 00.009.009v.009a.009.009 0 00.009.009zm-6.009 0h.009a.009.009 0 00.009-.009v-.009a.009.009 0 00-.009-.009H9v.009a.009.009 0 00.009.009v.009a.009.009 0 00.009.009z" />
                                           </svg>
                                       </i><span class="">{{ $t('service_categories') }}</span>
+                                  </RouterLink>
+</li>
+                              <li :class="['sidebar-layout', { active: isServicesActive }]"
+                                  v-if="hasPermission('can_access_service')">
+                                  <RouterLink to="/services" :class="['svg-icon', { active: isServicesActive }]">
+                                      <i class="">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
+                                              viewBox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M11.5 3v6.5h6.5M12 18l5.5-7.5-5.5-7.5v6.5H6.5" />
+                                          </svg>
+                                      </i><span class="">{{ $t('services') }}</span>
                                   </RouterLink>
                               </li>
 

@@ -228,5 +228,13 @@
   "service_category": "Service Category",
   "description": "Description",
   "delete_service_category_confirm": "Delete service category confirmation",
-  "saving": "Saving..."
+  "saving": "Saving...",
+  "services": "Services",
+  "service": "Service",
+  "delete_service_confirm": "Delete service confirmation",
+  "price": "Price",
+  "duration_minutes": "Duration (Minutes)",
+  "select_category": "Select Category",
+  "active": "Active",
+  "inactive": "Inactive"
 }

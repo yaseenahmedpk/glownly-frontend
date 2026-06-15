@@ -228,5 +228,13 @@
   "service_category": "Kategori Perkhidmatan",
   "description": "Deskripsi",
   "delete_service_category_confirm": "Padam kategori perkhidmatan ini?",
-  "saving": "Menyimpan..."
+  "saving": "Menyimpan...",
+  "services": "Perkhidmatan",
+  "service": "Perkhidmatan",
+  "delete_service_confirm": "Padam perkhidmatan ini?",
+  "price": "Harga",
+  "duration_minutes": "Durasi (Minit)",
+  "select_category": "Pilih Kategori",
+  "active": "Aktif",
+  "inactive": "Tidak Aktif"
 }
