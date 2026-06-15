@@ -72,11 +72,16 @@ const routes = [
          name: "Notifications",
          component: () => import("../views/dashboard/NotificationsView.vue"),
        },
-       {
-         path: "/system-notifications",
-         name: "SystemNotifications",
-         component: () => import("../views/dashboard/SystemNotificationsView.vue"),
-       },
+{
+          path: "/system-notifications",
+          name: "SystemNotifications",
+          component: () => import("../views/dashboard/SystemNotificationsView.vue"),
+        },
+        {
+          path: "/service-categories",
+          name: "ServiceCategories",
+          component: () => import("../views/dashboard/ServiceCategoriesView.vue"),
+        },
      ],
   },
 ];

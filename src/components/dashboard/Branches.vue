@@ -76,6 +76,7 @@ const headers = computed(() => {
     return [
         { text: t('id'), value: 'id', sortable: true },
         { text: t('name'), value: 'name', sortable: true },
+        { text: t('business_name'), value: 'business_name', sortable: true },
         { text: t('code'), value: 'code', sortable: true },
         { text: t('city'), value: 'city', sortable: true },
         { text: t('action'), value: 'action', sortable: false },
@@ -108,6 +109,9 @@ const actionsSlot = (item) => {
         :sort-type="'asc'" :rows-per-page="10" :rows-per-page-message="'Rows per page:'"
         :rows-of-page-separator-message="'of'" :empty-message="'No data found'" :buttons-pagination="true"
         theme-color="#007bff" table-class-name="customize-vue-table table table-bordered">
+        <template #item-business_name="item">
+            <span>{{ item.business?.business_name || '-' }}</span>
+        </template>
         <template #item-action="item">
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" style="color:green;cursor: pointer;"

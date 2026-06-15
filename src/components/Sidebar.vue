@@ -15,11 +15,12 @@ const { company } = storeToRefs(authStore)
 const route = useRoute()
 const isDashboardActive = computed(() => route.name === 'DashboardHome' || route.path === '/dashboard')
 const isBranchesActive = computed(() => route.name === 'Branches')
-const isSettingsOpen = computed(() => ['Roles', 'Permissions', 'RolePermissions', 'Notifications', 'SystemNotifications'].includes(route.name))
+const isSettingsOpen = computed(() => ['Roles', 'Permissions', 'RolePermissions', 'Notifications', 'SystemNotifications', 'ServiceCategories'].includes(route.name))
 const isRolesActive = computed(() => route.name === 'Roles')
 const isPermissionsActive = computed(() => route.name === 'Permissions')
 const isNotificationsActive = computed(() => route.name === 'Notifications')
 const isSystemNotificationsActive = computed(() => route.name === 'SystemNotifications')
+const isServiceCategoriesActive = computed(() => route.name === 'ServiceCategories')
 
 const companyLogo = computed(() => {
     return company.value?.business_logo_url ? company.value?.business_logo_url : defaultLogo
@@ -108,32 +109,56 @@ const companyName = computed(() => {
                                 </RouterLink>
 
                             </li>
-                             <li :class="['sidebar-layout', { active: isPermissionsActive }]"
-                                 v-if="hasPermission('can_access_permissions_navigation')">
-                                 <RouterLink to="/permissions" :class="['svg-icon', { active: isPermissionsActive }]">
-                                     <i class="">
-                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                             stroke-width="1.5" stroke="currentColor" class="size-6">
-                                             <path stroke-linecap="round" stroke-linejoin="round"
-                                                 d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
-                                         </svg>
+<li :class="['sidebar-layout', { active: isPermissionsActive }]"
+                                  v-if="hasPermission('can_access_permissions_navigation')">
+                                  <RouterLink to="/permissions" :class="['svg-icon', { active: isPermissionsActive }]">
+                                      <i class="">
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                              stroke-width="1.5" stroke="currentColor" class="size-6">
+                                              <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                                          </svg>
 
-                                     </i><span class="">{{ $t('permissions') }}</span>
-                                 </RouterLink>
+                                      </i><span class="">{{ $t('permissions') }}</span>
+                                  </RouterLink>
 
-                             </li>
-                             <li :class="['sidebar-layout', { active: isNotificationsActive }]"
-                                 v-if="hasPermission('can_access_notification')">
-                                 <RouterLink to="/notifications" :class="['svg-icon', { active: isNotificationsActive }]">
-                                     <i class="">
-                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
-                                             viewBox="0 0 24 24" stroke="currentColor">
-                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                         </svg>
-                                     </i><span class="">{{ $t('notifications') }}</span>
-                                 </RouterLink>
-                             </li>
+                              </li>
+                              <li :class="['sidebar-layout', { active: isNotificationsActive }]"
+                                  v-if="hasPermission('can_access_notification')">
+                                  <RouterLink to="/notifications" :class="['svg-icon', { active: isNotificationsActive }]">
+                                      <i class="">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
+                                              viewBox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                      </svg>
+                                  </i><span class="">{{ $t('notifications') }}</span>
+                                  </RouterLink>
+                              </li>
+                              <li :class="['sidebar-layout', { active: isSystemNotificationsActive }]"
+                                  v-if="hasPermission('can_access_notification')">
+                                  <RouterLink to="/system-notifications" :class="['svg-icon', { active: isSystemNotificationsActive }]">
+                                      <i class="">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
+                                              viewBox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                      </svg>
+                                  </i><span class="">{{ $t('system_notifications') }}</span>
+                                  </RouterLink>
+                              </li>
+                              <li :class="['sidebar-layout', { active: isServiceCategoriesActive }]"
+                                  v-if="hasPermission('can_access_service_category')">
+                                  <RouterLink to="/service-categories" :class="['svg-icon', { active: isServiceCategoriesActive }]">
+                                      <i class="">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
+                                              viewBox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M8.25 18.75V17.25A4.5 4.5 0 0112 15.75c1.654 0 3.104.448 4.375 1.228M15 18h.009a.009.009 0 00.009-.009v-.009a.009.009 0 00-.009-.009H15v.009a.009.009 0 00.009.009v.009a.009.009 0 00.009.009zm-6.009 0h.009a.009.009 0 00.009-.009v-.009a.009.009 0 00-.009-.009H9v.009a.009.009 0 00.009.009v.009a.009.009 0 00.009.009z" />
+                                          </svg>
+                                      </i><span class="">{{ $t('service_categories') }}</span>
+                                  </RouterLink>
+                              </li>
 
                         </ul>
                     </li>

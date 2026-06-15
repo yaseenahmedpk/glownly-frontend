@@ -120,6 +120,7 @@
   "business": "Perniagaan",
   "business_settings": "Tetapan Perniagaan",
   "business_list": "Senarai Perniagaan",
+  "business_name": "Nama Perniagaan",
   "select_your_business": "Pilih perniagaan anda",
   "choose_business_to_access": "Pilih perniagaan yang ingin anda akses.",
   "personal_information": "Maklumat Peribadi",
@@ -222,5 +223,10 @@
   "download_apps_message": "Akaun anda telah dicipta. Sila unduh aplikasi kami untuk log masuk ke akaun anda.",
   "app_store": "App Store",
   "google_play": "Google Play",
-  "show_qr_code": "Tampilkan Kode QR"
+  "show_qr_code": "Tampilkan Kode QR",
+  "service_categories": "Kategori Perkhidmatan",
+  "service_category": "Kategori Perkhidmatan",
+  "description": "Deskripsi",
+  "delete_service_category_confirm": "Padam kategori perkhidmatan ini?",
+  "saving": "Menyimpan..."
 }

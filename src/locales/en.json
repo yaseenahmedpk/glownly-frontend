@@ -125,6 +125,7 @@
   "business": "Business",
   "business_settings": "Business Settings",
   "business_list": "Business List",
+  "business_name": "Business Name",
   "select_your_business": "Select your business",
   "choose_business_to_access": "Choose the business you want to access.",
   "personal_information": "Personal Information",
@@ -222,5 +223,10 @@
   "app_store": "App Store",
   "google_play": "Google Play",
   "delete": "Delete",
-  "show_qr_code": "Show QR Code"
+  "show_qr_code": "Show QR Code",
+  "service_categories": "Service Categories",
+  "service_category": "Service Category",
+  "description": "Description",
+  "delete_service_category_confirm": "Delete service category confirmation",
+  "saving": "Saving..."
 }
