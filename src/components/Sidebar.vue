@@ -148,18 +148,18 @@ const companyName = computed(() => {
                                   </i><span class="">{{ $t('system_notifications') }}</span>
                                   </RouterLink>
                               </li>
-                              <li :class="['sidebar-layout', { active: isServiceCategoriesActive }]"
+<li :class="['sidebar-layout', { active: isServiceCategoriesActive }]"
                                   v-if="hasPermission('can_access_service_category')">
                                   <RouterLink to="/service-categories" :class="['svg-icon', { active: isServiceCategoriesActive }]">
                                       <i class="">
                                           <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
                                               viewBox="0 0 24 24" stroke="currentColor">
                                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M8.25 18.75V17.25A4.5 4.5 0 0112 15.75c1.654 0 3.104.448 4.375 1.228M15 18h.009a.009.009 0 00.009-.009v-.009a.009.009 0 00-.009-.009H15v.009a.009.009 0 00.009.009v.009a.009.009 0 00.009.009zm-6.009 0h.009a.009.009 0 00.009-.009v-.009a.009.009 0 00-.009-.009H9v.009a.009.009 0 00.009.009v.009a.009.009 0 00.009.009z" />
+                                                  d="M7 7h.01M7 7a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2h-10a2 2 0 01-2-2V7z" />
                                           </svg>
                                       </i><span class="">{{ $t('service_categories') }}</span>
                                   </RouterLink>
-</li>
+                              </li>
                               <li :class="['sidebar-layout', { active: isServicesActive }]"
                                   v-if="hasPermission('can_access_service')">
                                   <RouterLink to="/services" :class="['svg-icon', { active: isServicesActive }]">
@@ -167,7 +167,7 @@ const companyName = computed(() => {
                                           <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
                                               viewBox="0 0 24 24" stroke="currentColor">
                                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M11.5 3v6.5h6.5M12 18l5.5-7.5-5.5-7.5v6.5H6.5" />
+                                                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                                           </svg>
                                       </i><span class="">{{ $t('services') }}</span>
                                   </RouterLink>

@@ -39,6 +39,7 @@ const headers = computed(() => {
     return [
         { text: t('id'), value: 'id', sortable: true },
         { text: t('name'), value: 'name', sortable: true },
+        { text: t('category'), value: 'category_name', sortable: true },
         { text: t('price'), value: 'price', sortable: true },
         { text: t('duration_minutes'), value: 'duration_minutes', sortable: true },
         { text: t('is_active'), value: 'is_active', sortable: false },
@@ -54,6 +55,9 @@ const headers = computed(() => {
         table-class-name="customize-vue-table table table-bordered">
         <template #item-price="item">
             <span>{{ item.price ? '$' + item.price : '-' }}</span>
+        </template>
+        <template #item-category_name="item">
+            <span>{{ item.category?.name || '-' }}</span>
         </template>
         <template #item-duration_minutes="item">
             <span>{{ item.duration_minutes ? item.duration_minutes + ' min' : '-' }}</span>

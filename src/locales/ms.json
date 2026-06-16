@@ -236,5 +236,7 @@
   "duration_minutes": "Durasi (Minit)",
   "select_category": "Pilih Kategori",
   "active": "Aktif",
-  "inactive": "Tidak Aktif"
+  "inactive": "Tidak Aktif",
+  "business": "Perniagaan",
+  "category": "Kategori"
 }

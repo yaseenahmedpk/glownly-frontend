@@ -64,7 +64,7 @@ const openModal = () => {
     modalObject.value = new Modal(modalEl)
     editingServiceId.value = null;
     formData.value = {
-        business_id: authStore.company?.id || '',
+        business_id: authStore.company?.id || authStore.companyId || '',
         service_category_id: '',
         name: '',
         price: '',
@@ -206,7 +206,7 @@ const handleDeleteService = async (id) => {
 
                     <div class="mb-3">
                         <label class="form-label">{{ $t('business') }}</label>
-                        <input type="text" class="form-control" :value="authStore.company?.business_name || ''" disabled />
+                        <input type="text" class="form-control" :value="authStore.company?.name || authStore.company?.business_name || ''" disabled />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">{{ $t('service_category') }} <span class="text-danger">*</span></label>

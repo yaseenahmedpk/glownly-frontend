@@ -236,5 +236,7 @@
   "duration_minutes": "Duration (Minutes)",
   "select_category": "Select Category",
   "active": "Active",
-  "inactive": "Inactive"
+  "inactive": "Inactive",
+  "business": "Business",
+  "category": "Category"
 }
