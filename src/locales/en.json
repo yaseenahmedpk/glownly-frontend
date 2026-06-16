@@ -125,7 +125,6 @@
   "business": "Business",
   "business_settings": "Business Settings",
   "business_list": "Business List",
-  "business_name": "Business Name",
   "select_your_business": "Select your business",
   "choose_business_to_access": "Choose the business you want to access.",
   "personal_information": "Personal Information",
@@ -228,7 +227,6 @@
   "service_category": "Service Category",
   "description": "Description",
   "delete_service_category_confirm": "Delete service category confirmation",
-  "saving": "Saving...",
   "services": "Services",
   "service": "Service",
   "delete_service_confirm": "Delete service confirmation",
@@ -237,6 +235,7 @@
   "select_category": "Select Category",
   "active": "Active",
   "inactive": "Inactive",
-  "business": "Business",
-  "category": "Category"
+  "category": "Category",
+  "service_image": "Service Image",
+  "image": "Image"
 }

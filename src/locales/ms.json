@@ -120,7 +120,6 @@
   "business": "Perniagaan",
   "business_settings": "Tetapan Perniagaan",
   "business_list": "Senarai Perniagaan",
-  "business_name": "Nama Perniagaan",
   "select_your_business": "Pilih perniagaan anda",
   "choose_business_to_access": "Pilih perniagaan yang ingin anda akses.",
   "personal_information": "Maklumat Peribadi",
@@ -228,7 +227,6 @@
   "service_category": "Kategori Perkhidmatan",
   "description": "Deskripsi",
   "delete_service_category_confirm": "Padam kategori perkhidmatan ini?",
-  "saving": "Menyimpan...",
   "services": "Perkhidmatan",
   "service": "Perkhidmatan",
   "delete_service_confirm": "Padam perkhidmatan ini?",
@@ -237,6 +235,7 @@
   "select_category": "Pilih Kategori",
   "active": "Aktif",
   "inactive": "Tidak Aktif",
-  "business": "Perniagaan",
-  "category": "Kategori"
+  "category": "Kategori",
+  "service_image": "Gambar Perkhidmatan",
+  "image": "Gambar"
 }

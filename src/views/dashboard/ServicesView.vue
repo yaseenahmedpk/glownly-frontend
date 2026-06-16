@@ -25,12 +25,40 @@ const formData = ref({
     business_id: '',
     service_category_id: '',
     name: '',
-    price: '',
     duration_minutes: '',
-    is_active: true
+    is_active: true,
+    image: null,
+    image_url: null
 });
+const selectedImage = ref(null);
+const imagePreview = ref(null);
 
 const errorsMessage = ref(null);
+const imageFileInput = ref(null);
+
+const openImageFileChooser = () => {
+    imageFileInput.value?.click();
+};
+
+const onImageChange = (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+        const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedImageTypes.includes(file.type)) {
+            showErrorAlert(t('image_not_allowed') || 'Image type not allowed');
+            imageFileInput.value.value = '';
+            return;
+        }
+        const maxFileSize = 5 * 1024 * 1024;
+        if (file.size > maxFileSize) {
+            showErrorAlert(t('file_size_exceeded') || 'File size exceeded');
+            imageFileInput.value.value = '';
+            return;
+        }
+        selectedImage.value = file;
+        imagePreview.value = URL.createObjectURL(file);
+    }
+};
 
 const fetchServices = async () => {
     try {
@@ -67,12 +95,18 @@ const openModal = () => {
         business_id: authStore.company?.id || authStore.companyId || '',
         service_category_id: '',
         name: '',
-        price: '',
         duration_minutes: '',
-        is_active: true
+        is_active: true,
+        image: null,
+        image_url: null
     };
+    selectedImage.value = null;
+    imagePreview.value = null;
     errorsMessage.value = null;
     modalTitle.value = t("add");
+    if (imageFileInput.value) {
+        imageFileInput.value.value = '';
+    }
     modalObject.value.show()
 }
 
@@ -87,28 +121,31 @@ const saveService = async () => {
     try {
         if (formData.value.name != null) {
             loading.value = true
-            const payload = {
-                business_id: formData.value.business_id,
-                service_category_id: formData.value.service_category_id,
-                name: formData.value.name,
-                price: formData.value.price || null,
-                duration_minutes: formData.value.duration_minutes || null,
-                is_active: formData.value.is_active || false,
+            const payload = new FormData();
+            payload.append("business_id", formData.value.business_id);
+            payload.append("service_category_id", formData.value.service_category_id);
+            payload.append("name", formData.value.name);
+            payload.append("duration_minutes", formData.value.duration_minutes || "");
+            payload.append("is_active", formData.value.is_active || false);
+            if (selectedImage.value) {
+                payload.append("image", selectedImage.value);
             }
-
             if (editingServiceId.value) {
-                await updateService(editingServiceId.value, payload)
+                await updateService(editingServiceId.value, payload);
             } else {
-                await storeService(payload)
+                await storeService(payload);
             }
             formData.value = {
                 business_id: authStore.company?.id || '',
                 service_category_id: '',
                 name: '',
-                price: '',
                 duration_minutes: '',
-                is_active: true
+                is_active: true,
+                image: null,
+                image_url: null
             };
+            selectedImage.value = null;
+            imagePreview.value = null;
             editingServiceId.value = null;
             modalObject.value.hide()
             fetchServices()
@@ -129,10 +166,13 @@ const handleServiceData = (data) => {
         business_id: data.business_id || authStore.company?.id || '',
         service_category_id: data.service_category_id || '',
         name: data.name || '',
-        price: data.price || '',
         duration_minutes: data.duration_minutes || '',
         is_active: data.is_active || false,
+        image: null,
+        image_url: data.image_url || null
     };
+    selectedImage.value = null;
+    imagePreview.value = data.image_url || null;
     editingServiceId.value = data.id;
     modalTitle.value = t("edit");
     modalObject.value.show();
@@ -205,6 +245,26 @@ const handleDeleteService = async (id) => {
                 <div class="modal-body">
 
                     <div class="mb-3">
+                        <label class="form-label">{{ $t('service_image') || 'Service Image' }}</label>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="position-relative">
+                                <img v-if="imagePreview" :src="imagePreview" alt="Preview" class="avatar-preview" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" />
+                                <img v-else-if="formData.image_url" :src="formData.image_url" alt="Service" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" />
+                                <div v-else class="avatar-placeholder" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; background-color: #e9ecef; border-radius: 8px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 32px; height: 32px;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-2.036-6.036a2.25 2.25 0 00-3.182 0L2.25 15.75zm14.25 0l2.038-2.038a2.25 2.25 0 013.182 0l2.038 2.038M15 15.75v-3.75m0 0l-1.5 1.5m0 0l1.5 1.5M18 18h-6" />
+                                    </svg>
+                                </div>
+                                <div class="crm-p-image bg-primary" @click="openImageFileChooser" style="position: absolute; bottom: -5px; right: -5px; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                    <input ref="imageFileInput" class="file-upload" type="file" accept="image/*" @change="onImageChange" :key="editingServiceId" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">{{ $t('business') }}</label>
                         <input type="text" class="form-control" :value="authStore.company?.name || authStore.company?.business_name || ''" disabled />
                     </div>
@@ -221,10 +281,6 @@ const handleDeleteService = async (id) => {
                     <div class="mb-3">
                         <label class="form-label">{{ $t('name') }} <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" v-model="formData.name" />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">{{ $t('price') }}</label>
-                        <input type="number" class="form-control" v-model="formData.price" step="0.01" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">{{ $t('duration_minutes') }}</label>

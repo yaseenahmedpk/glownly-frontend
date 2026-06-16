@@ -26,9 +26,9 @@ const selectService = (service) => {
         business_id: service.business_id,
         service_category_id: service.service_category_id,
         name: service.name,
-        price: service.price,
         duration_minutes: service.duration_minutes,
         is_active: service.is_active,
+        image_url: service.image_url,
     });
 }
 const deleteService = (service) => {
@@ -39,8 +39,8 @@ const headers = computed(() => {
     return [
         { text: t('id'), value: 'id', sortable: true },
         { text: t('name'), value: 'name', sortable: true },
+        { text: t('image'), value: 'image_url', sortable: false },
         { text: t('category'), value: 'category_name', sortable: true },
-        { text: t('price'), value: 'price', sortable: true },
         { text: t('duration_minutes'), value: 'duration_minutes', sortable: true },
         { text: t('is_active'), value: 'is_active', sortable: false },
         { text: t('action'), value: 'action', sortable: false },
@@ -53,11 +53,16 @@ const headers = computed(() => {
         :rows-per-page-message="'Rows per page:'" :rows-of-page-separator-message="'of'"
         :empty-message="'No data found'" :buttons-pagination="true" theme-color="#007bff"
         table-class-name="customize-vue-table table table-bordered">
-        <template #item-price="item">
-            <span>{{ item.price ? '$' + item.price : '-' }}</span>
-        </template>
         <template #item-category_name="item">
             <span>{{ item.category?.name || '-' }}</span>
+        </template>
+        <template #item-image_url="item">
+            <img v-if="item.image_url" :src="item.image_url" alt="Service" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;" />
+            <div v-else class="avatar-placeholder" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; background-color: #e9ecef; border-radius: 8px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 28px; height: 28px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-2.036-6.036a2.25 2.25 0 00-3.182 0L2.25 15.75zm14.25 0l2.038-2.038a2.25 2.25 0 013.182 0l2.038 2.038M15 15.75v-3.75m0 0l-1.5 1.5m0 0l1.5 1.5M18 18h-6" />
+                </svg>
+            </div>
         </template>
         <template #item-duration_minutes="item">
             <span>{{ item.duration_minutes ? item.duration_minutes + ' min' : '-' }}</span>
