@@ -238,5 +238,6 @@
   "category": "Category",
   "service_image": "Service Image",
   "image": "Image",
-  "attendance_check_in": "{{staffName}} checked in at {{branchName}} branch"
+  "attendance_check_in": "{{staffName}} checked in at {{branchName}} branch",
+  "on_leave_staff":"On Leave Staff"
 }
