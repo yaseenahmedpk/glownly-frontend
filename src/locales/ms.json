@@ -237,5 +237,6 @@
   "inactive": "Tidak Aktif",
   "category": "Kategori",
   "service_image": "Gambar Perkhidmatan",
-  "image": "Gambar"
+  "image": "Gambar",
+  "attendance_check_in": "{{staffName}} telah daftar hadir di cawangan {{branchName}}"
 }
