@@ -238,6 +238,9 @@
   "category": "Kategori",
   "service_image": "Gambar Perkhidmatan",
   "image": "Gambar",
+  "select_branch": "Pilih Cawangan",
+  "all_branches": "Semua Cawangan",
   "attendance_check_in": "{{staffName}} telah daftar hadir di cawangan {{branchName}}",
-  "on_leave_staff":"Kakitangan Cuti"
+  "on_leave_staff":"Kakitangan Cuti",
+  "reset":"Tetapkan Semula"
 }
