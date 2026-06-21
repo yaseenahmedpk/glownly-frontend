@@ -57,215 +57,33 @@
   stroke: #1A1A2E !important;
 }
 
-/* Typography */
-.text-primary-dark {
+/* Form Controls - Unified styling */
+.form-select,
+.vue-datepicker {
+  border: 1px solid #D1D5DB !important;
+  border-radius: 8px !important;
+  padding: 10px 12px !important;
+  font-size: 14px !important;
+  background-color: #FFFFFF !important;
   color: #1A1A2E !important;
+  min-height: 42px !important;
+  height: 42px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
 
-.text-brand-purple {
-  color: #9A77BC !important;
+.form-select:focus,
+.vue-datepicker:focus {
+  border-color: #9A77BC !important;
+  box-shadow: 0 0 0 3px rgba(154, 119, 188, 0.2) !important;
 }
 
-.text-brand-gold {
-  color: #D4AF37 !important;
-}
-
-/* Buttons */
-.btn-primary {
-  background: #9A77BC;
-  border-color: #9A77BC;
-  border-radius: 8px;
-  font-weight: 500;
-}
-
-.btn-primary:hover {
-  background: #8A69AC;
-  border-color: #8A69AC;
-}
-
-.btn-outline-primary {
-  color: #9A77BC;
-  border-color: #9A77BC;
-  border-radius: 8px;
-}
-
-.btn-outline-primary:hover {
-  background: #9A77BC;
-  border-color: #9A77BC;
-}
-
-.btn-success {
-  background: #2ECC71;
-  border-color: #2ECC71;
-  border-radius: 8px;
-}
-
-.btn-danger {
-  background: #E74C3C;
-  border-color: #E74C3C;
-  border-radius: 8px;
-}
-
-.btn-warning {
-  background: #F39C12;
-  border-color: #F39C12;
-  border-radius: 8px;
-}
-
-/* Premium Cards */
-.premium-card {
-  background: #FFFFFF;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  border: 1px solid #E5E7EB;
-}
-
-/* Status Cards */
-.status-card {
-  background: #FFFFFF;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border: 1px solid #E5E7EB;
-}
-
-.status-card.purple {
-  border-left: 4px solid #9A77BC;
-}
-
-.status-card.primary {
-  border-left: 4px solid #3378ff;
-}
-
-.status-card.info {
-  border-left: 4px solid #17a2b8;
-}
-
-.status-card.danger {
-  border-left: 4px solid #E74C3C;
-}
-
-.status-card.warning {
-  border-left: 4px solid #F39C12;
-}
-
-.status-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.status-icon.purple {
-  background: rgba(154, 119, 188, 0.1);
-  color: #9A77BC;
-}
-
-.status-icon.primary {
-  background: rgba(51, 120, 255, 0.1);
-  color: #3378ff;
-}
-
-.status-icon.info {
-  background: rgba(23, 162, 184, 0.1);
-  color: #17a2b8;
-}
-
-.status-icon.danger {
-  background: rgba(231, 76, 60, 0.1);
-  color: #E74C3C;
-}
-
-.status-icon.warning {
-  background: rgba(243, 156, 18, 0.1);
-  color: #F39C12;
-}
-
-.status-icon.present {
-  background: rgba(46, 204, 113, 0.1);
-  color: #2ECC71;
-}
-
-.status-label {
-  color: #6B7280;
-  font-size: 13px;
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.status-number {
-  color: #1A1A2E;
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.page-title {
-  color: #1A1A2E;
-  font-weight: 600;
-}
-
-/* Sidebar hover states */
-.sidebar-layout a.svg-icon:hover,
-.sidebar-layout .svg-icon:hover {
-  background: rgba(154, 119, 188, 0.08) !important;
-  color: #9A77BC !important;
-}
-
-.sidebar-layout a.svg-icon:hover svg,
-.sidebar-layout a.svg-icon:hover i svg,
-.sidebar-layout .svg-icon:hover i svg,
-.sidebar-layout .svg-icon:hover .svg-icon,
-.sidebar-layout a.svg-icon:hover svg path,
-.sidebar-layout .svg-icon:hover i svg path,
-.sidebar-nav-icon:hover svg,
-.sidebar-nav-icon:hover svg path {
-  stroke: #9A77BC !important;
-}
-
-.sidebar-layout a.svg-icon:hover span,
-.sidebar-layout .svg-icon:hover span {
-  color: #9A77BC !important;
-}
-
-.sidebar-layout.active a.svg-icon,
-.sidebar-layout a.svg-icon.active,
-.sidebar-layout .svg-icon.active {
-  background: rgba(154, 119, 188, 0.1) !important;
-  color: #9A77BC !important;
-  font-weight: 500;
-}
-
-.sidebar-layout.active a.svg-icon svg,
-.sidebar-layout a.svg-icon.active svg,
-.sidebar-layout .svg-icon.active i svg,
-.sidebar-layout .svg-icon.active .svg-icon,
-.sidebar-layout.active a.svg-icon svg path,
-.sidebar-layout .svg-icon.active i svg path,
-.sidebar-layout a.svg-icon.active .sidebar-nav-icon svg path {
-  stroke: #9A77BC !important;
-}
-
-.iq-arrow-right {
-  stroke: #1A1A2E;
-  width: 15px;
-  height: 15px;
-  margin-left: auto;
-}
-
-.iq-arrow-right path {
-  stroke: #1A1A2E;
-}
-
-.sidebar-layout a.svg-icon:hover .iq-arrow-right,
-.sidebar-layout .svg-icon:hover .iq-arrow-right {
-  stroke: #9A77BC;
-}
-
-.sidebar-layout a.svg-icon:hover .iq-arrow-right path,
-.sidebar-layout .svg-icon:hover .iq-arrow-right path {
-  stroke: #9A77BC;
+.dark .form-select,
+.dark .vue-datepicker,
+body.dark .form-select,
+body.dark .vue-datepicker {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(204, 221, 255, 0.9) !important;
 }
 
 /* Dark Mode Sidebar Support */

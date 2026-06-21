@@ -136,29 +136,29 @@ onUnmounted(() => {
 
 <template>
   <div class="row">
-        <div class="col-md-12 mb-4 mt-1">
-          <div class="d-flex flex-wrap justify-content-between align-items-center">
-            <h4 class="font-weight-bold">{{ $t("overview") }}</h4>
-            <div class="d-flex flex-wrap align-items-center gap-3">
-              <select v-model="selectedBranchId" class="form-select mr-2" style="min-width: 200px;" @change="fetchStats">
-                <option value="">{{ $t("all_branches") }}</option>
-                <option v-for="branch in branches" :key="branch.id" :value="branch.id">
-                  {{ branch.name }}
-                </option>
-              </select>
-              <VueDatePicker v-model="dateRange" range placeholder="Select Date Range" style="min-width: 240px;" />
-              <button type="button" class="btn btn-outline-secondary px-4 me-2" @click="resetFilters">
-                {{ $t("reset") || "Reset" }}
-              </button>
-              <button type="button" class="btn btn-primary px-4" @click="submitDates">
-                {{ $t("submit") }}
-              </button>
-            </div>
-          </div>
+    <div class="col-md-12 mb-4 mt-1">
+      <div class="d-flex flex-wrap justify-content-between align-items-center">
+        <h4 class="font-weight-bold">{{ $t("overview") }}</h4>
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <select v-model="selectedBranchId" class="form-select mr-2" style="min-width: 200px;" @change="fetchStats">
+            <option value="">{{ $t("all_branches") }}</option>
+            <option v-for="branch in branches" :key="branch.id" :value="branch.id">
+              {{ branch.name }}
+            </option>
+          </select>
+          <VueDatePicker v-model="dateRange" range placeholder="Select Date Range" style="min-width: 240px;" />
+          <button type="button" class="btn btn-outline-secondary px-4 me-2" @click="resetFilters">
+            {{ $t("reset") || "Reset" }}
+          </button>
+          <button type="button" class="btn btn-primary px-4" @click="submitDates">
+            {{ $t("submit") }}
+          </button>
         </div>
+      </div>
+    </div>
 
     <div class="col-lg-8 col-md-12">
-      <div class="row">
+      <div class="row g-3">
         <div class="col-md-4">
           <div class="card">
             <div class="card-body">
