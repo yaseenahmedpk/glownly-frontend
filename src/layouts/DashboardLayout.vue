@@ -1,6 +1,7 @@
 <script setup>
 import '../assets/css/backend-plugin.min.css';
 import '../assets/css/backend.css';
+import '../assets/css/custom.css';
 import 'popper.js'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import Sidebar from '../components/Sidebar.vue';

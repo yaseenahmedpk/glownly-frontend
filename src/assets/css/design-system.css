@@ -1,0 +1,310 @@
+/* Sidebar - White Premium Style */
+.iq-sidebar {
+  background: #FFFFFF !important;
+  border-right: 1px solid #E5E7EB !important;
+  color: #1A1A2E !important;
+}
+
+.iq-sidebar.sidebar-default {
+  background: #FFFFFF !important;
+  color: #1A1A2E !important;
+}
+
+.iq-sidebar a {
+  color: #1A1A2E !important;
+}
+
+.sidebar-layout {
+  color: #1A1A2E !important;
+}
+
+.sidebar-layout a.svg-icon,
+.sidebar-layout .svg-icon {
+  color: #1A1A2E !important;
+  stroke: #1A1A2E !important;
+}
+
+.sidebar-layout a.svg-icon i,
+.sidebar-layout .svg-icon i,
+.sidebar-layout a i.sidebar-nav-icon,
+.sidebar-nav-icon {
+  color: inherit !important;
+}
+
+.sidebar-layout a.svg-icon svg,
+.sidebar-layout a.svg-icon i svg,
+.sidebar-layout .svg-icon i svg,
+.sidebar-nav-icon svg,
+.svg-icon {
+  stroke: currentColor !important;
+  fill: none !important;
+}
+
+.svg-icon[id="iq-user-1-1"] path,
+.sidebar-layout a.svg-icon svg path,
+.sidebar-layout a.svg-icon i svg path,
+.sidebar-layout .svg-icon i svg path,
+.sidebar-nav-icon svg path {
+  stroke: currentColor !important;
+}
+
+/* Wrapper menu close button */
+.wrapper-menu {
+  color: #1A1A2E !important;
+  stroke: #1A1A2E !important;
+}
+.wrapper-menu path {
+  stroke: #1A1A2E !important;
+}
+
+/* Typography */
+.text-primary-dark {
+  color: #1A1A2E !important;
+}
+
+.text-brand-purple {
+  color: #9A77BC !important;
+}
+
+.text-brand-gold {
+  color: #D4AF37 !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background: #9A77BC;
+  border-color: #9A77BC;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background: #8A69AC;
+  border-color: #8A69AC;
+}
+
+.btn-outline-primary {
+  color: #9A77BC;
+  border-color: #9A77BC;
+  border-radius: 8px;
+}
+
+.btn-outline-primary:hover {
+  background: #9A77BC;
+  border-color: #9A77BC;
+}
+
+.btn-success {
+  background: #2ECC71;
+  border-color: #2ECC71;
+  border-radius: 8px;
+}
+
+.btn-danger {
+  background: #E74C3C;
+  border-color: #E74C3C;
+  border-radius: 8px;
+}
+
+.btn-warning {
+  background: #F39C12;
+  border-color: #F39C12;
+  border-radius: 8px;
+}
+
+/* Premium Cards */
+.premium-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #E5E7EB;
+}
+
+/* Status Cards */
+.status-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #E5E7EB;
+}
+
+.status-card.purple {
+  border-left: 4px solid #9A77BC;
+}
+
+.status-card.primary {
+  border-left: 4px solid #3378ff;
+}
+
+.status-card.info {
+  border-left: 4px solid #17a2b8;
+}
+
+.status-card.danger {
+  border-left: 4px solid #E74C3C;
+}
+
+.status-card.warning {
+  border-left: 4px solid #F39C12;
+}
+
+.status-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-icon.purple {
+  background: rgba(154, 119, 188, 0.1);
+  color: #9A77BC;
+}
+
+.status-icon.primary {
+  background: rgba(51, 120, 255, 0.1);
+  color: #3378ff;
+}
+
+.status-icon.info {
+  background: rgba(23, 162, 184, 0.1);
+  color: #17a2b8;
+}
+
+.status-icon.danger {
+  background: rgba(231, 76, 60, 0.1);
+  color: #E74C3C;
+}
+
+.status-icon.warning {
+  background: rgba(243, 156, 18, 0.1);
+  color: #F39C12;
+}
+
+.status-icon.present {
+  background: rgba(46, 204, 113, 0.1);
+  color: #2ECC71;
+}
+
+.status-label {
+  color: #6B7280;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.status-number {
+  color: #1A1A2E;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.page-title {
+  color: #1A1A2E;
+  font-weight: 600;
+}
+
+/* Sidebar hover states */
+.sidebar-layout a.svg-icon:hover,
+.sidebar-layout .svg-icon:hover {
+  background: rgba(154, 119, 188, 0.08) !important;
+  color: #9A77BC !important;
+}
+
+.sidebar-layout a.svg-icon:hover svg,
+.sidebar-layout a.svg-icon:hover i svg,
+.sidebar-layout .svg-icon:hover i svg,
+.sidebar-layout .svg-icon:hover .svg-icon,
+.sidebar-layout a.svg-icon:hover svg path,
+.sidebar-layout .svg-icon:hover i svg path,
+.sidebar-nav-icon:hover svg,
+.sidebar-nav-icon:hover svg path {
+  stroke: #9A77BC !important;
+}
+
+.sidebar-layout a.svg-icon:hover span,
+.sidebar-layout .svg-icon:hover span {
+  color: #9A77BC !important;
+}
+
+.sidebar-layout.active a.svg-icon,
+.sidebar-layout a.svg-icon.active,
+.sidebar-layout .svg-icon.active {
+  background: rgba(154, 119, 188, 0.1) !important;
+  color: #9A77BC !important;
+  font-weight: 500;
+}
+
+.sidebar-layout.active a.svg-icon svg,
+.sidebar-layout a.svg-icon.active svg,
+.sidebar-layout .svg-icon.active i svg,
+.sidebar-layout .svg-icon.active .svg-icon,
+.sidebar-layout.active a.svg-icon svg path,
+.sidebar-layout .svg-icon.active i svg path,
+.sidebar-layout a.svg-icon.active .sidebar-nav-icon svg path {
+  stroke: #9A77BC !important;
+}
+
+.iq-arrow-right {
+  stroke: #1A1A2E;
+  width: 15px;
+  height: 15px;
+  margin-left: auto;
+}
+
+.iq-arrow-right path {
+  stroke: #1A1A2E;
+}
+
+.sidebar-layout a.svg-icon:hover .iq-arrow-right,
+.sidebar-layout .svg-icon:hover .iq-arrow-right {
+  stroke: #9A77BC;
+}
+
+.sidebar-layout a.svg-icon:hover .iq-arrow-right path,
+.sidebar-layout .svg-icon:hover .iq-arrow-right path {
+  stroke: #9A77BC;
+}
+
+/* Dark Mode Sidebar Support */
+.dark .iq-sidebar,
+body.dark .iq-sidebar {
+  background: rgba(1, 4, 27, 0.93) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+}
+
+.dark .iq-sidebar a,
+body.dark .iq-sidebar a {
+  color: rgba(204, 221, 255, 0.8) !important;
+}
+
+.dark .sidebar-layout,
+body.dark .sidebar-layout {
+  color: rgba(204, 221, 255, 0.8) !important;
+}
+
+.dark .sidebar-layout a.svg-icon,
+.dark .sidebar-layout .svg-icon,
+body.dark .sidebar-layout a.svg-icon,
+body.dark .sidebar-layout .svg-icon {
+  color: rgba(204, 221, 255, 0.8) !important;
+  stroke: rgba(204, 221, 255, 0.8) !important;
+}
+
+.dark .iq-arrow-right,
+body.dark .iq-arrow-right,
+.dark .iq-arrow-right path,
+body.dark .iq-arrow-right path {
+  stroke: rgba(204, 221, 255, 0.8) !important;
+}
+
+.dark .svg-icon[id="iq-user-1-1"],
+.dark .svg-icon[id="iq-user-1-1"] path,
+body.dark .svg-icon[id="iq-user-1-1"],
+body.dark .svg-icon[id="iq-user-1-1"] path {
+  stroke: rgba(204, 221, 255, 0.8) !important;
+  fill: rgba(204, 221, 255, 0.1) !important;
+}
