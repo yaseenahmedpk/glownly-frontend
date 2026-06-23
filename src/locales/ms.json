@@ -242,5 +242,12 @@
   "all_branches": "Semua Cawangan",
   "attendance_check_in": "{{staffName}} telah daftar hadir di cawangan {{branchName}}",
   "on_leave_staff":"Kakitangan Cuti",
-  "reset":"Tetapkan Semula"
+  "reset":"Tetapkan Semula",
+  "businesses": "Perniagaan",
+  "view_businesses": "Lihat Perniagaan",
+  "business_updated_successfully": "Perniagaan berjaya dikemas kini",
+  "business_created_successfully": "Perniagaan berjaya dicipta",
+  "business_deleted_successfully": "Perniagaan berjaya dipadam",
+  "delete_business_confirm": "Adakah anda pasti mahu memadam perniagaan ini?",
+  "business_id": "ID Perniagaan"
 }

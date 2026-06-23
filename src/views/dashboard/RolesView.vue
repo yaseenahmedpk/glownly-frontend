@@ -83,7 +83,6 @@ const saveRole = async () => {
     }
 }
 const handleRoleData = (data) => {
-    console.log(data.is_public ?? false);
     const modalEl = document.getElementById("roleModal")
     modalObject.value = new Modal(modalEl)
     roleName.value = data.name;

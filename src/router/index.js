@@ -82,10 +82,15 @@ const routes = [
           name: "ServiceCategories",
           component: () => import("../views/dashboard/ServiceCategoriesView.vue"),
         },
+{
+           path: "/services",
+           name: "Services",
+           component: () => import("../views/dashboard/ServicesView.vue"),
+        },
         {
-          path: "/services",
-          name: "Services",
-          component: () => import("../views/dashboard/ServicesView.vue"),
+           path: "/businesses",
+           name: "Businesses",
+           component: () => import("../views/dashboard/BusinessListView.vue"),
         },
       ],
   },

@@ -16,12 +16,14 @@ const route = useRoute()
 const isDashboardActive = computed(() => route.name === 'DashboardHome' || route.path === '/dashboard')
 const isBranchesActive = computed(() => route.name === 'Branches')
 const isSettingsOpen = computed(() => ['Roles', 'Permissions', 'RolePermissions', 'Notifications', 'SystemNotifications', 'ServiceCategories'].includes(route.name))
+const isBusinessSettingsOpen = computed(() => route.name === 'Businesses')
 const isRolesActive = computed(() => route.name === 'Roles')
 const isPermissionsActive = computed(() => route.name === 'Permissions')
 const isNotificationsActive = computed(() => route.name === 'Notifications')
 const isSystemNotificationsActive = computed(() => route.name === 'SystemNotifications')
 const isServiceCategoriesActive = computed(() => route.name === 'ServiceCategories')
 const isServicesActive = computed(() => route.name === 'Services')
+const isBusinessesActive = computed(() => route.name === 'Businesses')
 
 const companyLogo = computed(() => {
     return company.value?.business_logo_url ? company.value?.business_logo_url : defaultLogo
@@ -175,10 +177,10 @@ const companyName = computed(() => {
 
                         </ul>
                     </li>
-                    <li :class="['sidebar-layout', { active: isSettingsOpen }]"
-                        v-if="hasPermission('can_access_settings_nav')">
-                        <a href="#business_settings" :class="['svg-icon', { collapsed: !isSettingsOpen }]"
-                            data-toggle="collapse" :aria-expanded="isSettingsOpen">
+                    <li :class="['sidebar-layout', { active: isBusinessSettingsOpen }]"
+                        v-if="hasPermission('can_access_business')">
+                        <a href="#business_settings" :class="['svg-icon', { collapsed: !isBusinessSettingsOpen }]"
+                            data-toggle="collapse" :aria-expanded="isBusinessSettingsOpen">
                             <i>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -194,11 +196,11 @@ const companyName = computed(() => {
                                     d="M9 5l7 7-7 7" />
                             </svg>
                         </a>
-                        <ul id="business_settings" :class="['submenu', 'collapse', { show: isSettingsOpen }]"
+                        <ul id="business_settings" :class="['submenu', 'collapse', { show: isBusinessSettingsOpen }]"
                             data-parent="#iq-sidebar-toggle">
-                            <li :class="['sidebar-layout', { active: isRolesActive }]"
-                                v-if="hasPermission('can_access_role_navigation')">
-                                <RouterLink to="/roles" :class="['svg-icon', { active: isRolesActive }]">
+                            <li :class="['sidebar-layout', { active: isBusinessesActive }]"
+                                v-if="hasPermission('can_access_business')">
+                                <RouterLink to="/businesses" :class="['svg-icon', { active: isBusinessesActive }]">
                                     <i class="">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-6">

@@ -242,5 +242,12 @@
   "all_branches": "All Branches",
   "attendance_check_in": "{{staffName}} checked in at {{branchName}} branch",
   "on_leave_staff":"On Leave Staff",
-  "reset":"Reset"
+  "reset":"Reset",
+  "businesses": "Businesses",
+  "view_businesses": "View Businesses",
+  "business_updated_successfully": "Business updated successfully",
+  "business_created_successfully": "Business created successfully",
+  "business_deleted_successfully": "Business deleted successfully",
+  "delete_business_confirm": "Are you sure you want to delete this business?",
+  "business_id": "Business ID"
 }

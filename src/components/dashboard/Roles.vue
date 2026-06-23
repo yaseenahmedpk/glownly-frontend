@@ -1,11 +1,11 @@
 <script setup>
-import { RouterLink } from 'vue-router';
 import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
 import { computed } from 'vue';
 import { onBeforeRouteLeave } from "vue-router";
 import { useI18n } from 'vue-i18n';
 import { hasPermission } from '../../helpers/authHelper';
+import { RouterLink } from 'vue-router';
 
 const { t } = useI18n();
 
