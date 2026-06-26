@@ -29,7 +29,7 @@ const companyLogo = computed(() => {
     return company.value?.business_logo_url ? company.value?.business_logo_url : defaultLogo
 })
 const companyName = computed(() => {
-    return company.value?.name ? company.value?.name : "glownly"
+    return company.value?.business_name ? company.value?.business_name : "glownly"
 })
 </script>
 <template>

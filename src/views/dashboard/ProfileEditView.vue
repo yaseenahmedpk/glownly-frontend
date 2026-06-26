@@ -207,6 +207,11 @@ const fetchProfile = async () => {
     try {
         const response = await getProfile()
         profileData.value = response.data
+
+        const matchedBusiness = response.data?.profileDetails?.businesses?.find(business => business.id === authStore.company?.id)
+        if (matchedBusiness) {
+            authStore.setCompany(matchedBusiness)
+        }
     } catch (err) {
         showErrorAlert(handleApiError(err, t))
     }
