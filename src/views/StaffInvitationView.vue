@@ -2,6 +2,8 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import IntlTelInput from "intl-tel-input/vue";
+import "intl-tel-input/styles";
 import { verifyStaffInvitation, setStaffPassword } from '../services/authService'
 import { showErrorAlert } from '../helpers/swal'
 import { handleApiError } from '../helpers/handleApiError'
@@ -14,10 +16,24 @@ const token = ref('')
 const loading = ref(false)
 const invitationVerified = ref(false)
 const passwordSet = ref(false)
-const email = ref('')
+const mobileNumber = ref('')
+const mobileNumberRef = ref(null)
+const phoneError = ref('')
+const errorCode = ref(null)
 const password = ref('')
 const passwordConfirmation = ref('')
 const setPasswordLoading = ref(false)
+
+const geoIpLookup = (success, failure) => {
+  fetch("https://ipapi.co/json")
+    .then(res => res.json())
+    .then(data => success(data.country_code))
+    .catch(() => failure())
+}
+
+const changeErrorCode = (code) => {
+  errorCode.value = code
+}
 
 onMounted(async () => {
   token.value = route.query.token
@@ -31,7 +47,7 @@ const verifyInvitation = async () => {
     loading.value = true
     const response = await verifyStaffInvitation(token.value)
     invitationVerified.value = true
-    email.value = response.data?.email || ''
+    mobileNumber.value = response.data?.mobile_number || ''
   } catch (error) {
     showErrorAlert(handleApiError(error, t))
   } finally {
@@ -40,6 +56,13 @@ const verifyInvitation = async () => {
 }
 
 const handleSetPassword = async () => {
+  if (errorCode.value == null || errorCode.value === 0) {
+    phoneError.value = ''
+  } else {
+    phoneError.value = t('please_provide_valid_whatsapp_number')
+    return
+  }
+
   if (password.value !== passwordConfirmation.value) {
     showErrorAlert([t('passwords_do_not_match')])
     return
@@ -48,7 +71,7 @@ const handleSetPassword = async () => {
     setPasswordLoading.value = true
     await setStaffPassword({
       token: token.value,
-      email: email.value,
+      mobile_number: mobileNumber.value,
       password: password.value,
       password_confirmation: passwordConfirmation.value
     })
@@ -82,14 +105,22 @@ const handleSetPassword = async () => {
 
           <form v-else-if="invitationVerified && !passwordSet" @submit.prevent="handleSetPassword">
             <div class="form-group mb-3">
-              <label class="text-secondary">{{ $t('email') }}</label>
-              <input
-                v-model="email"
-                type="email"
-                class="form-control"
-                :placeholder="$t('enter_email')"
-                required
-              >
+              <label class="text-secondary">{{ $t('mobile_number') }}</label>
+              <IntlTelInput
+                v-model="mobileNumber"
+                ref="mobileNumberRef"
+                :inputProps="{
+                  class: 'form-control',
+                  placeholder: $t('enter_mobile_number')
+                }"
+                initial-country="auto"
+                :geo-ip-lookup="geoIpLookup"
+                :load-utils="() => import('intl-tel-input/utils')"
+                @changeErrorCode="changeErrorCode"
+              />
+              <div v-if="phoneError" class="text-danger mt-1">
+                {{ phoneError }}
+              </div>
             </div>
             <div class="form-group mb-3">
               <label class="text-secondary">{{ $t('password') }}</label>
