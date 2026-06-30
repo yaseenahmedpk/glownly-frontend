@@ -36,7 +36,7 @@ const changeErrorCode = (code) => {
 }
 
 onMounted(async () => {
-  token.value = route.query.token
+  token.value = route.params.token
   if (token.value) {
     await verifyInvitation()
   }

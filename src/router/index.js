@@ -20,7 +20,7 @@ const routes = [
   { path: "/company-details", component: BusinessDetailsView },
   { path: "/verify-email", component: EmailVerificationView },
   { path: "/account-verification", component: AccountVerificationChecker },
-  { path: "/staff-invitation", component: StaffInvitationView, name: "StaffInvitation" },
+  { path: "/i/:token", component: StaffInvitationView, name: "StaffInvitation" },
   {
     path: "/business-selection",
     name: "BusinessSelection",
