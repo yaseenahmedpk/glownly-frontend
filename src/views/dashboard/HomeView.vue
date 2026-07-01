@@ -118,18 +118,36 @@ onMounted(() => {
   const token = authStore.token;
   if (!token) return;
   const echo = initEcho(token);
+  console.log("[Reverb] Echo instance:", echo ? "created" : "null");
+  if (echo?.connector?.connection) {
+    console.log("[Reverb] Connector connection state:", echo.connector.connection.connection);
+    echo.connector.connection.bind("connected", () => {
+      console.log("[Reverb] Connected");
+    });
+    echo.connector.connection.bind("disconnected", () => {
+      console.log("[Reverb] Disconnected");
+    });
+  }
   const businessId = selectedBusinessId.value;
   if (businessId) {
     echo.private(`attendance.${businessId}`).listen(".attendance.notification", handleAttendanceNotification);
   }
+  echo.channel("test-channel").listen(".test.message", (payload) => {
+    console.log("[Reverb] Test channel message:", payload);
+  });
 });
 
 onUnmounted(() => {
   const businessId = selectedBusinessId.value;
-  if (!businessId) return;
+  if (businessId) {
+    const echo = getEcho();
+    if (echo) {
+      echo.leave(`attendance.${businessId}`);
+    }
+  }
   const echo = getEcho();
   if (echo) {
-    echo.leave(`attendance.${businessId}`);
+    echo.leave("test-channel");
   }
 });
 </script>

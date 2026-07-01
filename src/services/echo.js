@@ -9,10 +9,14 @@ function createEcho(token) {
   return new Echo({
     broadcaster: "reverb",
     key: import.meta.env.VITE_REVERB_APP_KEY,
-    wsHost: "localhost",
-    wsPort: 8080,
+    // wsHost: "live.bytes4sale.com",
+    wsHost: import.meta.env.VITE_REVERB_URL,
+    wsPort: import.meta.env.VITE_REVERB_PORT,
+     wssPort: 443,
     forceTLS: false,
     encrypted: false,
+    enabledTransports: ["ws", "wss"],
+    // path: "/app",
     authEndpoint: `${import.meta.env.VITE_API_BASE_URL}/v1/broadcasting/auth`,
     auth: {
       headers: {
