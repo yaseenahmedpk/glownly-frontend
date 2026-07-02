@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import IntlTelInput from "intl-tel-input/vue";
@@ -23,6 +23,23 @@ const errorCode = ref(null)
 const password = ref('')
 const passwordConfirmation = ref('')
 const setPasswordLoading = ref(false)
+const showPassword = ref(false)
+const showPasswordConfirmation = ref(false)
+const passwordValue = ref('')
+
+const passwordStrength = computed(() => {
+    const val = passwordValue.value
+    if (!val) return { label: '', score: 0 }
+    let score = 0
+    if (val.length >= 8) score++
+    if (/[A-Z]/.test(val)) score++
+    if (/[a-z]/.test(val)) score++
+    if (/[0-9]/.test(val)) score++
+    if (/[^A-Za-z0-9]/.test(val)) score++
+    if (score <= 2) return { label: 'Weak', color: 'danger', score }
+    if (score === 3 || score === 4) return { label: 'Medium', color: 'warning', score }
+    return { label: 'Strong', color: 'success', score }
+})
 
 const geoIpLookup = (success, failure) => {
   fetch("https://ipapi.co/json")
@@ -124,23 +141,42 @@ const handleSetPassword = async () => {
             </div>
             <div class="form-group mb-3">
               <label class="text-secondary">{{ $t('password') }}</label>
-              <input
-                v-model="password"
-                type="password"
-                class="form-control"
-                :placeholder="$t('enter_password')"
-                required
-              >
+              <div class="position-relative">
+                <input
+                  v-model="password"
+                  :type="showPassword ? 'text' : 'password'"
+                  class="form-control"
+                  :placeholder="$t('enter_password')"
+                  required
+                  @input="(e) => passwordValue = e.target.value"
+                >
+                <button type="button" class="btn btn-link position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; padding: 0;" @click="showPassword = !showPassword">
+                  <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
+              <div v-if="passwordValue" class="mt-2">
+                <div class="progress" style="height: 5px;">
+                  <div class="progress-bar" :class="`bg-${passwordStrength.color}`" role="progressbar" :style="{ width: (passwordStrength.score * 20) + '%' }"></div>
+                </div>
+                <small :class="`text-${passwordStrength.color}`">
+                  {{ passwordStrength.label }} password
+                </small>
+              </div>
             </div>
             <div class="form-group mb-4">
               <label class="text-secondary">{{ $t('confirm_password') }}</label>
-              <input
-                v-model="passwordConfirmation"
-                type="password"
-                class="form-control"
-                :placeholder="$t('enter_confirm_password')"
-                required
-              >
+              <div class="position-relative">
+                <input
+                  v-model="passwordConfirmation"
+                  :type="showPasswordConfirmation ? 'text' : 'password'"
+                  class="form-control"
+                  :placeholder="$t('enter_confirm_password')"
+                  required
+                >
+                <button type="button" class="btn btn-link position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; padding: 0;" @click="showPasswordConfirmation = !showPasswordConfirmation">
+                  <i :class="showPasswordConfirmation ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
             </div>
             <button
               type="submit"

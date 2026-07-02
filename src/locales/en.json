@@ -56,7 +56,7 @@
   "change_password_message": "Enter your new password below to change your password.",
   "changing_password": "Changing Password...",
   "passwords_do_not_match": "Passwords do not match",
-  "invalid_credentials": "Invalid email and password",
+  "invalid_credentials": "Invalid phone number and password",
   "your_account_is_inactive": "Your account is inactive",
   "something_went_wrong": "Something went wrong. Please try again.",
   "network_error": "Network error. Please check your internet connection.",
