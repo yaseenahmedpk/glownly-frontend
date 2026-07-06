@@ -46,7 +46,7 @@ const schema = yup.object({
     service_type: yup
         .string()
         .required('Please select service type')
-})
+    })
 const emit = defineEmits(['businessSubmit']);
 const submitForm = (values) => {
     const payload = {

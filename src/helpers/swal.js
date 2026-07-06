@@ -16,3 +16,12 @@ export function showErrorAlert(errors) {
     confirmButtonText: "OK",
   });
 }
+
+export function showSuccessAlert(title, message = "") {
+  return Swal.fire({
+    icon: "success",
+    title: title,
+    html: message,
+    confirmButtonText: "OK",
+  });
+}

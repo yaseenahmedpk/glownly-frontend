@@ -16,7 +16,8 @@ const phoneError = ref("");
 const errorCode = ref("");
 const passwordValue = ref('')
 defineProps({
-    loading: Boolean
+    loading: Boolean,
+    timerSeconds: Number
 })
 const form = reactive({
     mobileNumber: ""
@@ -38,6 +39,11 @@ const handleNumberVerification = () => {
 
     phoneError.value = "";
     emit('numberVerification', form)
+}
+function formatTime(seconds) {
+    const min = Math.floor(seconds / 60)
+    const sec = seconds % 60
+    return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
 }
 </script>
 <template>
@@ -64,11 +70,12 @@ const handleNumberVerification = () => {
             </div>
         </div>
         <button type="submit" class="btn btn-primary btn-block mt-2" :disabled="loading">
-            <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            <span>
-                {{ loading ? $t('verifying') : $t('verify_number') }}
-            </span>
-
+            <span v-if="!loading">{{ $t('verify_number') }}</span>
+            <span v-else class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
         </button>
+        <div v-if="loading" class="text-center mt-3">
+            <span class="fw-semibold">{{ $t('waiting_for_whatsapp_response') }}</span>
+            <div class="text-muted small mt-2">{{ $t('verification_in_progress') }} {{ formatTime(timerSeconds) }}</div>
+        </div>
     </form>
 </template>
