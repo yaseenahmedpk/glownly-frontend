@@ -63,15 +63,20 @@ const routes = [
         component: () => import("../views/dashboard/ProfileEditView.vue"),
       },
        {
-         path: "/branches",
-         name: "Branches",
-         component: () => import("../views/dashboard/BranchesView.vue"),
-       },
+          path: "/branches",
+          name: "Branches",
+          component: () => import("../views/dashboard/BranchesView.vue"),
+        },
        {
-         path: "/notifications",
-         name: "Notifications",
-         component: () => import("../views/dashboard/NotificationsView.vue"),
-       },
+          path: "/staff",
+          name: "Staff",
+          component: () => import("../views/dashboard/StaffView.vue"),
+        },
+        {
+          path: "/notifications",
+          name: "Notifications",
+          component: () => import("../views/dashboard/NotificationsView.vue"),
+        },
 {
           path: "/system-notifications",
           name: "SystemNotifications",
