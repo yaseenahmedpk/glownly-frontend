@@ -158,13 +158,13 @@ onUnmounted(() => {
       <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
         <h4 class="font-weight-bold">{{ $t("overview") }}</h4>
         <div class="d-flex flex-wrap align-items-center gap-3">
-          <select v-model="selectedBranchId" class="form-select mr-2" style="min-width: 200px;" @change="fetchStats">
+          <select v-model="selectedBranchId" class="form-select mr-2" style="min-width: 200px; max-width: 220px;" @change="fetchStats">
             <option value="">{{ $t("all_branches") }}</option>
             <option v-for="branch in branches" :key="branch.id" :value="branch.id">
               {{ branch.name }}
             </option>
           </select>
-          <VueDatePicker v-model="dateRange" range placeholder="Select Date Range" style="min-width: 240px; margin-right: 10px;" />
+          <VueDatePicker v-model="dateRange" range placeholder="Select Date Range" style="min-width: 240px; max-width: 260px; margin-right: 10px;" />
           <button type="button" class="btn btn-outline-secondary mr-2" @click="resetFilters">
             {{ $t("reset") || "Reset" }}
           </button>
