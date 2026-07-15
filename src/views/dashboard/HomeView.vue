@@ -155,17 +155,17 @@ onUnmounted(() => {
 <template>
   <div class="row">
     <div class="col-md-12 mb-4">
-      <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
+      <div class="d-flex flex-nowrap justify-content-between align-items-center mb-2">
         <h4 class="font-weight-bold">{{ $t("overview") }}</h4>
-        <div class="d-flex flex-wrap align-items-center gap-3">
-          <select v-model="selectedBranchId" class="form-select mr-2" style="min-width: 200px; max-width: 220px;" @change="fetchStats">
+        <div class="d-flex flex-nowrap align-items-center gap-3">
+          <select v-model="selectedBranchId" class="form-select" style="min-width: 180px; max-width: 200px;" @change="fetchStats">
             <option value="">{{ $t("all_branches") }}</option>
             <option v-for="branch in branches" :key="branch.id" :value="branch.id">
               {{ branch.name }}
             </option>
           </select>
-          <VueDatePicker v-model="dateRange" range placeholder="Select Date Range" style="min-width: 240px; max-width: 260px; margin-right: 10px;" />
-          <button type="button" class="btn btn-outline-secondary mr-2" @click="resetFilters">
+          <VueDatePicker v-model="dateRange" range placeholder="Select Date Range" style="min-width: 220px; max-width: 240px;" />
+          <button type="button" class="btn btn-outline-secondary" @click="resetFilters">
             {{ $t("reset") || "Reset" }}
           </button>
           <button type="button" class="btn btn-primary" @click="submitDates">

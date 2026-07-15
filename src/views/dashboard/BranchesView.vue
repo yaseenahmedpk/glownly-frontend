@@ -142,6 +142,12 @@ const closeModal = () => {
 }
 
 const validateShiftTimes = () => {
+    if (!formData.value.opening_time || !formData.value.closing_time) {
+        return {
+            valid: false,
+            message: t('please_select_shift_times', { number: 1 })
+        };
+    }
     for (let i = 0; i < formData.value.shifts.length; i++) {
         const shift = formData.value.shifts[i];
         if (!shift.opening_time || !shift.closing_time) {
@@ -155,38 +161,32 @@ const validateShiftTimes = () => {
 };
 
 const saveBranch = async () => {
-    if (shiftCount.value > 1) {
-        const validation = validateShiftTimes();
-        if (!validation.valid) {
-            showErrorAlert(validation.message);
-            return;
-        }
+    const validation = validateShiftTimes();
+    if (!validation.valid) {
+        showErrorAlert(validation.message);
+        return;
     }
 
     try {
         loading.value = true
         const payload = { ...formData.value };
         payload.business_id = authStore.company?.id;
-        if (shiftCount.value <= 1) {
-            payload.shifts = [];
-        } else {
-            const shifts = [];
-            if (formData.value.opening_time || formData.value.closing_time) {
-                shifts.push({
-                    shift_no: 1,
-                    start_time: formData.value.opening_time,
-                    end_time: formData.value.closing_time
-                });
-            }
-            formData.value.shifts.forEach(s => {
-                shifts.push({
-                    shift_no: s.shift_number,
-                    start_time: s.opening_time,
-                    end_time: s.closing_time
-                });
+        const shifts = [];
+        if (formData.value.opening_time || formData.value.closing_time) {
+            shifts.push({
+                shift_no: 1,
+                start_time: formData.value.opening_time,
+                end_time: formData.value.closing_time
             });
-            payload.shifts = shifts;
         }
+        formData.value.shifts.forEach(s => {
+            shifts.push({
+                shift_no: s.shift_number,
+                start_time: s.opening_time,
+                end_time: s.closing_time
+            });
+        });
+        payload.shifts = shifts;
         delete payload.shiftCount;
         let response;
         if (editingBranchId.value) {
