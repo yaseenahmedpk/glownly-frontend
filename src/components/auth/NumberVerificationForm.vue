@@ -32,12 +32,45 @@ const geoIpLookup = (success, failure) => {
         .then(data => success(data.country_code))
         .catch(() => failure());
 };
+const normalizeToE164 = () => {
+    const refValue = phoneNumberRef.value
+    const instance = refValue?.instance
+    if (!instance) return ''
+
+    const countryData = instance.getSelectedCountryData()
+    const countryCode = countryData?.dialCode || ''
+    if (!countryCode) return ''
+
+    const inputEl = refValue?.input || instance?.telInputEl
+    if (!inputEl) return ''
+
+    let raw = inputEl.value || ''
+    if (raw.startsWith('+')) return raw
+
+    raw = raw.replace(/[^0-9]/g, '')
+    if (!raw) return ''
+
+    let national = raw
+    if (national.startsWith('0')) {
+        national = national.slice(1)
+    }
+    if (!national) return ''
+
+    return `+${countryCode}${national}`
+}
 const handleNumberVerification = () => {
     if (user.value && user.value.mobile_number) {
         form.mobileNumber = user.value.mobile_number;
     }
 
-    phoneError.value = "";
+    const e164Number = normalizeToE164()
+    if (!e164Number) {
+        phoneError.value = 'Please enter a valid mobile number'
+        return
+    }
+
+    phoneError.value = ""
+    form.mobileNumber = e164Number
     emit('numberVerification', form)
 }
 function formatTime(seconds) {
@@ -51,7 +84,7 @@ function formatTime(seconds) {
         <div class="row">
             <div class="col-lg-12">
                 <div class="form-group" v-if="!user || !user.mobile_number">
-                    <label class="text-secondary">Mobile Number</label>
+                    <label class="text-secondary">Mobile Number <small class="text-muted">(ex: 11xxxxxxx)</small></label>
 
                     <!-- IMPORTANT: keep outside Field because it's custom -->
                     <IntlTelInput v-model="phoneNumber" ref="phoneNumberRef" :inputProps="{

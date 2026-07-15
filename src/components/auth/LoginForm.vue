@@ -28,13 +28,44 @@ const changeErrorCode = (code) => {
     errorCode.value = code
 }
 
+const normalizeToE164 = () => {
+    const refValue = mobileNumberRef.value
+    const instance = refValue?.instance
+    if (!instance) return ''
+
+    const countryData = instance.getSelectedCountryData()
+    const countryCode = countryData?.dialCode || ''
+    if (!countryCode) return ''
+
+    const inputEl = refValue?.input || instance?.telInputEl
+    if (!inputEl) return ''
+
+    let raw = inputEl.value || ''
+    if (raw.startsWith('+')) return raw
+
+    raw = raw.replace(/[^0-9]/g, '')
+    if (!raw) return ''
+
+    let national = raw
+    if (national.startsWith('0')) {
+        national = national.slice(1)
+    }
+    if (!national) return ''
+
+    return `+${countryCode}${national}`
+}
+
 const handleLogin = () => {
-    if (errorCode.value != null && errorCode.value !== 0) {
-        phoneError.value = 'Please enter a valid phone number'
+    const e164Number = normalizeToE164()
+
+    if (!e164Number) {
+        phoneError.value = 'Please enter a valid mobile number'
         return
     }
+
     phoneError.value = ''
-    emit('login', form)
+    const payload = { ...form, mobileNumber: e164Number }
+    emit('login', payload)
 }
 </script>
 <template>
@@ -42,7 +73,7 @@ const handleLogin = () => {
         <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group">
-                        <label class="text-secondary">{{ $t('mobile_number') }}</label>
+                        <label class="text-secondary">{{ $t('mobile_number') }} <small class="text-muted">({{ $t('mobile_number_example') }})</small></label>
                         <IntlTelInput
                             v-model="form.mobileNumber"
                             ref="mobileNumberRef"

@@ -52,6 +52,33 @@ const changeErrorCode = (code) => {
   errorCode.value = code
 }
 
+const normalizeToE164 = () => {
+    const refValue = mobileNumberRef.value
+    const instance = refValue?.instance
+    if (!instance) return ''
+
+    const countryData = instance.getSelectedCountryData()
+    const countryCode = countryData?.dialCode || ''
+    if (!countryCode) return ''
+
+    const inputEl = refValue?.input || instance?.telInputEl
+    if (!inputEl) return ''
+
+    let raw = inputEl.value || ''
+    if (raw.startsWith('+')) return raw
+
+    raw = raw.replace(/[^0-9]/g, '')
+    if (!raw) return ''
+
+    let national = raw
+    if (national.startsWith('0')) {
+        national = national.slice(1)
+    }
+    if (!national) return ''
+
+    return `+${countryCode}${national}`
+}
+
 onMounted(async () => {
   token.value = route.params.token
   if (token.value) {
@@ -73,31 +100,31 @@ const verifyInvitation = async () => {
 }
 
 const handleSetPassword = async () => {
-  if (errorCode.value == null || errorCode.value === 0) {
-    phoneError.value = ''
-  } else {
-    phoneError.value = t('please_provide_valid_whatsapp_number')
-    return
-  }
+    const e164Number = normalizeToE164()
 
-  if (password.value !== passwordConfirmation.value) {
-    showErrorAlert([t('passwords_do_not_match')])
-    return
-  }
-  try {
-    setPasswordLoading.value = true
-    await setStaffPassword({
-      token: token.value,
-      mobile_number: mobileNumber.value,
-      password: password.value,
-      password_confirmation: passwordConfirmation.value
-    })
-    passwordSet.value = true
-  } catch (error) {
-    showErrorAlert(handleApiError(error, t))
-  } finally {
-    setPasswordLoading.value = false
-  }
+    if (!e164Number) {
+        phoneError.value = t('please_provide_valid_whatsapp_number')
+        return
+    }
+
+    if (password.value !== passwordConfirmation.value) {
+        showErrorAlert([t('passwords_do_not_match')])
+        return
+    }
+    try {
+        setPasswordLoading.value = true
+        await setStaffPassword({
+            token: token.value,
+            mobile_number: e164Number,
+            password: password.value,
+            password_confirmation: passwordConfirmation.value
+        })
+        passwordSet.value = true
+    } catch (error) {
+        showErrorAlert(handleApiError(error, t))
+    } finally {
+        setPasswordLoading.value = false
+    }
 }
 </script>
 
@@ -122,7 +149,7 @@ const handleSetPassword = async () => {
 
           <form v-else-if="invitationVerified && !passwordSet" @submit.prevent="handleSetPassword">
             <div class="form-group mb-3">
-              <label class="text-secondary">{{ $t('mobile_number') }}</label>
+              <label class="text-secondary">{{ $t('mobile_number') }} <small class="text-muted">(ex: 11xxxxxxx)</small></label>
               <IntlTelInput
                 v-model="mobileNumber"
                 ref="mobileNumberRef"
