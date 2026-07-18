@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import Notifications from "../../components/dashboard/Notifications.vue";
-import { getSystemNotification } from "../../services/notificationService";
+import { getBusinessNotifications } from "../../services/notificationService";
 import { storeNotification } from "../../services/notificationService";
 import { updateNotification } from "../../services/notificationService";
 import { deleteNotification } from "../../services/notificationService";
@@ -12,24 +12,30 @@ import { useI18n } from 'vue-i18n'
 import { Modal } from "bootstrap"
 import { hasPermission } from "../../helpers/authHelper";
 import { useRouter } from 'vue-router';
+import { useAuthStore } from "../../stores/authStore";
+import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
 const router = useRouter();
+const authStore = useAuthStore();
+const { company } = storeToRefs(authStore);
+const businessId = computed(() => company.value?.id);
 
 const loading = ref(false);
 const notifications = ref([]);
 const modalObject = ref(null);
 const title = ref(null);
 const message = ref(null);
-const isActive = ref(false);
+const notificationTo = ref("");
 const errorsMessage = ref(null);
+const notificationToError = ref(null);
 const editingNotificationId = ref(null);
 const modalTitle = ref(null);
 
 const fetchNotifications = async () => {
     try {
         loading.value = true;
-        const response = await getSystemNotification();
+        const response = await getBusinessNotifications(businessId.value);
         notifications.value = response.data.notifications;
     } catch (error) {
         showErrorAlert(handleApiError(error, t));
@@ -47,7 +53,8 @@ const openModal = () => {
     editingNotificationId.value = null;
     title.value = null;
     message.value = null;
-    isActive.value = false;
+    notificationTo.value = "";
+    notificationToError.value = null;
     modalTitle.value = t("add");
     modalObject.value.show()
 }
@@ -56,28 +63,54 @@ const closeModal = () => {
         document.activeElement.blur()
     }
     modalObject.value.hide()
+    notificationToError.value = null;
 }
 const saveNotification = async () => {
     try {
         if (title.value != null) {
-            loading.value = true
-            const payload = {
-                title: title.value,
-                message: message.value,
-                is_active: isActive.value ? 1 : 0,
+            if (!notificationTo.value) {
+                notificationToError.value = "Notification To is required";
+                return;
             }
+            notificationToError.value = null;
+            loading.value = true
 
             if (editingNotificationId.value) {
+                const payload = {
+                    title: title.value,
+                    message: message.value,
+                    notification_to: notificationTo.value,
+                }
                 await updateNotification(editingNotificationId.value, payload)
             } else {
-                await storeNotification(payload)
+                const result = await Swal.fire({
+                    title: t('are_you_sure'),
+                    text: t('verify_notification_content'),
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: t('yes_send'),
+                    cancelButtonText: t('cancel')
+                });
+
+                if (result.isConfirmed) {
+                    const payload = {
+                        title: title.value,
+                        message: message.value,
+                        notificationTo: notificationTo.value,
+                    }
+                    await storeNotification(payload, businessId.value)
+                } else {
+                    loading.value = false;
+                    return;
+                }
             }
             title.value = "";
             message.value = null;
-            isActive.value = false;
+            notificationTo.value = "";
             editingNotificationId.value = null;
             modalObject.value.hide()
-            // refresh table
             fetchNotifications()
         } else {
             errorsMessage.value = "Title is required";
@@ -93,7 +126,7 @@ const handleNotificationData = (data) => {
     modalObject.value = new Modal(modalEl)
     title.value = data.title;
     message.value = data.message;
-    isActive.value = data.is_active == 1 ? true : false;
+    notificationTo.value = data.notification_to || "announcement";
     editingNotificationId.value = data.id;
     modalTitle.value = t("edit");
     modalObject.value.show();
@@ -182,16 +215,16 @@ const handleDeleteNotification = async (id) => {
                             {{ errorsMessage }}
                         </span>
                     </div>
-                    <!-- Notification Active Status -->
+                    <!-- Notification To -->
                     <div class="mb-3">
-                        <div class="custom-control custom-checkbox custom-checkbox-color-check custom-control-inline">
-                            <input type="checkbox" class="custom-control-input bg-primary"
-                                id="notificationCustomCheck-1" v-model="isActive">
-                            <label class="custom-control-label" for="notificationCustomCheck-1"> {{ $t('is_active')
-                            }}</label>
-                        </div>
-                        <span class="text-danger" v-if="errorsMessage">
-                            {{ errorsMessage }}
+                        <label class="form-label">{{ $t('notification_to') }}</label>
+                        <select class="form-select" v-model="notificationTo">
+                            <option value="" disabled>{{ $t('select') }}</option>
+                            <option value="announcement">{{ $t('announcement') }}</option>
+                            <option value="absentees">{{ $t('absentees') }}</option>
+                        </select>
+                        <span class="text-danger" v-if="notificationToError">
+                            {{ notificationToError }}
                         </span>
                     </div>
 
