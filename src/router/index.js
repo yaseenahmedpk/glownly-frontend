@@ -10,6 +10,7 @@ import AccountVerificationChecker from "../views/AccountVerificationChecker.vue"
 import DashboardLayout from "../layouts/DashboardLayout.vue";
 import StaffInvitationView from "../views/StaffInvitationView.vue";
 import { useAuthStore } from "../stores/authStore";
+import { hasPermission } from "../helpers/authHelper";
 
 const routes = [
   { path: "/login", component: LoginView },
@@ -92,11 +93,17 @@ const routes = [
            name: "Services",
            component: () => import("../views/dashboard/ServicesView.vue"),
         },
-        {
-           path: "/businesses",
-           name: "Businesses",
-           component: () => import("../views/dashboard/BusinessListView.vue"),
-        },
+         {
+            path: "/businesses",
+            name: "Businesses",
+            component: () => import("../views/dashboard/BusinessListView.vue"),
+         },
+         {
+            path: "/attendance-report",
+            name: "AttendanceReport",
+            component: () => import("../views/dashboard/AttendanceReportView.vue"),
+            meta: { requiresAuth: true, permission: "can_access_attendance_report" },
+         },
       ],
   },
 ];
@@ -114,6 +121,10 @@ router.beforeEach((to, from) => {
   }
 
   if (to.path === "/login" && isAuthenticated) {
+    return "/dashboard";
+  }
+
+  if (to.meta.permission && !hasPermission(to.meta.permission)) {
     return "/dashboard";
   }
 

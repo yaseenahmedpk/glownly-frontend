@@ -25,6 +25,8 @@ const isServiceCategoriesActive = computed(() => route.name === 'ServiceCategori
 const isServicesActive = computed(() => route.name === 'Services')
 const isBusinessesActive = computed(() => route.name === 'Businesses')
 const isStaffActive = computed(() => route.name === 'Staff')
+const isReportsOpen = computed(() => route.name === 'AttendanceReport')
+const isAttendanceActive = computed(() => route.name === 'AttendanceReport')
 
 const companyLogo = computed(() => {
     return company.value?.business_logo_url ? company.value?.business_logo_url : defaultLogo
@@ -180,6 +182,44 @@ const companyName = computed(() => {
                                 </RouterLink>
                             </li>
 
+                        </ul>
+                    </li>
+                    <li :class="['sidebar-layout', { active: isReportsOpen }]"
+                        v-if="hasPermission('can_access_reports')">
+                        <a href="#reports" :class="['svg-icon', { collapsed: !isReportsOpen }]" data-toggle="collapse"
+                            :aria-expanded="isReportsOpen">
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125v-2.25zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125v-8.25zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                                </svg>
+
+                            </i>
+                            <span class="ml-2">{{ $t('reports') }}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon iq-arrow-right arrow-active"
+                                width="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                        <ul id="reports" :class="['submenu', 'collapse', { show: isReportsOpen }]"
+                            data-parent="#iq-sidebar-toggle">
+                            <li :class="['sidebar-layout', { active: isAttendanceActive }]"
+                                v-if="hasPermission('can_access_attendance_report')">
+                                <RouterLink to="/attendance-report" :class="['svg-icon', { active: isAttendanceActive }]">
+                                    <i class="">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                                        </svg>
+
+                                    </i><span class="">{{ $t('attendance') }}</span>
+                                </RouterLink>
+
+                            </li>
                         </ul>
                     </li>
                     <li :class="['sidebar-layout', { active: isBusinessSettingsOpen }]"
