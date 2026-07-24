@@ -17,3 +17,26 @@ export const getAttendanceReport = (from, to) => {
         },
     });
 };
+
+export const getAttendanceSummary = async (from, to) => {
+    const response = await getAttendanceReport(from, to);
+    const payload = response.data.data || response.data || {};
+    const records = Array.isArray(payload.records) ? payload.records : [];
+
+    const stats = payload.stats || {};
+
+    const mtdData = stats.mtd || {
+        present: 0,
+        absent: 0,
+        leave: 0,
+    };
+
+    const weeklyData = Array.isArray(stats.weekly) ? stats.weekly : [];
+
+    return {
+        records,
+        totalStaff: stats.total_staff || 0,
+        mtdData,
+        weeklyData,
+    };
+};

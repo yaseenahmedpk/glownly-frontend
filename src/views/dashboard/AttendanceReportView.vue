@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useAuthStore } from "../../stores/authStore";
 import { getStaff } from "../../services/staffService";
-import { getAttendanceReport } from "../../services/attendanceService";
+import { getAttendanceReport, getAttendanceSummary } from "../../services/attendanceService";
 import { handleApiError } from "../../helpers/handleApiError";
 import { showErrorAlert } from "../../helpers/swal";
 import { useToast } from "../../helpers/useToast";
@@ -11,6 +11,11 @@ import Vue3EasyDataTable from "vue3-easy-data-table";
 import "vue3-easy-data-table/dist/style.css";
 import { VueDatePicker } from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import defaultProfilePic from "../../assets/images/profile.png";
+import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, BarElement, CategoryScale, LinearScale } from "chart.js";
+import { Pie, Bar } from "vue-chartjs";
+
+ChartJS.register(Title, Tooltip, Legend, ArcElement, BarElement, CategoryScale, LinearScale);
 
 const { t } = useI18n();
 const { toast } = useToast();
@@ -21,8 +26,16 @@ const attendanceData = ref([]);
 const allStaff = ref([]);
 const totalStaffCount = ref(0);
 
-const fromDate = ref(null);
-const toDate = ref(null);
+const fromDate = ref(new Date());
+const toDate = ref(new Date());
+
+const mtdData = ref({
+    present: 0,
+    absent: 0,
+    leave: 0,
+});
+
+const weeklyData = ref([]);
 
 const currentMonthStart = computed(() => {
     const now = new Date();
@@ -59,6 +72,132 @@ const tableItems = computed(() => {
     }));
 });
 
+const pieChartData = computed(() => {
+    const present = mtdData.value.present || 0;
+    const absent = mtdData.value.absent || 0;
+    const leave = mtdData.value.leave || 0;
+
+    return {
+        labels: [t("present_staff"), t("absent_staff"), t("leave")],
+        datasets: [
+            {
+                data: [present, absent, leave],
+                backgroundColor: ["#10b981", "#ef4444", "#f59e0b"],
+                borderColor: ["#10b981", "#ef4444", "#f59e0b"],
+                borderWidth: 1,
+                hoverOffset: 4,
+            },
+        ],
+    };
+});
+
+const pieChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            position: "bottom",
+            labels: {
+                padding: 20,
+                usePointStyle: true,
+                pointStyle: "circle",
+                font: {
+                    size: 13,
+                },
+            },
+        },
+        tooltip: {
+            callbacks: {
+                label: (context) => {
+                    const label = context.label || "";
+                    const value = context.raw || 0;
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                    return `${label}: ${value} (${percentage}%)`;
+                },
+            },
+        },
+    },
+};
+
+const barChartData = computed(() => {
+    const labels = weeklyData.value.map((item) => item.day_name || item.date);
+    const present = weeklyData.value.map((item) => item.present || 0);
+    const absent = weeklyData.value.map((item) => item.absent || 0);
+    const leave = weeklyData.value.map((item) => item.leave || 0);
+
+    return {
+        labels,
+        datasets: [
+            {
+                label: t("present_staff"),
+                data: present,
+                backgroundColor: "#10b981",
+                borderRadius: 4,
+                barPercentage: 0.6,
+            },
+            {
+                label: t("absent_staff"),
+                data: absent,
+                backgroundColor: "#ef4444",
+                borderRadius: 4,
+                barPercentage: 0.6,
+            },
+            {
+                label: t("leave"),
+                data: leave,
+                backgroundColor: "#f59e0b",
+                borderRadius: 4,
+                barPercentage: 0.6,
+            },
+        ],
+    };
+});
+
+const barChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            position: "top",
+            align: "end",
+            labels: {
+                usePointStyle: true,
+                pointStyle: "circle",
+                padding: 16,
+                font: {
+                    size: 12,
+                },
+            },
+        },
+        tooltip: {
+            mode: "index",
+            intersect: false,
+        },
+    },
+    scales: {
+        x: {
+            grid: {
+                display: false,
+            },
+            ticks: {
+                font: {
+                    size: 12,
+                },
+            },
+        },
+        y: {
+            beginAtZero: true,
+            ticks: {
+                stepSize: 1,
+                font: {
+                    size: 12,
+                },
+            },
+        },
+    },
+};
+
 const fetchStaffCount = async () => {
     try {
         const businessId = authStore.company?.id;
@@ -76,37 +215,23 @@ const fetchCurrentMonthStats = async () => {
     try {
         loading.value = true;
         const now = new Date();
-        const year = now.getFullYear();
-        const month = now.getMonth();
-        const firstDay = `${year}-${String(month + 1).padStart(2, "0")}-01`;
-        const lastDay = now.toISOString().split("T")[0];
+        const todayStr = now.toISOString().split("T")[0];
 
-        const response = await getAttendanceReport(firstDay, lastDay);
-        const data = response.data.data || response.data || [];
-        const records = Array.isArray(data) ? data : [];
+        const result = await getAttendanceSummary(todayStr, todayStr);
+        attendanceData.value = result.records;
+        mtdData.value = result.mtdData;
+        weeklyData.value = result.weeklyData;
 
-        const uniquePresentStaff = new Set();
-        const uniqueAbsentStaff = new Set();
-
-        records.forEach((record) => {
-            const status = (record.status || "").toLowerCase();
-            if (status === "present" || status === "late" || status === "half_day") {
-                uniquePresentStaff.add(record.staff_member_id);
-            } else if (status === "absent" || status === "missing") {
-                uniqueAbsentStaff.add(record.staff_member_id);
-            }
-        });
-
-        const presentCount = uniquePresentStaff.size;
-        const absentCount = uniqueAbsentStaff.size;
-        const totalCount = totalStaffCount.value;
+        const presentCount = mtdData.value.present || 0;
+        const absentCount = mtdData.value.absent || 0;
+        const leaveCount = mtdData.value.leave || 0;
 
         monthStats.value = {
-            totalStaff: totalCount,
+            totalStaff: result.totalStaff || 0,
             presentStaff: presentCount,
             absentStaff: absentCount,
             attendancePercentage:
-                totalCount > 0 ? Math.round((presentCount / totalCount) * 100) : 0,
+                (result.totalStaff || 0) > 0 ? Math.round((presentCount / result.totalStaff) * 100) : 0,
         };
     } catch (error) {
         showErrorAlert(handleApiError(error, t));
@@ -126,9 +251,23 @@ const generateReport = async () => {
         const from = fromDate.value.toISOString().split("T")[0];
         const to = toDate.value.toISOString().split("T")[0];
 
-        const response = await getAttendanceReport(from, to);
-        const data = response.data.data || response.data || [];
-        attendanceData.value = Array.isArray(data) ? data : [];
+        const result = await getAttendanceSummary(from, to);
+        attendanceData.value = result.records;
+        mtdData.value = result.mtdData;
+        weeklyData.value = result.weeklyData;
+
+        const presentCount = mtdData.value.present || 0;
+        const absentCount = mtdData.value.absent || 0;
+        const leaveCount = mtdData.value.leave || 0;
+        const totalCount = presentCount + absentCount + leaveCount;
+
+        monthStats.value = {
+            totalStaff: result.totalStaff || 0,
+            presentStaff: presentCount,
+            absentStaff: absentCount,
+            attendancePercentage:
+                (result.totalStaff || 0) > 0 ? Math.round((presentCount / result.totalStaff) * 100) : 0,
+        };
     } catch (error) {
         showErrorAlert(handleApiError(error, t));
     } finally {
@@ -151,7 +290,7 @@ onMounted(() => {
         </div>
 
         <div class="row mb-4">
-                    <div class="col-md-4 col-sm-6 mb-3">
+            <div class="col-md-4 col-sm-6 mb-3">
                 <div class="stat-card stat-card-total">
                     <div class="stat-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -187,6 +326,33 @@ onMounted(() => {
                     <div class="stat-info">
                         <span class="stat-label">{{ $t("absent_staff") }}</span>
                         <span class="stat-value">{{ monthStats.absentStaff }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6 col-sm-12 mb-3">
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <h5 class="card-title">{{ $t("attendance_percentage") || "Attendance Distribution" }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <Pie :data="pieChartData" :options="pieChartOptions" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-3">
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <h5 class="card-title">{{ $t("current_month_attendance") }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <Bar :data="barChartData" :options="barChartOptions" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -253,10 +419,10 @@ onMounted(() => {
                             <template #item-staff_name="item">
                                 <div class="d-flex align-items-center gap-2">
                                     <img
-                                        :src="item.profile_pic || '/default-avatar.png'"
+                                        :src="item.profile_pic || defaultProfilePic"
                                         class="avatar-sm rounded-circle"
                                         :alt="item.staff_name"
-                                        @error="$event.target.src = '/default-avatar.png'"
+                                        @error="$event.target.src = defaultProfilePic"
                                     />
                                     <span class="fw-semibold">{{ item.staff_name }}</span>
                                 </div>
@@ -370,6 +536,30 @@ onMounted(() => {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
+.chart-card {
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.chart-card .card-header {
+    background: transparent;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 20px;
+}
+
+.chart-card .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin: 0;
+}
+
+.chart-container {
+    position: relative;
+    height: 280px;
+}
+
 .form-label {
     font-weight: 600;
     font-size: 13px;
@@ -425,9 +615,13 @@ onMounted(() => {
     letter-spacing: 0.3px;
 }
 
-:deep(.easy-data-table td) {
-    font-size: 14px !important;
-    color: #1a1a2e !important;
+:deep(.easy-data-table tbody tr) {
+    height: 64px;
+}
+
+:deep(.easy-data-table tbody td) {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
 }
 
 :deep(.vue-date-picker) {
@@ -468,6 +662,10 @@ onMounted(() => {
     .stat-icon {
         width: 40px;
         height: 40px;
+    }
+
+    .chart-container {
+        height: 240px;
     }
 }
 </style>
