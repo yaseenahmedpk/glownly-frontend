@@ -55,6 +55,9 @@ const schema = yup.object({
     country: yup
         .string()
         .required('Country is required'),
+    currency: yup
+        .string()
+        .required('Currency is required'),
     timezone: yup
         .string()
         .required('Timezone is required'),
@@ -70,6 +73,8 @@ const onSubmit = (values) => {
     if (errorCode.value == null || errorCode.value === 0) {
         values.mobileNumber = phoneNumber.value
         // values.country = phoneNumberRef.value.instance.getSelectedCountryData().iso2
+        values.currency_id = values.currency
+        delete values.currency
     } else {
         phoneError.value = t('please_provide_valid_whatsapp_number')
         return;
@@ -196,6 +201,20 @@ const passwordStrength = computed(() => {
                         </option>
                     </Field>
                     <ErrorMessage name="country" class="text-danger" />
+                </div>
+            </div>
+
+            <!-- Currency -->
+            <div class="col-12 mt-2">
+                <div class="form-group">
+                    <label class="text-secondary">{{ $t('currency') }}</label>
+                    <Field name="currency" as="select" class="form-control">
+                        <option value="">{{ $t('select_currency') }}</option>
+                        <option v-for="cur in registrationMetaData?.currencies || []" :key="cur.id" :value="cur.id">
+                            {{ cur.currency }} ({{ cur.currency_symbol }})
+                        </option>
+                    </Field>
+                    <ErrorMessage name="currency" class="text-danger" />
                 </div>
             </div>
 

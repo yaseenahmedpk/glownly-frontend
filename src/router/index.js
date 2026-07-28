@@ -98,13 +98,19 @@ const routes = [
             name: "Businesses",
             component: () => import("../views/dashboard/BusinessListView.vue"),
          },
-         {
-            path: "/attendance-report",
-            name: "AttendanceReport",
-            component: () => import("../views/dashboard/AttendanceReportView.vue"),
-            meta: { requiresAuth: true, permission: "can_access_attendance_report" },
-         },
-      ],
+          {
+             path: "/attendance-report",
+             name: "AttendanceReport",
+             component: () => import("../views/dashboard/AttendanceReportView.vue"),
+             meta: { requiresAuth: true, permission: "can_access_attendance_report" },
+          },
+          {
+             path: "/payroll-report",
+             name: "PayrollReport",
+             component: () => import("../views/dashboard/PayrollReportView.vue"),
+             meta: { requiresAuth: true, permission: "can_access_staff_payroll_report" },
+          },
+       ],
   },
 ];
 const router = createRouter({

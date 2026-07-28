@@ -99,6 +99,7 @@ const handleUpdateBusiness = async (data) => {
             formData.append('website', data.website)
             formData.append('timezone_id', data.timezone_id)
             formData.append('country_id', data.country_id)
+            formData.append('currency_id', data.currency_id)
             formData.append('city', data.city)
             formData.append('state_id', data.state_id)
             formData.append('address', data.address)

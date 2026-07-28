@@ -314,6 +314,16 @@
                                             <ErrorMessage name="countryId" class="text-danger" />
                                         </div>
                                         <div class="form-group col-sm-6">
+                                            <label for="currency">{{ $t('currency') }}</label>
+                                            <Field name="currencyId" as="select" class="form-control" id="currency"
+                                                v-model="businessData.currencyId">
+                                                <option value="" disabled>{{ $t('select_currency') }}</option>
+                                                <option v-for="cur in currencies" :key="cur.id"
+                                                    :value="cur.id">{{ cur.currency }} ({{ cur.currency_symbol }})</option>
+                                            </Field>
+                                            <ErrorMessage name="currencyId" class="text-danger" />
+                                        </div>
+                                        <div class="form-group col-sm-6">
                                             <label for="city">{{ $t('city') }}</label>
                                             <Field name="city" type="text" class="form-control" id="city"
                                                 v-model="businessData.city" />
@@ -469,6 +479,7 @@ const personalData = reactive({
 const countries = ref([])
 const languages = ref([])
 const timezones = ref([])
+const currencies = ref([])
 const states = ref([])
 const businessStates = ref([])
 const isCountryInitialized = ref(false)
@@ -502,6 +513,7 @@ const businessData = reactive({
     website: '',
     timezoneId: '',
     countryId: '',
+    currencyId: '',
     city: '',
     stateId: '',
     address: '',
@@ -546,6 +558,7 @@ watch(() => props.profileData, async (newData) => {
         countries.value = Array.isArray(newData.countries) ? newData.countries : []
         languages.value = Array.isArray(newData.languages) ? newData.languages : []
         timezones.value = Array.isArray(newData.timezones) ? newData.timezones : []
+        currencies.value = Array.isArray(newData.currencies) ? newData.currencies : []
 
         Object.assign(contactData, {
             contactNumber: newData.profileDetails?.mobile_number ?? '',
@@ -581,6 +594,7 @@ watch(() => props.profileData, async (newData) => {
             website: matchedBusiness?.website || '',
             timezoneId: matchedBusiness?.timezone_id || personalData.timezoneId || '',
             countryId: matchedBusiness?.country_id || personalData.countryId || '',
+            currencyId: matchedBusiness?.currency_id || personalData.currencyId || '',
             city: matchedBusiness?.city || personalData.city || '',
             stateId: matchedBusiness?.state_id || personalData.stateId || '',
             address: matchedBusiness?.address || '',
@@ -682,6 +696,7 @@ const businessSchema = yup.object({
     website: yup.string().url('Enter a valid website URL'),
     timezoneId: yup.string().required('Timezone is required'),
     countryId: yup.string().required('Country is required'),
+    currencyId: yup.string().required('Currency is required'),
     city: yup.string().required('City is required'),
     stateId: yup.string().required('State is required'),
     address: yup.string().required('Address is required'),
@@ -774,6 +789,7 @@ const onSubmitBusiness = (values) => {
         website: values.website,
         timezone_id: values.timezoneId,
         country_id: values.countryId,
+        currency_id: values.currencyId,
         city: values.city,
         state_id: values.stateId,
         address: values.address,
