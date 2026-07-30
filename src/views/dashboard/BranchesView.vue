@@ -97,7 +97,7 @@ onMounted(() => {
 
 const openModal = async () => {
     const modalEl = document.getElementById("branchModal")
-    modalObject.value = new Modal(modalEl)
+    modalObject.value = new Modal(modalEl, { backdrop: 'static', keyboard: false })
     editingBranchId.value = null;
     resetForm();
     modalTitle.value = t("add");
@@ -210,7 +210,7 @@ const handleBranchData = async (data) => {
     }
 
     const modalEl = document.getElementById("branchModal");
-    modalObject.value = new Modal(modalEl);
+    modalObject.value = new Modal(modalEl, { backdrop: 'static', keyboard: false });
 
     const branch = branches.value.find((b) => b.id === data.id) || data;
     const branchShifts = branch.branch_shifts || [];
