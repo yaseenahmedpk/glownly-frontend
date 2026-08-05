@@ -9,6 +9,8 @@ import { getBranches } from "../../services/branchService";
 import { handleApiError } from "../../helpers/handleApiError";
 import { VueDatePicker } from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import AnnualLeaveCalendar from "../../components/dashboard/AnnualLeaveCalendar.vue";
+import LeaveDetailsModal from "../../components/dashboard/LeaveDetailsModal.vue";
 
 const { locale } = useI18n();
 const authStore = useAuthStore();
@@ -20,8 +22,15 @@ const presentEmployees = ref(0);
 const loading = ref(false);
 const branches = ref([]);
 const selectedBranchId = ref("");
+const selectedEvent = ref(null);
 
 const selectedBusinessId = computed(() => authStore.company?.id ?? "");
+
+const handleEventClick = (event) => {
+  selectedEvent.value = event;
+};
+
+const totalBranches = computed(() => stats.value?.total_branches ?? 0);
 
 const fetchStats = async () => {
   if (!selectedBusinessId.value) return;
@@ -56,7 +65,6 @@ const fetchBranches = async () => {
   }
 };
 
-const totalBranches = computed(() => stats.value?.total_branches ?? 0);
 const totalStaff = computed(() => stats.value?.total_staff ?? 0);
 const absentStaff = computed(() => stats.value?.absent_staff ?? 0);
 const onLeaveStaff = computed(() => stats.value?.on_leave_staff ?? 0);
@@ -269,6 +277,12 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
+
+    <div class="col-lg-12 col-md-12 mt-4">
+      <AnnualLeaveCalendar @event-click="handleEventClick" />
+    </div>
+
+    <LeaveDetailsModal :event="selectedEvent" />
   </div>
 </template>
 
