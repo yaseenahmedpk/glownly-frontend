@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import defaultLogo from '../../assets/images/glownly_logo.png'
+import defaultLogo from '../../assets/images/remaken_logo.png'
 
 const { t } = useI18n()
 
