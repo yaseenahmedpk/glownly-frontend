@@ -6,6 +6,7 @@ import { Form, Field, ErrorMessage, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import SearchableSelect from '../form/SearchableSelect.vue'
 
 
 const { t } = useI18n()
@@ -194,11 +195,16 @@ const passwordStrength = computed(() => {
             <div class="col-12 mt-2">
                 <div class="form-group">
                     <label class="text-secondary">{{ $t('country') }}</label>
-                    <Field name="country" as="select" class="form-control">
-                        <option value="">{{ $t('select_country') }}</option>
-                        <option v-for="c in registrationMetaData?.countries || []" :key="c.id" :value="c.id">
-                            {{ c.name }}
-                        </option>
+                    <Field name="country" v-slot="{ field }">
+                        <SearchableSelect
+                            :modelValue="field.value"
+                            @update:modelValue="field.onChange"
+                            :options="registrationMetaData?.countries || []"
+                            labelKey="name"
+                            valueKey="id"
+                            :placeholder="$t('select_country')"
+                            :searchPlaceholder="$t('search_country')"
+                        />
                     </Field>
                     <ErrorMessage name="country" class="text-danger" />
                 </div>
@@ -208,11 +214,17 @@ const passwordStrength = computed(() => {
             <div class="col-12 mt-2">
                 <div class="form-group">
                     <label class="text-secondary">{{ $t('currency') }}</label>
-                    <Field name="currency" as="select" class="form-control">
-                        <option value="">{{ $t('select_currency') }}</option>
-                        <option v-for="cur in registrationMetaData?.currencies || []" :key="cur.id" :value="cur.id">
-                            {{ cur.currency }} ({{ cur.currency_symbol }})
-                        </option>
+                    <Field name="currency" v-slot="{ field }">
+                        <SearchableSelect
+                            :modelValue="field.value"
+                            @update:modelValue="field.onChange"
+                            :options="registrationMetaData?.currencies || []"
+                            labelKey="currency"
+                            valueKey="id"
+                            :placeholder="$t('select_currency')"
+                            :searchPlaceholder="$t('search_currency')"
+                            :displayFn="(cur) => `${cur.currency} (${cur.currency_symbol})`"
+                        />
                     </Field>
                     <ErrorMessage name="currency" class="text-danger" />
                 </div>
@@ -222,11 +234,16 @@ const passwordStrength = computed(() => {
             <div class="col-12 mt-2">
                 <div class="form-group">
                     <label class="text-secondary">{{ $t('timezone') }}</label>
-                    <Field as="select" name="timezone" class="form-control">
-                        <option value="">{{ $t('select_timezone') }}</option>
-                        <option v-for="t in registrationMetaData?.timezones || []" :key="t.id" :value="t.id">
-                            {{ t.label }}
-                        </option>
+                    <Field name="timezone" v-slot="{ field }">
+                        <SearchableSelect
+                            :modelValue="field.value"
+                            @update:modelValue="field.onChange"
+                            :options="registrationMetaData?.timezones || []"
+                            labelKey="label"
+                            valueKey="id"
+                            :placeholder="$t('select_timezone')"
+                            :searchPlaceholder="$t('search_timezone')"
+                        />
                     </Field>
                     <ErrorMessage name="timezone" class="text-danger" />
                 </div>
