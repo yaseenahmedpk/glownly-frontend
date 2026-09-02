@@ -13,6 +13,7 @@ import { useAuthStore } from "../stores/authStore";
 import { hasPermission } from "../helpers/authHelper";
 
 const routes = [
+  { path: "/", component: LoginView },
   { path: "/login", component: LoginView },
   { path: "/signup", component: SignupView },
   { path: "/number-verification", component: NumberVerificationView },
