@@ -16,7 +16,7 @@ const route = useRoute()
 const isDashboardActive = computed(() => route.name === 'DashboardHome' || route.path === '/dashboard')
 const isBranchesActive = computed(() => route.name === 'Branches')
 const isSettingsOpen = computed(() => ['Roles', 'Permissions', 'RolePermissions', 'Notifications', 'SystemNotifications', 'ServiceCategories'].includes(route.name))
-const isBusinessSettingsOpen = computed(() => route.name === 'Businesses')
+const isBusinessSettingsOpen = computed(() => ['Businesses', 'Advertisements'].includes(route.name))
 const isRolesActive = computed(() => route.name === 'Roles')
 const isPermissionsActive = computed(() => route.name === 'Permissions')
 const isNotificationsActive = computed(() => route.name === 'Notifications')
@@ -24,6 +24,7 @@ const isSystemNotificationsActive = computed(() => route.name === 'SystemNotific
 const isServiceCategoriesActive = computed(() => route.name === 'ServiceCategories')
 const isServicesActive = computed(() => route.name === 'Services')
 const isBusinessesActive = computed(() => route.name === 'Businesses')
+const isAdvertisementsActive = computed(() => route.name === 'Advertisements')
 const isStaffActive = computed(() => route.name === 'Staff')
 const isReportsOpen = computed(() => ['AttendanceReport', 'PayrollReport'].includes(route.name))
 const isAttendanceActive = computed(() => route.name === 'AttendanceReport')
@@ -273,6 +274,19 @@ const companyName = computed(() => {
                                     </i><span class="">{{ $t('business_list') }}</span>
                                 </RouterLink>
 
+                            </li>
+                            <li :class="['sidebar-layout', { active: isAdvertisementsActive }]"
+                                v-if="hasPermission('can_access_advertisement')">
+                                <RouterLink to="/advertisements"
+                                    :class="['svg-icon', { active: isAdvertisementsActive }]">
+                                    <i class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.25 2.25m0 0h3.75m-3.75 0h-1.5m1.5 0h1.5m-1.5 0v6" />
+                                        </svg>
+                                    </i><span class="">{{ $t('advertisements') }}</span>
+                                </RouterLink>
                             </li>
                         </ul>
                     </li>

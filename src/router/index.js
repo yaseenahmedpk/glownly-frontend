@@ -89,16 +89,21 @@ const routes = [
           name: "ServiceCategories",
           component: () => import("../views/dashboard/ServiceCategoriesView.vue"),
         },
-{
-           path: "/services",
-           name: "Services",
-           component: () => import("../views/dashboard/ServicesView.vue"),
-        },
-         {
-            path: "/businesses",
-            name: "Businesses",
-            component: () => import("../views/dashboard/BusinessListView.vue"),
-         },
+          {
+             path: "/services",
+             name: "Services",
+             component: () => import("../views/dashboard/ServicesView.vue"),
+          },
+           {
+              path: "/advertisements",
+              name: "Advertisements",
+              component: () => import("../views/dashboard/AdvertisementsView.vue"),
+           },
+           {
+              path: "/businesses",
+              name: "Businesses",
+              component: () => import("../views/dashboard/BusinessListView.vue"),
+           },
           {
              path: "/attendance-report",
              name: "AttendanceReport",
