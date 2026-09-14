@@ -94,6 +94,26 @@ const routes = [
              name: "Services",
              component: () => import("../views/dashboard/ServicesView.vue"),
           },
+        {
+           path: "/coupons",
+           name: "Coupons",
+           component: () => import("../views/dashboard/CouponsView.vue"),
+        },
+        {
+           path: "/coupons/create",
+           name: "CouponCreate",
+           component: () => import("../views/dashboard/CouponCreateView.vue"),
+        },
+        {
+           path: "/coupons/:id",
+           name: "CouponDetails",
+           component: () => import("../views/dashboard/CouponDetailsView.vue"),
+        },
+        {
+           path: "/coupons/:id/edit",
+           name: "CouponEdit",
+           component: () => import("../views/dashboard/CouponCreateView.vue"),
+        },
            {
               path: "/advertisements",
               name: "Advertisements",

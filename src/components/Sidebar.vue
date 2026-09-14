@@ -25,6 +25,8 @@ const isServiceCategoriesActive = computed(() => route.name === 'ServiceCategori
 const isServicesActive = computed(() => route.name === 'Services')
 const isBusinessesActive = computed(() => route.name === 'Businesses')
 const isAdvertisementsActive = computed(() => route.name === 'Advertisements')
+const isMarketingOpen = computed(() => ['Coupons', 'CouponCreate', 'CouponDetails', 'CouponEdit'].includes(route.name))
+const isCouponsActive = computed(() => route.name === 'Coupons')
 const isStaffActive = computed(() => route.name === 'Staff')
 const isReportsOpen = computed(() => ['AttendanceReport', 'PayrollReport'].includes(route.name))
 const isAttendanceActive = computed(() => route.name === 'AttendanceReport')
@@ -236,6 +238,40 @@ const companyName = computed(() => {
                                     </i><span class="">{{ $t('payroll') }}</span>
                                 </RouterLink>
 
+                            </li>
+                        </ul>
+                    </li>
+                    <li :class="['sidebar-layout', { active: isMarketingOpen }]"
+                        v-if="hasPermission('can_access_coupons')">
+                        <a href="#marketing" :class="['svg-icon', { collapsed: !isMarketingOpen }]"
+                            data-toggle="collapse" :aria-expanded="isMarketingOpen">
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.25 2.25m0 0h3.75m-3.75 0h-1.5m1.5 0h1.5m-1.5 0v6" />
+                                </svg>
+                            </i>
+                            <span class="ml-2">{{ $t('marketing') }}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon iq-arrow-right arrow-active"
+                                width="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                        <ul id="marketing" :class="['submenu', 'collapse', { show: isMarketingOpen }]"
+                            data-parent="#iq-sidebar-toggle">
+                            <li :class="['sidebar-layout', { active: isCouponsActive }]"
+                                v-if="hasPermission('can_access_coupons')">
+                                <RouterLink to="/coupons" :class="['svg-icon', { active: isCouponsActive }]">
+                                    <i class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                        </svg>
+                                    </i><span class="">{{ $t('coupons') }}</span>
+                                </RouterLink>
                             </li>
                         </ul>
                     </li>
