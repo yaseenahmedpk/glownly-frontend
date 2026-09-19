@@ -63,8 +63,9 @@ const updateQrCodeHandler = async () => {
     updateLoading.value = true;
     try {
         const res = await updateQrCode(currentBranchId.value);
-        qrCodeUrl.value = res.data.qr_code_url;
-        emit('qrCodeUpdated', currentBranchId.value, res.data.qr_code_url);
+        const baseUrl = res.data.qr_code_url || res.data.data?.qr_code_url;
+        qrCodeUrl.value = baseUrl ? `${baseUrl}?t=${Date.now()}` : '';
+        emit('qrCodeUpdated', currentBranchId.value, qrCodeUrl.value);
     } catch (err) {
         console.error('Failed to update QR code');
     } finally {
